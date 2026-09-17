@@ -69,3 +69,30 @@ Unsynchronized clock domain crossings cause metastability and intermittent silic
 | `clk_uart_115k` | `clk_100m` | **Asynchronous** | **2-FF Synchronizer** | ⚠️ **UNSYNCHRONIZED (CRITICAL)** |
 
 Violations are flagged with high-visibility amber warning badges directly on the schematic and waveform timeline.
+
+---
+
+## 5. Production Implementation & Studio Architecture
+
+Axiom EDA implements this architecture natively in TypeScript, SVG, and React 19:
+
+- **Static Timing Analysis Model (`ui/src/engine/timingModel.ts`)**:
+  - Full path delay accumulation ($\sum t_{\text{cell}} + \sum t_{\text{net}} + t_{\text{setup}}$).
+  - Setup Slack Calculation: $T_{\text{slack}} = T_{\text{clk}} - T_{\text{arrival}}$.
+  - Hold Slack Calculation ($T_{\text{hold}} = 280\text{ ps}$ safe margin).
+  - Maximum Achievable Frequency: $f_{\text{max}} = 1 / (T_{\text{clk}} - \text{WNS})$.
+  - Slack Distribution Histogram: 5 proportional bins classifying path margins from negative violations ($< 0\text{ ps}$) up to healthy margins ($> +500\text{ ps}$).
+- **Timing Radar & Waterfall Viewer (`ui/src/components/TimingRadarViewer.tsx`)**:
+  - **Constraint Wizard Toolbar**: Fast toggle presets for 50 MHz (20 ns), 100 MHz (10 ns), 200 MHz (5 ns), and 300 MHz (3.33 ns).
+  - **Slack Radar Metric Cards**: Real-time display of WNS, TNS, WHS, and Fmax with status badges (`MET` / `VIOLATION`).
+  - **Interactive Critical Path Waterfall**: Color-coded proportional timeline bars:
+    - Launch Clock tree skew (Cyan)
+    - Source Flip-Flop $T_{\text{co}}$ (Indigo)
+    - Combinational Logic Gates (Emerald)
+    - Interconnect Wire Routing (Amber)
+    - Capture Flip-Flop Setup Window (Purple)
+  - **Logic Gate vs Wire Breakdown**: Proportional calculation (e.g. 63% Cell Delay vs 37% Routing Delay) with automated pipeline advice.
+  - **Automated CDC Verification Matrix Table**: Source/Dest domain mapping, frequency ratios, protection schemes, and verified status pills.
+- **Studio Integration (`ui/src/App.tsx`)**:
+  - Dedicated `[ ⏱️ Timing & Energy ]` studio view tab for in-depth timing exploration alongside HDL source code.
+

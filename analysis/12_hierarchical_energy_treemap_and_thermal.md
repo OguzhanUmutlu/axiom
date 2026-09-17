@@ -48,3 +48,19 @@ Axiom models the multi-rail power distribution network in real time:
 
 ### 3.1. Automated Voltage Droop Hazard Flags
 If a simultaneous bus transition causes rail voltage to sag below the specified noise margin (e.g. $V_{\text{core}} < 0.85\text{V}$, $>5\%$ droop), Axiom automatically flags an **SSN Hazard Warning** in the telemetry panel and places a persistent hazard marker on the waveform timeline.
+
+---
+
+## 4. Production Implementation & Studio Architecture
+
+Axiom EDA implements this architecture natively in TypeScript, SVG, and React 19:
+
+- **Energy Treemap Model (`ui/src/engine/timingModel.ts`)**:
+  - `computeEnergyTreemap(topModule, simTimePs)`: Hierarchical decomposition of total energy dissipation ($E = \frac{1}{2} C V^2$) into arithmetic datapaths, state registers, clock networks, and submodules.
+  - Per-module switching toggle rate tracking ($\alpha$, toggles per nanosecond).
+  - Multi-rail PDN droop calculations ($V_{\text{droop}} = IR + L\frac{di}{dt}$) in millivolts.
+- **Interactive Silicon Energy Treemap (`ui/src/components/TimingRadarViewer.tsx`)**:
+  - 2D proportional tile layout with thermal color coding (Cool Blue $\to$ Amber $\to$ Neon Red).
+  - Live PDN Voltage Droop readout HUD card with accumulated microjoules ($\mu\text{J}$) display.
+  - Integration with the Studio Workspace in `ui/src/App.tsx`.
+
