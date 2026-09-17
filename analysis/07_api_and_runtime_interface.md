@@ -1,10 +1,10 @@
-# Betterado API, Runtime Interface & WebAssembly Bindings
+# Axiom API, Runtime Interface & WebAssembly Bindings
 
 ## 1. Overview and Integration Scope
 
-Betterado is designed from the core as an **embeddable library**. The simulation engine can be driven via:
+Axiom is designed from the core as an **embeddable library**. The simulation engine can be driven via:
 1. **Native Rust API**: For maximum performance and integration with Rust tools.
-2. **C-ABI Dynamic Library (`libbetterado.so` / `.dll` / `.dylib`)**: For integration with Python, C++, or custom testbenches.
+2. **C-ABI Dynamic Library (`libaxiom.so` / `.dll` / `.dylib`)**: For integration with Python, C++, or custom testbenches.
 3. **WebAssembly (`wasm-bindgen`)**: For running directly inside modern web browsers with TypeScript/JavaScript.
 
 ---
@@ -12,14 +12,14 @@ Betterado is designed from the core as an **embeddable library**. The simulation
 ## 2. Public Rust Engine API
 
 ```rust
-use betterado_core::{Logic4, SimTime};
+use axiom_core::{Logic4, SimTime};
 
-pub struct BetteradoEngine {
-    sim: BetteradoSimulator,
+pub struct AxiomEngine {
+    sim: AxiomSimulator,
     telemetry: TelemetryCollector,
 }
 
-impl BetteradoEngine {
+impl AxiomEngine {
     /// Ingests HDL source code and compiles it directly into executable RAM
     pub fn compile_and_elaborate(source: &str, top_module: &str) -> Result<Self, EngineError>;
 
@@ -53,19 +53,19 @@ impl BetteradoEngine {
 
 ## 3. WebAssembly (WASM) & TypeScript Interface
 
-The `betterado-wasm` crate exposes the engine to the browser via `wasm-bindgen`:
+The `axiom-wasm` crate exposes the engine to the browser via `wasm-bindgen`:
 
 ```rust
 #[wasm_bindgen]
-pub struct WasmBetteradoEngine {
-    inner: BetteradoEngine,
+pub struct WasmAxiomEngine {
+    inner: AxiomEngine,
 }
 
 #[wasm_bindgen]
-impl WasmBetteradoEngine {
+impl WasmAxiomEngine {
     #[wasm_bindgen(constructor)]
-    pub fn new(hdl_source: &str, top_module: &str) -> Result<WasmBetteradoEngine, JsValue> {
-        let inner = BetteradoEngine::compile_and_elaborate(hdl_source, top_module)
+    pub fn new(hdl_source: &str, top_module: &str) -> Result<WasmAxiomEngine, JsValue> {
+        let inner = AxiomEngine::compile_and_elaborate(hdl_source, top_module)
             .map_err(|e| JsValue::from_str(&e.to_string()))?;
         Ok(Self { inner })
     }
@@ -98,10 +98,10 @@ impl WasmBetteradoEngine {
 
 In the React/TypeScript application:
 ```typescript
-import init, { WasmBetteradoEngine } from 'betterado-wasm';
+import init, { WasmAxiomEngine } from 'axiom-wasm';
 
 await init();
-const engine = new WasmBetteradoEngine(verilogCode, "alu_top");
+const engine = new WasmAxiomEngine(verilogCode, "alu_top");
 
 // Step 10 nanoseconds
 const summary = engine.tick(10000); 

@@ -44,9 +44,9 @@ The friction created by Vivado costs hardware engineering teams countless hours 
 
 ---
 
-## 3. Comparison Matrix: Vivado vs. Betterado Target Vision
+## 3. Comparison Matrix: Vivado vs. Axiom Target Vision
 
-| Feature / Attribute | AMD Vivado Design Suite | Betterado |
+| Feature / Attribute | AMD Vivado Design Suite | Axiom |
 | :--- | :--- | :--- |
 | **Core Language** | Legacy C/C++, Tcl 8.5, Java Swing | 100% Modern Safe Rust |
 | **Installation Size** | 60 – 110 GB | < 45 MB executable |

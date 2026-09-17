@@ -1,10 +1,10 @@
-# Betterado Elaboration Pipeline & Intermediate Representation (BIR)
+# Axiom Elaboration Pipeline & Intermediate Representation (BIR)
 
 ## 1. Overview of Elaboration
 
-Elaboration takes the modular, un-instantiated ASTs from `betterado-syntax` and turns them into an executable, fully resolved circuit graph. In Betterado, elaboration produces **Betterado Intermediate Representation (BIR)**.
+Elaboration takes the modular, un-instantiated ASTs from `axiom-syntax` and turns them into an executable, fully resolved circuit graph. In Axiom, elaboration produces **Axiom Intermediate Representation (BIR)**.
 
-Unlike Vivado's `xelab` (which takes seconds to emit C files and call external linkers), Betterado elaborates entirely in RAM using directed acyclic graph (DAG) transformations in milliseconds.
+Unlike Vivado's `xelab` (which takes seconds to emit C files and call external linkers), Axiom elaborates entirely in RAM using directed acyclic graph (DAG) transformations in milliseconds.
 
 ---
 
@@ -52,7 +52,7 @@ Unlike Vivado's `xelab` (which takes seconds to emit C files and call external l
                               |
                               v
 +-------------------------------------------------------------+
-| 5. Lowering into BIR (Betterado Intermediate Representation)|
+| 5. Lowering into BIR (Axiom Intermediate Representation)|
 |    - Lower continuous assignments to dataflow logic nodes   |
 |    - Lower always/process blocks into state transition nodes|
 |    - Extract explicit trigger sensitivity sets              |
@@ -61,7 +61,7 @@ Unlike Vivado's `xelab` (which takes seconds to emit C files and call external l
 
 ---
 
-## 3. Specification of Betterado Intermediate Representation (BIR)
+## 3. Specification of Axiom Intermediate Representation (BIR)
 
 BIR is a strongly typed, low-level hardware intermediate representation optimized for:
 1. Direct translation to **Cranelift IR** for native JIT machine code generation.
@@ -153,6 +153,6 @@ Whenever a signal with `NetId` changes value during simulation:
 
 ## 5. Elaboration Speed & Scalability
 
-By avoiding disk serialization, Betterado's elaboration achieves:
+By avoiding disk serialization, Axiom's elaboration achieves:
 - **Instant Elaboration**: 100,000 gates elaborated in $< 20 \text{ ms}$.
 - **Zero External Dependencies**: Self-contained Rust code, completely independent of host C compilers or system toolchains.

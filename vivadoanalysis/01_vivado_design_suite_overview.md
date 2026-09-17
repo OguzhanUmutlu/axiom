@@ -10,7 +10,7 @@ Despite its industry dominance, Vivado's HDL processing pipeline suffers from se
 - **Heavy UI Overhead**: Java/Swing-based desktop frontend with heavy memory consumption, slow rendering of large waveforms, and no web/cloud capability.
 - **Opaque Delta Cycles**: Inability to visually single-step or inspect discrete delta cycles in zero simulation time.
 
-Understanding Vivado's internal stages is vital for building **Betterado**—a modern, ultra-fast, cross-platform remake written in Rust that compiles HDL directly to machine code in RAM and provides delta-time tickable simulation and real-time telemetry.
+Understanding Vivado's internal stages is vital for building **Axiom**—a modern, ultra-fast, cross-platform remake written in Rust that compiles HDL directly to machine code in RAM and provides delta-time tickable simulation and real-time telemetry.
 
 ---
 
@@ -116,9 +116,9 @@ Vivado incorporates a power estimation engine documented in **UG907**. Power ana
 
 ---
 
-## 5. Motivation for Betterado
+## 5. Motivation for Axiom
 
-| Metric / Dimension | AMD Vivado (xsim/xelab) | Betterado (Target Design) |
+| Metric / Dimension | AMD Vivado (xsim/xelab) | Axiom (Target Design) |
 | :--- | :--- | :--- |
 | **Language & Safety** | Legacy C/C++, Java Swing | Modern 100% Memory-Safe Rust |
 | **Install Footprint** | 60 GB – 110 GB | Single self-contained binary (< 50 MB) |

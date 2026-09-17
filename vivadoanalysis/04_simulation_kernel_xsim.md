@@ -155,7 +155,7 @@ Using this encoding, bitwise Boolean logic can be executed with SIMD bit-twiddli
 
 Vivado provides **no command to step a single delta cycle** or inspect signals across delta iterations within zero time. All delta cycles within a time step are collapsed in the waveform viewer (`.wdb`), hiding critical glitches, setup/hold hazards, and transient evaluation bugs.
 
-Betterado solves this by offering a **manual delta-tick API**:
+Axiom solves this by offering a **manual delta-tick API**:
 ```rust
 sim.step_delta(); // Step exactly one delta cycle
 sim.tick(SimTime::from_nanos(10)); // Tick physical time by 10ns

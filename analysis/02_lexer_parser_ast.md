@@ -1,8 +1,8 @@
-# Betterado Front-End: Lexer, Preprocessor, Resilient Parser & AST
+# Axiom Front-End: Lexer, Preprocessor, Resilient Parser & AST
 
 ## 1. Overview and Design Objectives
 
-The `betterado-syntax` crate implements the front-end HDL ingestion engine. Its objectives are:
+The `axiom-syntax` crate implements the front-end HDL ingestion engine. Its objectives are:
 1. **High Throughput**: Lexing and parsing millions of lines of Verilog and SystemVerilog per second.
 2. **Resilience & Fault Tolerance**: Syntax errors do not halt parsing; the parser recovers and parses remaining modules to provide comprehensive IDE feedback.
 3. **Lossless Source Mapping**: Accurate byte spans for every token and AST node to power IDE hover, jump-to-definition, and diagnostic squiggles.

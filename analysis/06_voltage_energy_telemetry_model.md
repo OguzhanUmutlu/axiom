@@ -1,4 +1,4 @@
-# Betterado Voltage, Energy & Power Telemetry Engine
+# Axiom Voltage, Energy & Power Telemetry Engine
 
 ## 1. Overview and Problem Statement
 
@@ -7,7 +7,7 @@ Vivado's power estimation (`report_power`) is disconnected from simulation. It r
 - Dynamic current spikes during clock transitions.
 - Instantaneous energy dissipation per sub-module.
 
-Betterado embeds a **first-principles physics-based power telemetry model** directly inside the simulation kernel. As signals toggle during `tick(dt)` or `step_delta()`, energy dissipation is accumulated in real time and streamed to the UI at 60 frames per second.
+Axiom embeds a **first-principles physics-based power telemetry model** directly inside the simulation kernel. As signals toggle during `tick(dt)` or `step_delta()`, energy dissipation is accumulated in real time and streamed to the UI at 60 frames per second.
 
 ---
 
@@ -38,13 +38,13 @@ $$I_{\text{rail}}(t) = \frac{P_{\text{dynamic}}(t)}{V_{\text{rail}}}$$
 
 ## 3. Power Supply Rails & Voltage Modeling
 
-Betterado allows users to define independent power supply rails (matching FPGA standards):
+Axiom allows users to define independent power supply rails (matching FPGA standards):
 - **$V_{\text{core}}$ (Core Logic)**: $0.85\text{V} - 1.0\text{V}$ (powers internal flip-flops and logic gates).
 - **$V_{\text{aux}}$ (Auxiliary / Clocking)**: $1.8\text{V}$ (powers clock buffers and PLLs).
 - **$V_{\text{io}}$ (I/O Banks)**: Configurable per port ($1.2\text{V}, 1.8\text{V}, 2.5\text{V}, 3.3\text{V}$).
 
 ### Voltage Sag / Droop Modeling
-If a large number of logic gates switch simultaneously on a clock edge (high $di/dt$), Betterado simulates power distribution network (PDN) impedance:
+If a large number of logic gates switch simultaneously on a clock edge (high $di/dt$), Axiom simulates power distribution network (PDN) impedance:
 $$V_{\text{droop}}(t) = L_{\text{pdn}} \frac{di}{dt} + R_{\text{pdn}} \cdot i(t)$$
 This allows engineers to detect whether high switching activity causes voltage droop that could trigger timing violations.
 
@@ -84,7 +84,7 @@ To prevent telemetry calculations from slowing down the high-speed JIT simulatio
 
 ## 5. Export Formats
 
-In addition to live streaming, `betterado-telemetry` exports:
+In addition to live streaming, `axiom-telemetry` exports:
 - **SAIF (Switching Activity Interchange Format)**: 100% compatible with Vivado's `read_saif` command for cross-verification.
 - **VCD (Value Change Dump)**: Standard IEEE 1364 format.
 - **CSV / Parquet**: Raw numerical time-series of voltage, current, and energy for analysis in Python / Pandas / MATLAB.

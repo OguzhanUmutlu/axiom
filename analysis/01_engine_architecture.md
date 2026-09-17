@@ -1,8 +1,8 @@
-# Betterado Engine Architecture & Workspace Organization
+# Axiom Engine Architecture & Workspace Organization
 
 ## 1. Architectural Philosophy
 
-The Betterado engine is designed around three foundational engineering principles:
+The Axiom engine is designed around three foundational engineering principles:
 1. **Zero-Overhead Memory Safety**: Built 100% in safe Rust, eliminating memory leaks, buffer overflows, and segmentation faults that plague legacy C/C++ EDA tools.
 2. **Instant In-RAM Compilation**: Eliminates external compilers (GCC/Clang) and multi-step disk serialization. All ASTs, netlists, and JIT-compiled machine code reside directly in RAM.
 3. **Embeddable & Modular**: The engine operates as an independent, headless library with clean C-ABI and WebAssembly bindings, decoupled from the Tauri desktop UI.
@@ -19,7 +19,7 @@ axiom/
 ├── crates/
 │   ├── core/                       # Foundational types (SimTime, 4-state logic, spans, diagnostics)
 │   ├── syntax/                     # Streaming lexer, preprocessor, Pratt AST parser
-│   ├── ir/                         # Elaborator, symbol tables, and BIR (Betterado IR)
+│   ├── ir/                         # Elaborator, symbol tables, and BIR (Axiom IR)
 │   ├── jit/                        # Cranelift JIT backend & machine code memory manager
 │   ├── sim/                        # Stratified event queue, delta cycle engine & tick API
 │   ├── telemetry/                  # Power, energy, voltage calculations, VCD & SAIF exporters
@@ -33,7 +33,7 @@ axiom/
 
 ## 3. Memory Model & Zero-Allocation Principles
 
-HDL designs generate millions of tiny AST nodes, net references, and event objects. Traditional heap allocations (`Box`, `Vec`, `malloc`) cause severe memory fragmentation and pointer chasing. Betterado solves this using specialized memory management:
+HDL designs generate millions of tiny AST nodes, net references, and event objects. Traditional heap allocations (`Box`, `Vec`, `malloc`) cause severe memory fragmentation and pointer chasing. Axiom solves this using specialized memory management:
 
 ### 3.1. Arena Allocation (`bumpalo`)
 - During parsing and elaboration, AST nodes and netlist gates are allocated inside an arena allocator (`bumpalo::Bump`).
@@ -59,7 +59,7 @@ HDL designs generate millions of tiny AST nodes, net references, and event objec
 
 ## 4. Diagnostics & Error Reporting
 
-Betterado replaces cryptic Vivado error messages with rich, modern diagnostics:
+Axiom replaces cryptic Vivado error messages with rich, modern diagnostics:
 - Built with source-span tracking: every token preserves its exact UTF-8 byte offset, line number, and column.
 - Colored error messages with underlined offending code snippets, context notes, and actionable suggestions.
 - Diagnostic errors serialize cleanly to JSON for display in the Tauri/React IDE code editor.

@@ -4,7 +4,7 @@
 
 In traditional EDA tools like AMD Vivado, the schematic viewer is a sluggish, static Java Swing view. Navigating large designs with hundreds of thousands of gates leads to visual stuttering, modal window freezing, and opaque netlist hierarchies. Furthermore, the schematic is isolated from the simulation waveform and HDL source code—tracing a bug across schematic, waveform, and code requires manual search and mental mapping.
 
-**Axiom EDA replaces this with a GPU-accelerated, infinite-canvas Hardware Directed Acyclic Graph (DAG)** engine built with WebGL / HTML5 Canvas. It connects the elaborated **BIR (Betterado Intermediate Representation)** netlist directly to an interactive, 60+ FPS visual representation with **bidirectional cross-probing** and **instant critical logic cone tracing**.
+**Axiom EDA replaces this with a GPU-accelerated, infinite-canvas Hardware Directed Acyclic Graph (DAG)** engine built with WebGL / HTML5 Canvas. It connects the elaborated **BIR (Axiom Intermediate Representation)** netlist directly to an interactive, 60+ FPS visual representation with **bidirectional cross-probing** and **instant critical logic cone tracing**.
 
 ---
 
