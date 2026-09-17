@@ -27,7 +27,13 @@
 
 ## Completed
 
-- [x] **Phase 12.2: Self-Contained Binary, Zstd In-RAM Asset Bundling, Desktop Search Integration & Multi-Arch Releases - [P0]**
+- [x] **Phase 12.3: Dual-Runtime Simulation Architecture (In-Browser WebAssembly & Native Tauri v2 IPC) - [P0]**
+  - [x] **WebAssembly Simulation Kernel (`crates/wasm`)**: Compiled HDL parser, elaborator, 4-state arena (`SimStateArena`), portable evaluator (`PortableEvaluator`), stratified event scheduler, and silicon telemetry engine directly to `wasm32-unknown-unknown` (322 KB, ~102 KB gzipped).
+  - [x] **Feature-Gated Cranelift JIT**: Gated Cranelift virtual-memory code generation to `not(target_arch = "wasm32")`, enabling clean compilation across both WebAssembly and native targets with zero host-OS memory protection dependencies.
+  - [x] **Tauri v2 Native Desktop Integration (`crates/desktop`)**: Configured native Tauri v2 desktop application (`axiom-desktop`) with high-speed zero-copy IPC handlers (`compile_design`, `step_time`, `step_delta`, `force_signal`, `export_vcd`, `export_saif`) running native Cranelift JIT machine code compilation in RAM.
+  - [x] **Universal Dual-Runtime Router (`ui/src/engine/engineBridge.ts`)**: Auto-detects runtime environment (`isTauriRuntime()`); delegates to Tauri native IPC when running on desktop and client-side WebAssembly when running in-browser, with seamless state updates into waveforms, schematic DAG, and telemetry visualizers.
+  - [x] **Web Studio Website Deployment**: Integrated `base: './'` asset bundling, deployed interactive Web Studio live to `https://axiom.aerovex.net/studio/`, and linked directly from documentation navbar and homepage hero button (`⚡ Launch Web Studio`).
+
   - [x] **Zstd In-Binary UI Compression**: Compressed React 19 UI assets (`ui/dist/`) with Zstandard level 19 (~90 KB) and embedded them directly into the `axiom` binary at compile time via `crates/cli/build.rs`.
   - [x] **Embedded In-RAM GUI Server (`gui_server.rs`)**: Zero-async HTTP server (`tiny_http`) serving decompressed UI assets from RAM and providing live simulation engine REST API (`/api/compile`, `/api/step_time`, `/api/step_delta`, `/api/force`, `/api/vcd`, `/api/saif`, `/api/status`) with automatic browser launching (`axiom gui`).
   - [x] **Desktop Application & System Search Integration**:
