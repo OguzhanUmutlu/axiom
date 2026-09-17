@@ -13,11 +13,9 @@
 ---
 ## In Progress
 
-- [ ] **Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]**
-  - [ ] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks, generated clocks, input/output delays, and multicycle paths.
-  - [ ] **Setup/Hold Slack Radar & Critical Path Waterfall**: Visual path delay explorer with cell delay vs. interconnect delay breakdowns.
-  - [ ] **Clock Domain Crossing (CDC) Matrix**: Automated metastability risk analysis and 2-FF synchronizer validation.
-  - [ ] **Hierarchical Silicon Energy Treemap**: 2D squarified treemap visualizer showing dynamic power dissipation ($E = \frac{1}{2} C V^2$) and PDN supply sag ($V_{sag} = IR + L di/dt$).
+- [ ] **Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]**
+  - [ ] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation.
+  - [ ] **Interactive In-UI Tcl/Python/Rust REPL Console**: Unified scriptable command console with command history, syntax highlighting, and tab completion.
 
 ---
 
@@ -25,13 +23,17 @@
 
 ### Multi-Phase Innovation Roadmap
 
-#### Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]
-- [ ] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation.
-- [ ] **Interactive In-UI Tcl/Python/Rust REPL Console**: Unified scriptable command console with command history, syntax highlighting, and tab completion.
+*All core innovation phases scheduled.*
 
 ---
 
 ## Completed
+
+- [x] **Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]**
+  - [x] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks (50 MHz, 100 MHz, 200 MHz, 300 MHz) and path margin calculation.
+  - [x] **Setup/Hold Slack Radar & Critical Path Waterfall**: Visual path delay explorer with cell delay vs. interconnect delay breakdowns (e.g. 63% Logic, 37% Routing) and automated pipeline register advice.
+  - [x] **Clock Domain Crossing (CDC) Matrix**: Automated metastability risk analysis and 2-FF synchronizer validation across asynchronous clock boundaries.
+  - [x] **Hierarchical Silicon Energy Treemap**: 2D squarified treemap visualizer showing dynamic power dissipation ($E = \frac{1}{2} C V^2$) and PDN package supply sag ($V_{sag} = IR + L di/dt$).
 
 - [x] **Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]**
   - [x] **Virtual Instrument Rack**: Front-panel palette with interactive 8-bit DIP switch bank, tactile pushbuttons (RESET strobe & STEP CLK), rotary quadrature hex encoder dial, dual 7-segment LED displays, and 16-bit SMD LED bar graph.
