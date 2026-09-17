@@ -14,33 +14,51 @@
 
 ## In Progress
 
-- [ ] **Brand Identity & Project Renaming to Axiom - [P0]**
-  - [x] Rename GitHub repository from `betterado` to `axiom` (`OguzhanUmutlu/axiom`).
-  - [x] Update GitHub description, topic tags, and homepage URL (`https://axiom.aerovex.net`).
-  - [ ] Update workspace manifest, crate naming, and internal module paths to `axiom-*`.
-  - [ ] Update UI branding tokens, headers, and metadata to Axiom EDA.
-  - [ ] Overhaul `README.md` with executive-grade architecture diagrams, benchmarks, and badges.
-- [ ] **VitePress Documentation Portal & GitHub Pages CI/CD (`axiom.aerovex.net`) - [P0]**
-  - [ ] Initialize `docs/` VitePress suite with Obsidian dark theme matching Axiom UI.
-  - [ ] Configure `docs/public/CNAME` with `axiom.aerovex.net`.
-  - [ ] Author documentation chapters: Guide, Core Architecture, Vivado Feature Parity, and CLI Reference.
-  - [ ] Implement `.github/workflows/deploy-docs.yml` automated GitHub Pages deployment.
+- [ ] **Phase 8: Advanced Waveform Innovation & Signal Inspection Engine - [P0]**
+  - [ ] **Multi-Radix Bus Exploder**: Expandable multi-bit vector buses into bit-indexed sub-lanes with real-time radix switching (Hex, Binary, Unsigned, Signed Decimal, ASCII).
+  - [ ] **Dual-Cursor Monotonic Time Measurement**: Cursor A and Cursor B pins with floating delta badge ($\Delta t$ in ps/ns, frequency $f = 1/\Delta t$ in MHz/GHz).
+  - [ ] **Zero-Time Delta Accordion Viewer**: Expandable timeline accordion revealing internal $\delta$-cycles ($\delta_0 \to \delta_1 \to \dots \to \delta_n$) with glitch hazard ribbons ($0 \to 1 \to 0$ and $1 \to 0 \to 1$).
+  - [ ] **Interactive Signal/Pin Forcing & Probing**: Live inspector panel allowing engineers to force `0`, `1`, `X`, `Z` or clock square waves directly into running simulation state.
 
 ---
 
 ## Todo
 
-### Vivado Next-Generation Features Roadmap
-- [ ] **[P1] Interactive RTL Schematic & Netlist DAG Graph Viewer**: Hardware-accelerated schematic DAG rendered directly from elaborated BIR netlist with bidirectional waveform cross-probing.
-- [ ] **[P1] Static Timing Analysis (STA) & SDC/XDC Constraint Engine**: Setup/hold slack calculation, Worst Negative Slack (WNS), Total Negative Slack (TNS), and critical timing path pin-to-pin delay tracing.
-- [ ] **[P2] Logic Synthesis & FPGA Technology Mapping**: Combinational logic mapping into 6-input LUTs (`LUT6`), flip-flops (`FDRE`), and fast carry chains (`CARRY4`/`CARRY8`).
-- [ ] **[P2] Interactive Scriptable Tcl Shell & Embedded REPL**: Headless and in-UI command console supporting standard Tcl automation (`run`, `step_delta`, `get_nets`, `report_power`).
-- [ ] **[P2] Virtual I/O (VIO) & Software Integrated Logic Analyzer (ILA)**: Virtual lab bench with interactive switches, pushbuttons, LEDs, 7-segment displays, and triggerable software logic analyzer.
-- [ ] **[P2] VHDL-2008 Front-End Parser (`xvhdl` Parity)**: Native IEEE 1076-2008 parser enabling mixed-language Verilog/VHDL elaboration.
+### Multi-Phase Innovation Roadmap
+
+#### Phase 9: GPU-Accelerated Hardware Schematic DAG & Logic Cone Slicer - [P1]
+- [ ] **Interactive Canvas/WebGL Schematic DAG**: Render elaborated BIR netlist nodes (ports, registers, multiplexers, adders, operators) with auto-layout routing.
+- [ ] **Semantic Level-of-Detail (LOD)**: Zoom from macro module blocks with activity heatmaps down to internal Cranelift logic gates.
+- [ ] **Bidirectional Cross-Probing**: Seamless synchronization across Schematic $\leftrightarrow$ Waveform $\leftrightarrow$ Monaco HDL Code Editor.
+- [ ] **1-Click Critical Logic Cone Slicer**: Instant fan-in datapath extraction and fan-out load tree isolation with timing delay heatmaps.
+
+#### Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]
+- [ ] **Virtual Instrument Rack**: Front-panel palette with interactive DIP switches, momentary pushbuttons, rotary encoders, and multi-digit 7-segment displays.
+- [ ] **Real-Time In-RAM Stimulus Injection**: Direct state manipulation triggering sub-microsecond Cranelift JIT re-evaluation without physical JTAG hardware.
+- [ ] **Waveform Stimulus Painter**: Visual mouse-drawn clock and vector stimulus generator with synthesizable SystemVerilog testbench export.
+
+#### Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]
+- [ ] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks, generated clocks, input/output delays, and multicycle paths.
+- [ ] **Setup/Hold Slack Radar & Critical Path Waterfall**: Visual path delay explorer with cell delay vs. interconnect delay breakdowns.
+- [ ] **Clock Domain Crossing (CDC) Matrix**: Automated metastability risk analysis and 2-FF synchronizer validation.
+- [ ] **Hierarchical Silicon Energy Treemap**: 2D squarified treemap visualizer showing dynamic power dissipation ($E = \frac{1}{2} C V^2$) and PDN supply sag ($V_{sag} = IR + L di/dt$).
+
+#### Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]
+- [ ] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation.
+- [ ] **Interactive In-UI Tcl/Python/Rust REPL Console**: Unified scriptable command console with command history, syntax highlighting, and tab completion.
+
 
 ---
 
 ## Completed
+
+- [x] **Phase 7: Documentation Portal, Rebranding, Cloudflare Edge & CI/CD - [P0]**
+  - [x] Rebranded to **Axiom EDA** under Aerovex (`axiom.aerovex.net`).
+  - [x] Generated official vector logo (`logo.svg`), multi-res PNGs (512px, 64px, 32px, favicon.ico), and integrated into docs and UI header.
+  - [x] Authored complete VitePress documentation suite in `docs/` with Obsidian dark theme tokens.
+  - [x] Fixed and verified native LaTeX MathJax3 formula rendering ($P = \frac{1}{2} C V^2 f \alpha$, $V_{sag} = IR + L\frac{di}{dt}$).
+  - [x] Deployed live to `axiom.aerovex.net` via GitHub Actions (`.github/workflows/deploy-docs.yml`) and Cloudflare Pages edge proxy with SSL.
+  - [x] Created `scripts/cloc.sh` to track handwritten code and documentation (11,471 lines across 110 files).
 
 - [x] **Phase 6: Verification, Benchmarking & Tooling Parity - [P2]**
   - [x] Standalone Headless CLI Driver (`crates/betterado-cli`): In-RAM compilation (`compile`), headless simulation (`run`), batch IEEE 1364 VCD & SAIF 2.0 dumping, and benchmark command.
