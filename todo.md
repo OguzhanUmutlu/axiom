@@ -13,21 +13,23 @@
 ---
 ## In Progress
 
-- [ ] **Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]**
-  - [ ] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation.
-  - [ ] **Interactive In-UI Tcl/Python/Rust REPL Console**: Unified scriptable command console with command history, syntax highlighting, and tab completion.
+*All 12 scheduled phases successfully delivered and verified.*
 
 ---
 
 ## Todo
 
-### Multi-Phase Innovation Roadmap
-
-*All core innovation phases scheduled.*
+### Future Enhancement Roadmap
+- [ ] **Phase 13: WebAssembly Standalone Worker Sandbox**: WebWorker multithreaded simulation isolation with SharedArrayBuffer.
+- [ ] **Phase 14: Direct Xilinx 7-Series & UltraScale+ Primitive Library Emulation**: Pre-compiled primitives for LUT6_2, DSP48E2, RAMB36E2, and BUFG.
 
 ---
 
 ## Completed
+
+- [x] **Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]**
+  - [x] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation (`OmnibarModal.tsx`).
+  - [x] **Interactive In-UI Scripting REPL Console**: Responsive terminal console with command history (`Up`/`Down`), tab completion, direct dispatch to `engineBridge` (`run`, `step`, `step delta`, `reset`, `get`, `set`, `force`, `release`, `report_timing`, `report_power`), and syntax colorized output.
 
 - [x] **Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]**
   - [x] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks (50 MHz, 100 MHz, 200 MHz, 300 MHz) and path margin calculation.
