@@ -1,14 +1,14 @@
 # Axiom EDA — Implementation Todo & Progress Tracker
 
 > **Feature Overview:**
-> **Axiom** (formerly Betterado) is an aerospace-grade, high-performance, cross-platform Electronic Design Automation (EDA) suite and hardware simulation engine built natively in **Rust** under the **Aerovex** platform (`https://axiom.aerovex.com`).
+> **Axiom** (formerly Betterado) is an aerospace-grade, high-performance, cross-platform Electronic Design Automation (EDA) suite and hardware simulation engine built natively in **Rust** under the **Aerovex** platform (`https://axiom.aerovex.net`).
 > 
 > Axiom eliminates decades of legacy EDA bloat by providing:
 > 1. **In-RAM Cranelift JIT Compilation**: Direct translation of Verilog/SystemVerilog into native machine code in milliseconds with zero disk turnaround.
 > 2. **Manual Delta-Time Tick & Event Queue Inspection**: Full visibility into zero-time $\delta$-cycles, exposing combinational race conditions and glitches hidden by Vivado.
 > 3. **Physics-Informed Silicon Power & Voltage Telemetry**: Live dynamic power ($P = \frac{1}{2} C V^2 f \alpha$) and PDN inductive voltage sag modeling ($V_{sag} = IR + L\frac{di}{dt}$) with VCD & SAIF 2.0 exporters.
 > 4. **Dual-Target Desktop & Web UI**: Built with Tauri v2, React 19, TypeScript, PostCSS, and Vite, running seamlessly on Linux, macOS (Apple Silicon), Windows, and in standard web browsers.
-> 5. **VitePress Documentation Portal**: Hosted on GitHub Pages with custom domain redirect to `axiom.aerovex.com`.
+> 5. **VitePress Documentation Portal**: Hosted on GitHub Pages with custom domain redirect to `axiom.aerovex.net`.
 
 ---
 
@@ -16,13 +16,13 @@
 
 - [ ] **Brand Identity & Project Renaming to Axiom - [P0]**
   - [x] Rename GitHub repository from `betterado` to `axiom` (`OguzhanUmutlu/axiom`).
-  - [x] Update GitHub description, topic tags, and homepage URL (`https://axiom.aerovex.com`).
+  - [x] Update GitHub description, topic tags, and homepage URL (`https://axiom.aerovex.net`).
   - [ ] Update workspace manifest, crate naming, and internal module paths to `axiom-*`.
   - [ ] Update UI branding tokens, headers, and metadata to Axiom EDA.
   - [ ] Overhaul `README.md` with executive-grade architecture diagrams, benchmarks, and badges.
-- [ ] **VitePress Documentation Portal & GitHub Pages CI/CD (`axiom.aerovex.com`) - [P0]**
+- [ ] **VitePress Documentation Portal & GitHub Pages CI/CD (`axiom.aerovex.net`) - [P0]**
   - [ ] Initialize `docs/` VitePress suite with Obsidian dark theme matching Axiom UI.
-  - [ ] Configure `docs/public/CNAME` with `axiom.aerovex.com`.
+  - [ ] Configure `docs/public/CNAME` with `axiom.aerovex.net`.
   - [ ] Author documentation chapters: Guide, Core Architecture, Vivado Feature Parity, and CLI Reference.
   - [ ] Implement `.github/workflows/deploy-docs.yml` automated GitHub Pages deployment.
 
