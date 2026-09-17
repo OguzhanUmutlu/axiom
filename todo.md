@@ -13,22 +13,16 @@
 ---
 ## In Progress
 
-- [ ] **Phase 9: GPU-Accelerated Hardware Schematic DAG & Logic Cone Slicer - [P1]**
-  - [ ] **Interactive Canvas/WebGL Schematic DAG**: Render elaborated BIR netlist nodes (ports, registers, multiplexers, adders, operators) with auto-layout routing.
-  - [ ] **Semantic Level-of-Detail (LOD)**: Zoom from macro module blocks with activity heatmaps down to internal Cranelift logic gates.
-  - [ ] **Bidirectional Cross-Probing**: Seamless synchronization across Schematic $\leftrightarrow$ Waveform $\leftrightarrow$ Monaco HDL Code Editor.
-  - [ ] **1-Click Critical Logic Cone Slicer**: Instant fan-in datapath extraction and fan-out load tree isolation with timing delay heatmaps.
+- [ ] **Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]**
+  - [ ] **Virtual Instrument Rack**: Front-panel palette with interactive DIP switches, momentary pushbuttons, rotary encoders, and multi-digit 7-segment displays.
+  - [ ] **Real-Time In-RAM Stimulus Injection**: Direct state manipulation triggering sub-microsecond Cranelift JIT re-evaluation without physical JTAG hardware.
+  - [ ] **Waveform Stimulus Painter**: Visual mouse-drawn clock and vector stimulus generator with synthesizable SystemVerilog testbench export.
 
 ---
 
 ## Todo
 
 ### Multi-Phase Innovation Roadmap
-
-#### Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]
-- [ ] **Virtual Instrument Rack**: Front-panel palette with interactive DIP switches, momentary pushbuttons, rotary encoders, and multi-digit 7-segment displays.
-- [ ] **Real-Time In-RAM Stimulus Injection**: Direct state manipulation triggering sub-microsecond Cranelift JIT re-evaluation without physical JTAG hardware.
-- [ ] **Waveform Stimulus Painter**: Visual mouse-drawn clock and vector stimulus generator with synthesizable SystemVerilog testbench export.
 
 #### Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]
 - [ ] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks, generated clocks, input/output delays, and multicycle paths.
@@ -43,6 +37,12 @@
 ---
 
 ## Completed
+
+- [x] **Phase 9: GPU-Accelerated Hardware Schematic DAG & Logic Cone Slicer - [P1]**
+  - [x] **Interactive Canvas/WebGL Schematic DAG**: Elaborated BIR netlist visualizer (ports, registers, multiplexers, adders, operators) with auto-layout routing, pan/zoom, and minimap navigator.
+  - [x] **Semantic Level-of-Detail (LOD)**: Multi-scale zoom transitions from macro module envelopes down to gate-level Cranelift JIT machine operations (`iadd`, `isub`, `band`, `icmp eq`).
+  - [x] **Bidirectional Cross-Probing**: Full 3-way synchronization across Schematic DAG $\leftrightarrow$ Waveform Viewer $\leftrightarrow$ HDL Code Editor with line highlights and pulse halos.
+  - [x] **1-Click Critical Logic Cone Slicer**: Instant fan-in datapath extraction and fan-out tree isolation (`F` / `O` hotkeys) with timing slack HUD and 12% background dimming.
 
 - [x] **Phase 8: Advanced Waveform Innovation & Signal Inspection Engine - [P0]**
   - [x] **Multi-Radix Bus Exploder**: Expandable multi-bit vector buses into bit-indexed sub-lanes (`bus[0]..bus[W-1]`) with real-time radix switching (Hex, Binary, Unsigned, Signed Decimal, ASCII).
