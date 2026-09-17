@@ -1,27 +1,42 @@
-# Betterado - Implementation Todo & Progress Tracker
+# Axiom EDA — Implementation Todo & Progress Tracker
 
 > **Feature Overview:**
-> **Betterado** is a clean-slate, high-performance, cross-platform remake and modernization of AMD/Xilinx Vivado's HDL processing and simulation engine in Rust. It provides an end-to-end HDL compiler that parses Verilog/SystemVerilog, elaborates hierarchical designs, and JIT-compiles them directly to native machine code in RAM (using Cranelift) or WebAssembly for web environments.
+> **Axiom** (formerly Betterado) is an aerospace-grade, high-performance, cross-platform Electronic Design Automation (EDA) suite and hardware simulation engine built natively in **Rust** under the **Aerovex** platform (`https://axiom.aerovex.com`).
 > 
-> Unlike Vivado's closed and heavy desktop suite, Betterado features:
-> 1. **Ultra-Fast RAM Execution**: Direct compilation to machine code via Cranelift, bypassing multi-minute C++ or snapshot overhead.
-> 2. **Granular Delta-Time Tick API**: A deterministic simulation kernel that can be manually stepped by picoseconds, nanoseconds, or individual delta cycles, providing full visibility into race conditions, combinational glitches, and sensitivity triggers.
-> 3. **Real-time Voltage, Energy & Power Telemetry**: Physics-informed switching activity calculation ($P_{dyn} = \frac{1}{2} C V^2 f \alpha$) and real-time live telemetry streaming for interactive power and voltage graphing.
-> 4. **Dual-Target Desktop & Web UI**: A lightweight, modern dark-themed application built with Tauri v2, React 19, TypeScript, PostCSS, and Vite, running natively on Linux, macOS, Windows, and directly in modern web browsers via WebAssembly.
-> 
-> *Git Safety Directive: No destructive git operations (commit, push, reset, checkout, clean) are to be executed during initial development.*
+> Axiom eliminates decades of legacy EDA bloat by providing:
+> 1. **In-RAM Cranelift JIT Compilation**: Direct translation of Verilog/SystemVerilog into native machine code in milliseconds with zero disk turnaround.
+> 2. **Manual Delta-Time Tick & Event Queue Inspection**: Full visibility into zero-time $\delta$-cycles, exposing combinational race conditions and glitches hidden by Vivado.
+> 3. **Physics-Informed Silicon Power & Voltage Telemetry**: Live dynamic power ($P = \frac{1}{2} C V^2 f \alpha$) and PDN inductive voltage sag modeling ($V_{sag} = IR + L\frac{di}{dt}$) with VCD & SAIF 2.0 exporters.
+> 4. **Dual-Target Desktop & Web UI**: Built with Tauri v2, React 19, TypeScript, PostCSS, and Vite, running seamlessly on Linux, macOS (Apple Silicon), Windows, and in standard web browsers.
+> 5. **VitePress Documentation Portal**: Hosted on GitHub Pages with custom domain redirect to `axiom.aerovex.com`.
 
 ---
 
 ## In Progress
 
-*(All roadmap milestones Phases 0 through 6 fully completed and verified)*
+- [ ] **Brand Identity & Project Renaming to Axiom - [P0]**
+  - [x] Rename GitHub repository from `betterado` to `axiom` (`OguzhanUmutlu/axiom`).
+  - [x] Update GitHub description, topic tags, and homepage URL (`https://axiom.aerovex.com`).
+  - [ ] Update workspace manifest, crate naming, and internal module paths to `axiom-*`.
+  - [ ] Update UI branding tokens, headers, and metadata to Axiom EDA.
+  - [ ] Overhaul `README.md` with executive-grade architecture diagrams, benchmarks, and badges.
+- [ ] **VitePress Documentation Portal & GitHub Pages CI/CD (`axiom.aerovex.com`) - [P0]**
+  - [ ] Initialize `docs/` VitePress suite with Obsidian dark theme matching Axiom UI.
+  - [ ] Configure `docs/public/CNAME` with `axiom.aerovex.com`.
+  - [ ] Author documentation chapters: Guide, Core Architecture, Vivado Feature Parity, and CLI Reference.
+  - [ ] Implement `.github/workflows/deploy-docs.yml` automated GitHub Pages deployment.
 
 ---
 
 ## Todo
 
-*(All current roadmap items completed)*
+### Vivado Next-Generation Features Roadmap
+- [ ] **[P1] Interactive RTL Schematic & Netlist DAG Graph Viewer**: Hardware-accelerated schematic DAG rendered directly from elaborated BIR netlist with bidirectional waveform cross-probing.
+- [ ] **[P1] Static Timing Analysis (STA) & SDC/XDC Constraint Engine**: Setup/hold slack calculation, Worst Negative Slack (WNS), Total Negative Slack (TNS), and critical timing path pin-to-pin delay tracing.
+- [ ] **[P2] Logic Synthesis & FPGA Technology Mapping**: Combinational logic mapping into 6-input LUTs (`LUT6`), flip-flops (`FDRE`), and fast carry chains (`CARRY4`/`CARRY8`).
+- [ ] **[P2] Interactive Scriptable Tcl Shell & Embedded REPL**: Headless and in-UI command console supporting standard Tcl automation (`run`, `step_delta`, `get_nets`, `report_power`).
+- [ ] **[P2] Virtual I/O (VIO) & Software Integrated Logic Analyzer (ILA)**: Virtual lab bench with interactive switches, pushbuttons, LEDs, 7-segment displays, and triggerable software logic analyzer.
+- [ ] **[P2] VHDL-2008 Front-End Parser (`xvhdl` Parity)**: Native IEEE 1076-2008 parser enabling mixed-language Verilog/VHDL elaboration.
 
 ---
 
