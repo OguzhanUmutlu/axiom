@@ -27,6 +27,16 @@
 
 ## Completed
 
+- [x] **Phase 12.2: Self-Contained Binary, Zstd In-RAM Asset Bundling, Desktop Search Integration & Multi-Arch Releases - [P0]**
+  - [x] **Zstd In-Binary UI Compression**: Compressed React 19 UI assets (`ui/dist/`) with Zstandard level 19 (~90 KB) and embedded them directly into the `axiom` binary at compile time via `crates/cli/build.rs`.
+  - [x] **Embedded In-RAM GUI Server (`gui_server.rs`)**: Zero-async HTTP server (`tiny_http`) serving decompressed UI assets from RAM and providing live simulation engine REST API (`/api/compile`, `/api/step_time`, `/api/step_delta`, `/api/force`, `/api/vcd`, `/api/saif`, `/api/status`) with automatic browser launching (`axiom gui`).
+  - [x] **Desktop Application & System Search Integration**:
+    - Linux: Created Freedesktop `~/.local/share/applications/axiom.desktop` and installed high-res 512x512 icon in `~/.local/share/icons/hicolor/512x512/apps/axiom.png` for GNOME/KDE/Rofi indexing.
+    - macOS: Created `~/Applications/Axiom.app` bundle with `Info.plist`, launcher script, and high-res icon for Spotlight, Raycast, and Alfred.
+    - Windows: Created Start Menu and Desktop `.lnk` shortcuts with custom `axiom.ico` for Windows Search.
+  - [x] **Universal Pre-Built Distribution (Aerovex CDN & GitHub Releases)**: Automated instant sub-2s installations from `https://axiom.aerovex.net/dist/` and published official `v0.1.0` release assets.
+  - [x] **Multi-Architecture Release Workflow**: Configured `.github/workflows/release.yml` with cross-platform build matrix across Linux (`x86_64`, `aarch64`), macOS (`x86_64`, `aarch64` Apple Silicon), and Windows (`x86_64`).
+
 - [x] **Phase 12.1: Universal Single-Line Installers, Versioning, Source Build Driver & Clean Crate Names - [P1]**
   - [x] **Clean Crate Names**: Renamed all crate folders to remove `betterado-` prefix (`crates/core`, `crates/syntax`, `crates/ir`, `crates/jit`, `crates/sim`, `crates/telemetry`, `crates/desktop`, `crates/cli`).
   - [x] **Universal Single-Line Installers**:

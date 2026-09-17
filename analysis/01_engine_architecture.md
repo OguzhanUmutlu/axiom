@@ -14,18 +14,19 @@ The Betterado engine is designed around three foundational engineering principle
 To maintain strict modularity, high build parallelization, and clean dependency boundaries, the engine is structured as a Cargo workspace:
 
 ```
-betterado/
+axiom/
 ├── Cargo.toml                      # Workspace root configuration
 ├── crates/
-│   ├── betterado-core/             # Foundational types (SimTime, 4-state logic, spans, diagnostics)
-│   ├── betterado-syntax/           # Lexer, preprocessor, parser, and AST
-│   ├── betterado-ir/               # Elaborator, symbol tables, and BIR (Betterado IR)
-│   ├── betterado-jit/              # Cranelift JIT backend & machine code memory manager
-│   ├── betterado-sim/              # Stratified event queue, delta cycle engine & tick API
-│   ├── betterado-telemetry/        # Power, energy, voltage calculations & ring-buffer streaming
-│   ├── betterado-wasm/             # WebAssembly bindings (wasm-bindgen) for web browser execution
-│   └── betterado-cli/              # Standalone command-line driver (replacing xvlog/xelab/xsim)
-└── app/                            # Desktop (Tauri v2) & Web (React 19 + TypeScript + PostCSS)
+│   ├── core/                       # Foundational types (SimTime, 4-state logic, spans, diagnostics)
+│   ├── syntax/                     # Streaming lexer, preprocessor, Pratt AST parser
+│   ├── ir/                         # Elaborator, symbol tables, and BIR (Betterado IR)
+│   ├── jit/                        # Cranelift JIT backend & machine code memory manager
+│   ├── sim/                        # Stratified event queue, delta cycle engine & tick API
+│   ├── telemetry/                  # Power, energy, voltage calculations, VCD & SAIF exporters
+│   ├── desktop/                    # DesktopEngine library & IPC interface
+│   └── cli/                        # Unified CLI & In-RAM GUI server (embedded Zstd UI bundle)
+├── ui/                             # React 19 + TypeScript + PostCSS interactive studio
+└── docs/                           # VitePress documentation portal (axiom.aerovex.net)
 ```
 
 ---
