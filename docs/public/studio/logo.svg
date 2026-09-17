@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Outer Dark Squircle Container -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="#080c14" stroke="#00f2fe" stroke-width="4.5" stroke-opacity="0.9" />
+
+  <!-- High-Tech Circuit Grid Backdrop -->
+  <g stroke="#00f2fe" stroke-opacity="0.09" stroke-width="1.5">
+    <line x1="128" y1="16" x2="128" y2="496" />
+    <line x1="256" y1="16" x2="256" y2="496" />
+    <line x1="384" y1="16" x2="384" y2="496" />
+    <line x1="16" y1="128" x2="496" y2="128" />
+    <line x1="16" y1="256" x2="496" y2="256" />
+    <line x1="16" y1="384" x2="496" y2="384" />
+  </g>
+
+  <!-- Left Leg Main Facet (Electric Neon Cyan) -->
+  <polygon points="256,88 256,220 180,410 148,410 240,118" fill="#00f2fe" />
+
+  <!-- Left Leg Outer Bevel (Ice Cyan Highlight) -->
+  <polygon points="240,118 148,410 118,410 220,138 256,88" fill="#67e8f9" />
+
+  <!-- Right Leg Main Facet (Cobalt Royal Blue) -->
+  <polygon points="256,88 272,118 364,410 332,410 256,220" fill="#2563eb" />
+
+  <!-- Right Leg Outer Bevel (Vivid Sky Blue) -->
+  <polygon points="272,118 256,88 292,138 394,410 364,410" fill="#38bdf8" />
+
+  <!-- Center Delta Void Under-Shadow -->
+  <polygon points="256,220 196,366 316,366" fill="#030712" fill-opacity="0.6" />
+
+  <!-- Dynamic Precision Crossbar (Silicon Horizon) -->
+  <polygon points="152,314 360,314 342,344 170,344" fill="#0284c7" />
+  <line x1="136" y1="329" x2="376" y2="329" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Central Delta Energy Diamond Node -->
+  <polygon points="256,306 276,329 256,352 236,329" fill="#ffffff" stroke="#00f2fe" stroke-width="4" />
+
+  <!-- Apex Clock Injection Trace & Synchronizer Node -->
+  <line x1="256" y1="32" x2="256" y2="78" stroke="#00f2fe" stroke-width="4" stroke-linecap="round" />
+  <circle cx="256" cy="32" r="6" fill="#00f2fe" stroke="#ffffff" stroke-width="2" />
+  <circle cx="256" cy="88" r="7.5" fill="#ffffff" stroke="#00f2fe" stroke-width="3" />
+
+  <!-- Ground / Rail Corner Nodes -->
+  <circle cx="148" cy="410" r="7.5" fill="#00f2fe" stroke="#080c14" stroke-width="2.5" />
+  <circle cx="364" cy="410" r="7.5" fill="#38bdf8" stroke="#080c14" stroke-width="2.5" />
+
+  <!-- Micro-Trace Bus Interconnects -->
+  <g stroke="#00f2fe" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M 64 410 L 126 410" />
+    <circle cx="64" cy="410" r="4.5" fill="#00f2fe" />
+    <path d="M 386 410 L 448 410" />
+    <circle cx="448" cy="410" r="4.5" fill="#00f2fe" />
+  </g>
+</svg>
