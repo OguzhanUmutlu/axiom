@@ -79,12 +79,12 @@
   - [x] **Zero-Time Delta Accordion Viewer**: Expandable timeline drawer revealing internal $\delta$-cycles ($\delta_0 \to \delta_1 \to \dots$) with glitch hazard ribbons ($0 \to 1 \to 0$ and $1 \to 0 \to 1$).
   - [x] **Interactive Signal/Pin Forcing & Probing**: Live inspector modal allowing engineers to force `0`, `1`, `X`, `Z` or custom bus values with sub-microsecond in-RAM re-evaluation and release.
 
-- [x] **Phase 7: Documentation Portal, Rebranding, Cloudflare Edge & CI/CD - [P0]**
+- [x] **Phase 7: Documentation Portal, Custom Domain CNAME & GitHub Pages CI/CD - [P0]**
   - [x] Rebranded to **Axiom EDA** under Aerovex (`axiom.aerovex.net`).
   - [x] Generated official vector logo (`logo.svg`), multi-res PNGs (512px, 64px, 32px, favicon.ico), and integrated into docs and UI header.
   - [x] Authored complete VitePress documentation suite in `docs/` with Obsidian dark theme tokens.
   - [x] Fixed and verified native LaTeX MathJax3 formula rendering ($P = \frac{1}{2} C V^2 f \alpha$, $V_{sag} = IR + L\frac{di}{dt}$).
-  - [x] Deployed live to `axiom.aerovex.net` via GitHub Actions (`.github/workflows/deploy-docs.yml`) and Cloudflare Pages edge proxy with SSL.
+  - [x] Deployed live to `axiom.aerovex.net` via GitHub Actions (`.github/workflows/deploy-docs.yml`) directly on GitHub Pages with CNAME custom domain and automatic SSL.
   - [x] Created `scripts/cloc.sh` to track handwritten code and documentation (11,471 lines across 110 files).
 
 - [x] **Phase 6: Verification, Benchmarking & Tooling Parity - [P2]**
