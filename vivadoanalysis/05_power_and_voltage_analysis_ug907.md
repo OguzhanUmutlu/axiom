@@ -108,14 +108,14 @@ $$I_{\text{rail}} = \frac{P_{\text{rail}}}{V_{\text{rail}}}$$
 
 ---
 
-## 5. Architectural Critique & Betterado Telemetry Architecture
+## 5. Architectural Critique & Axiom Telemetry Architecture
 
 ### Vivado's Flaws:
 - **Offline & Disconnected**: In Vivado, power analysis is an offline post-processing step. You must run the simulation, close `xsim`, generate a SAIF file, open the implemented netlist in Vivado, and run `report_power`. There is **zero real-time feedback** during simulation.
 - **No Temporal / Instantaneous Energy Graphing**: Vivado only gives an aggregate average power over the entire simulation window. It cannot graph dynamic current spikes or instantaneous energy surges across a 10ns clock cycle.
 
-### Betterado's Real-Time Engine:
-- **Physics-Integrated Sim Kernel**: Every signal update in Betterado's JIT simulation loop tracks switching activity and instantaneous energy dissipation:
+### Axiom's Real-Time Engine:
+- **Physics-Integrated Sim Kernel**: Every signal update in Axiom's JIT simulation loop tracks switching activity and instantaneous energy dissipation:
   $$E_{\text{event}} = \frac{1}{2} C_{\text{net}} V_{\text{net}}^2$$
 - **Live Streamed Telemetry**: Ring-buffer streaming emits instantaneous power and cumulative energy samples directly to the Tauri/React GUI at 60 FPS.
 - **Interactive Voltage / Energy Graphs**: Users see dynamic current spikes synchronized with the digital waveform viewer, pinpointing exactly which clock edge or instruction causes a power surge.

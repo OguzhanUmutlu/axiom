@@ -97,9 +97,9 @@ Despite basic functionality, Vivado's waveform inspection suffers from critical 
 
 ---
 
-## 6. How Betterado Redefines Hardware Inspection
+## 6. How Axiom Redefines Hardware Inspection
 
-Betterado fundamentally redesigns the inspection paradigm:
+Axiom fundamentally redesigns the inspection paradigm:
 1. **Delta-Cycle Scrubbing**: The simulation engine records delta micro-steps. The user can expand any timestamp to view every delta transition ($\delta_0, \delta_1, \delta_2...$).
 2. **Streaming Ring Buffer in RAM**: Real-time signal updates are cached in memory-mapped ring buffers and streamed directly to a 60+ FPS Canvas/WebGL renderer in the frontend.
 3. **Co-located Voltage & Energy Traces**: Every digital net can display an synchronized analog current/power graph beneath it.

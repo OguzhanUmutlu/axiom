@@ -133,9 +133,9 @@ Source Code (.v / .sv)
 
 ---
 
-## 6. Design Implications for Betterado
+## 6. Design Implications for Axiom
 
-In Betterado:
+In Axiom:
 - **Zero Disk Serialization for ASTs**: Parsing occurs in RAM using high-performance arena allocators (`bumpalo`).
 - **Parallel Compilation**: Files and modules are parsed concurrently across all CPU threads using `rayon`.
 - **Rich Diagnostics**: Diagnostics utilize terminal and web-renderable spans (`miette`-style) with exact source code excerpts and actionable suggestions.

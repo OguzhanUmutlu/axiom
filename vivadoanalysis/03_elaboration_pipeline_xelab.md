@@ -144,9 +144,9 @@ The final output of `xelab` is a **simulation snapshot** stored inside `xsim.dir
 
 ---
 
-## 5. Betterado Elaboration Innovations
+## 5. Axiom Elaboration Innovations
 
-In Betterado:
-1. **Direct IR Lowering**: Instead of generating intermediary C/C++ files and invoking GCC (which takes 5–30 seconds), Betterado lowers directly to a flat SSA-like hardware Intermediate Representation (**BIR**).
+In Axiom:
+1. **Direct IR Lowering**: Instead of generating intermediary C/C++ files and invoking GCC (which takes 5–30 seconds), Axiom lowers directly to a flat SSA-like hardware Intermediate Representation (**BIR**).
 2. **Instant In-RAM Snapshot**: Elaboration is purely an in-memory transformation. The resulting BIR graph is handed directly to Cranelift for JIT machine-code compilation in milliseconds.
 3. **Interactive Hierarchy Inspector**: The hierarchical scope tree built during elaboration is exposed directly to the Tauri frontend via JSON/WASM, enabling live browsing of module trees, port widths, and net connectivity.

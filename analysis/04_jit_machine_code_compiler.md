@@ -1,4 +1,4 @@
-# Betterado In-RAM JIT Machine Code Compiler (Cranelift & WebAssembly)
+# Axiom In-RAM JIT Machine Code Compiler (Cranelift & WebAssembly)
 
 ## 1. Overview and Problem Formulation
 
@@ -9,9 +9,9 @@ In digital simulation, evaluating millions of boolean operations through an inte
 
 Vivado tries to solve this by compiling designs to C/C++ and invoking an external compiler (like GCC or Clang). However, running GCC requires disk writes, process forks, parsing header files, and linking shared libraries—introducing **10 to 45 seconds of latency per iteration**.
 
-**Betterado utilizes Cranelift**—the modern code generator written in Rust (used in Wasmtime)—to JIT-compile BIR directly into native machine code (x86_64, AArch64) in RAM in **under 50 milliseconds**.
+**Axiom utilizes Cranelift**—the modern code generator written in Rust (used in Wasmtime)—to JIT-compile BIR directly into native machine code (x86_64, AArch64) in RAM in **under 50 milliseconds**.
 
-For web browsers, Betterado emits direct **WebAssembly (WASM)** code.
+For web browsers, Axiom emits direct **WebAssembly (WASM)** code.
 
 ---
 
@@ -22,7 +22,7 @@ For web browsers, Betterado emits direct **WebAssembly (WASM)** code.
             |
             v
 +-------------------------------------------------------------+
-|               betterado-jit Compiler Engine                 |
+|               axiom-jit Compiler Engine                 |
 +-------------------------------------------------------------+
             |
             v
@@ -54,7 +54,7 @@ For web browsers, Betterado emits direct **WebAssembly (WASM)** code.
 
 ## 3. High-Performance 4-State Bit-Twiddling
 
-To represent IEEE 1800 4-state logic (`0`, `1`, `X`, `Z`) across arbitrary bit-widths, Betterado packs bits into two parallel arrays of `u64` words:
+To represent IEEE 1800 4-state logic (`0`, `1`, `X`, `Z`) across arbitrary bit-widths, Axiom packs bits into two parallel arrays of `u64` words:
 - `values: *mut u64` (Stores the primary 0 or 1 value).
 - `masks:  *mut u64` (Stores 1 if the bit is unknown `X` or high-impedance `Z`).
 
@@ -87,7 +87,7 @@ A 64-bit wire bus is evaluated in **just 6 native CPU cycles**, operating simult
 
 ## 4. In-RAM Executable Memory Management
 
-Betterado manages JIT memory using platform-native APIs:
+Axiom manages JIT memory using platform-native APIs:
 - **Unix / Linux / macOS**: Uses `mmap` with `PROT_READ | PROT_WRITE`, writes the machine code emitted by Cranelift, and flips permissions to `PROT_READ | PROT_EXEC` via `mprotect`.
 - **Windows**: Uses `VirtualAlloc` with `PAGE_EXECUTE_READWRITE`.
 
@@ -102,6 +102,6 @@ When a design is modified in the IDE:
 ## 5. WebAssembly (WASM) Dual-Target Codegen
 
 To support running inside web browsers (Chrome, Firefox, Safari, Edge) without native binary dependencies:
-- Betterado compiles to `wasm32-unknown-unknown`.
+- Axiom compiles to `wasm32-unknown-unknown`.
 - In the browser target, the JIT engine generates WebAssembly bytecode modules dynamically in memory using `wasm-encoder`.
 - The WebAssembly bytecode is instantiated via the browser's native `WebAssembly.instantiate()` engine, achieving near-native JIT simulation performance directly inside web worker threads.

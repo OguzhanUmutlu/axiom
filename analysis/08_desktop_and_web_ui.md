@@ -1,8 +1,8 @@
-# Betterado Desktop & Web Application Architecture (Tauri v2 + React 19 + PostCSS + Vite)
+# Axiom Desktop & Web Application Architecture (Tauri v2 + React 19 + PostCSS + Vite)
 
 ## 1. Overview and Design Philosophy
 
-The Betterado user interface is a desktop application that runs independently of the host operating system (Linux, macOS, Windows) and can also run directly inside standard web browsers.
+The Axiom user interface is a desktop application that runs independently of the host operating system (Linux, macOS, Windows) and can also run directly inside standard web browsers.
 
 ### Design Principles:
 1. **Clean, Modern, Dark-Themed Aesthetic**: Minimalist, distraction-free engineering environment (inspired by Linear, Obsidian, and modern VS Code).
@@ -52,7 +52,7 @@ The Betterado user interface is a desktop application that runs independently of
 
 ## 4. Hardware-Accelerated Waveform Visualizer
 
-Rendering thousands of digital signal transitions in the DOM via SVGs causes catastrophic browser lag. Betterado implements a virtualized **Canvas 2D / WebGL Time-Series Canvas**:
+Rendering thousands of digital signal transitions in the DOM via SVGs causes catastrophic browser lag. Axiom implements a virtualized **Canvas 2D / WebGL Time-Series Canvas**:
 
 ### Key Features:
 - **Viewport Virtualization**: Only signals and time ranges currently visible in the scroll window are computed and rendered.
@@ -65,7 +65,7 @@ Rendering thousands of digital signal transitions in the DOM via SVGs causes cat
 ## 5. Dual-Target Build Architecture (Desktop & Web)
 
 ```
-                       betterado-ui (React + Vite)
+                       axiom-ui (React + Vite)
                                     |
                     +---------------+---------------+
                     |                               |
@@ -79,5 +79,5 @@ Rendering thousands of digital signal transitions in the DOM via SVGs causes cat
 ```
 
 - In **Desktop mode** (`npm run tauri dev`), the UI calls Tauri IPC commands that invoke the native Cranelift JIT engine.
-- In **Web mode** (`npm run dev`), the UI instantiates `betterado-wasm` inside a Web Worker and communicates via typed message channels.
+- In **Web mode** (`npm run dev`), the UI instantiates `axiom-wasm` inside a Web Worker and communicates via typed message channels.
 - Zero conditional code in UI components—both modes share the identical React frontend code.

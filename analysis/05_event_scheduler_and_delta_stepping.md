@@ -1,10 +1,10 @@
-# Betterado Stratified Event Scheduler & Manual Delta-Time Tick API
+# Axiom Stratified Event Scheduler & Manual Delta-Time Tick API
 
 ## 1. Executive Summary
 
-The simulation kernel in `betterado-sim` is responsible for driving simulated physical time and executing digital transitions with mathematical determinism.
+The simulation kernel in `axiom-sim` is responsible for driving simulated physical time and executing digital transitions with mathematical determinism.
 
-Betterado implements:
+Axiom implements:
 1. Full compliance with the **IEEE 1800 Stratified Event Queue** specification.
 2. A breakthrough **Manual Delta-Time Tick & Step API**, giving callers total control over physical time increments ($\Delta t$), discrete delta cycles ($\delta$), and individual event firings.
 
@@ -44,10 +44,10 @@ Within any given time step $t$:
 
 ## 3. The Manual Delta-Time Tick & Step API
 
-Unlike Vivado (which only exposes coarse-grained `run 100ns` commands), Betterado exposes an embeddable, fine-grained control API:
+Unlike Vivado (which only exposes coarse-grained `run 100ns` commands), Axiom exposes an embeddable, fine-grained control API:
 
 ```rust
-pub struct BetteradoSimulator {
+pub struct AxiomSimulator {
     state: SimStateArena,
     circuit: BirCircuit,
     event_queue: StratifiedEventQueue,
@@ -56,7 +56,7 @@ pub struct BetteradoSimulator {
     listeners: Vec<Box<dyn SimEventListener>>,
 }
 
-impl BetteradoSimulator {
+impl AxiomSimulator {
     /// Advances physical simulation time by a specified delta duration (e.g. 10ns).
     /// Executes all scheduled events and delta cycles within this duration.
     pub fn tick(&mut self, delta_time: SimTime) -> SimResult {
@@ -108,7 +108,7 @@ impl BetteradoSimulator {
 
 ## 4. Deep Inspection & Glitch Detection
 
-Because Betterado exposes `step_delta()`:
+Because Axiom exposes `step_delta()`:
 - The UI can step through a clock edge one delta cycle at a time.
 - If a signal toggles multiple times within the same time step ($0 \to 1 \to 0$), the engine detects this **combinational glitch**.
 - The engine computes the glitch energy dissipation and alerts the user with a visual indicator in the waveform viewer.

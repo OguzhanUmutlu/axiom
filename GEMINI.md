@@ -1,18 +1,18 @@
-# Betterado: A High-Performance Rust Remake of Vivado's HDL Processor & Simulator
+# Axiom: A High-Performance Rust Remake of Vivado's HDL Processor & Simulator
 
 ## 1. Project Manifesto & Core Mission
 
-**Betterado** is a ground-up, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust**.
+**Axiom** is a ground-up, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust**.
 
 Vivado is the undisputed industry standard for FPGA development, yet it suffers from decades of technical bloat: 100+ GB installations, sluggish Java Swing interfaces, multi-stage file-based elaboration pipelines, and a complete lack of support for modern operating systems like macOS (Apple Silicon) or web browsers. Furthermore, Vivado treats zero-time delta cycles as a black box, hiding critical combinational glitches and race conditions from the engineer.
 
-**Betterado dismantles these limitations.** It provides a lightweight (<50 MB), lightning-fast, and deeply introspectable HDL engine paired with an elegant, modern dark-themed desktop and web application.
+**Axiom dismantles these limitations.** It provides a lightweight (<50 MB), lightning-fast, and deeply introspectable HDL engine paired with an elegant, modern dark-themed desktop and web application.
 
 ---
 
 ## 2. Core Architecture & Architectural Techniques
 
-As defined by the project specification, Betterado incorporates the following core technical capabilities and architectural techniques:
+As defined by the project specification, Axiom incorporates the following core technical capabilities and architectural techniques:
 
 ### 2.1. In-RAM JIT Machine Code Execution Engine
 - **End-to-End HDL Understanding**: Full lexical analysis, AST parsing, and semantic elaboration of Verilog and SystemVerilog without relying on external compilers (GCC/Clang) or intermediate C++ file dumps.
@@ -73,7 +73,7 @@ The project maintains two distinct, highly organized research and architecture d
    - `08_cli_and_tcl_reference.md`
 
 2. **`analysis/`**:
-   In-depth technical architecture and specification for **Betterado itself** (the actual project, not Vivado). The master index is located at:
+   In-depth technical architecture and specification for **Axiom itself** (the actual project, not Vivado). The master index is located at:
    - `analysis/analysis.md` (stores the directory tree structure and defines the exact purpose of every markdown file).
 
 3. **`todo.md`**:

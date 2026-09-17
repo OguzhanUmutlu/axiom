@@ -2,7 +2,7 @@
 
 ## 1. Scope
 
-This document provides a comprehensive command-line and Tcl reference for the key executables and commands that make up Vivado's HDL simulation and power analysis flow (`xvlog`, `xvhdl`, `xelab`, `xsim`, `report_power`). This serves as a functional reference specification for Betterado's CLI interface and automated compatibility layer.
+This document provides a comprehensive command-line and Tcl reference for the key executables and commands that make up Vivado's HDL simulation and power analysis flow (`xvlog`, `xvhdl`, `xelab`, `xsim`, `report_power`). This serves as a functional reference specification for Axiom's CLI interface and automated compatibility layer.
 
 ---
 
@@ -111,13 +111,13 @@ report_power -file "power_breakdown.rpt" -xpe "power_export.xpe"
 
 ---
 
-## 6. Mapping Vivado Commands to Betterado Architecture
+## 6. Mapping Vivado Commands to Axiom Architecture
 
-| Vivado Command / Tool | Betterado Primitive / CLI Equivalent | Betterado Architecture Advantage |
+| Vivado Command / Tool | Axiom Primitive / CLI Equivalent | Axiom Architecture Advantage |
 | :--- | :--- | :--- |
-| `xvlog`, `xvhdl` | `betterado compile <files>` | In-memory parallel parsing, zero disk serialization |
-| `xelab -top <top>` | `betterado elaborate -top <top>` | Direct BIR graph lowering, sub-second latency |
-| `xsim -R` | `betterado run` | In-RAM Cranelift JIT machine code execution |
+| `xvlog`, `xvhdl` | `axiom compile <files>` | In-memory parallel parsing, zero disk serialization |
+| `xelab -top <top>` | `axiom elaborate -top <top>` | Direct BIR graph lowering, sub-second latency |
+| `xsim -R` | `axiom run` | In-RAM Cranelift JIT machine code execution |
 | `xsim (step)` | `sim.step_delta()` / `sim.tick(dt)` | True delta-cycle micro-stepping, glitch inspection |
 | `open_saif` / `report_power` | `sim.telemetry_stream()` | Real-time 60 FPS voltage, current, and power telemetry |
-| `xsim -gui` | `betterado gui` | Ultra-fast native Tauri v2 + React 19 dark UI |
+| `xsim -gui` | `axiom gui` | Ultra-fast native Tauri v2 + React 19 dark UI |
