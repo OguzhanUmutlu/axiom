@@ -13,22 +13,17 @@
 ---
 ## In Progress
 
-- [ ] **Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]**
-  - [ ] **Virtual Instrument Rack**: Front-panel palette with interactive DIP switches, momentary pushbuttons, rotary encoders, and multi-digit 7-segment displays.
-  - [ ] **Real-Time In-RAM Stimulus Injection**: Direct state manipulation triggering sub-microsecond Cranelift JIT re-evaluation without physical JTAG hardware.
-  - [ ] **Waveform Stimulus Painter**: Visual mouse-drawn clock and vector stimulus generator with synthesizable SystemVerilog testbench export.
+- [ ] **Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]**
+  - [ ] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks, generated clocks, input/output delays, and multicycle paths.
+  - [ ] **Setup/Hold Slack Radar & Critical Path Waterfall**: Visual path delay explorer with cell delay vs. interconnect delay breakdowns.
+  - [ ] **Clock Domain Crossing (CDC) Matrix**: Automated metastability risk analysis and 2-FF synchronizer validation.
+  - [ ] **Hierarchical Silicon Energy Treemap**: 2D squarified treemap visualizer showing dynamic power dissipation ($E = \frac{1}{2} C V^2$) and PDN supply sag ($V_{sag} = IR + L di/dt$).
 
 ---
 
 ## Todo
 
 ### Multi-Phase Innovation Roadmap
-
-#### Phase 11: Timing Radar, Slack Waterfall & Hierarchical Energy Treemap - [P2]
-- [ ] **Visual Timing Constraints Editor**: SDC/XDC constraint wizard for clocks, generated clocks, input/output delays, and multicycle paths.
-- [ ] **Setup/Hold Slack Radar & Critical Path Waterfall**: Visual path delay explorer with cell delay vs. interconnect delay breakdowns.
-- [ ] **Clock Domain Crossing (CDC) Matrix**: Automated metastability risk analysis and 2-FF synchronizer validation.
-- [ ] **Hierarchical Silicon Energy Treemap**: 2D squarified treemap visualizer showing dynamic power dissipation ($E = \frac{1}{2} C V^2$) and PDN supply sag ($V_{sag} = IR + L di/dt$).
 
 #### Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]
 - [ ] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation.
@@ -37,6 +32,11 @@
 ---
 
 ## Completed
+
+- [x] **Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]**
+  - [x] **Virtual Instrument Rack**: Front-panel palette with interactive 8-bit DIP switch bank, tactile pushbuttons (RESET strobe & STEP CLK), rotary quadrature hex encoder dial, dual 7-segment LED displays, and 16-bit SMD LED bar graph.
+  - [x] **Real-Time In-RAM Stimulus Injection**: Direct state manipulation triggering sub-microsecond Cranelift JIT re-evaluation without physical JTAG hardware.
+  - [x] **Waveform Stimulus Painter**: Visual mouse-drawn clock and vector stimulus generator with 1-click synthesizable IEEE 1800-2017 SystemVerilog testbench export (`${topModule}_tb.sv`).
 
 - [x] **Phase 9: GPU-Accelerated Hardware Schematic DAG & Logic Cone Slicer - [P1]**
   - [x] **Interactive Canvas/WebGL Schematic DAG**: Elaborated BIR netlist visualizer (ports, registers, multiplexers, adders, operators) with auto-layout routing, pan/zoom, and minimap navigator.
