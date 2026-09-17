@@ -18,7 +18,8 @@ analysis/
 ├── 09_schematic_dag_and_synthesis_viewer.md# GPU-accelerated DAG schematic, logic cone & cross-probing
 ├── 10_virtual_lab_and_stimulus_rack.md     # Virtual front-panel instruments, live stimulus & pin forcing
 ├── 11_timing_radar_and_slack_waterfall.md  # SDC/XDC constraint visualizer, slack waterfall & CDC matrix
-└── 12_hierarchical_energy_treemap_and_thermal.md # Module energy treemap, PDN droop & thermal margin
+├── 12_hierarchical_energy_treemap_and_thermal.md # Module energy treemap, PDN droop & thermal margin
+└── 13_omnibar_and_scripting_repl.md        # Unified Ctrl+K Omnibar palette & in-UI interactive REPL shell
 ```
 
 ---
@@ -39,4 +40,5 @@ analysis/
 | **`10_virtual_lab_and_stimulus_rack.md`** | **Virtual Lab & Stimulus Rack** | • Pure software virtual front-panel instrument rack (switches, buttons, LEDs, 7-segs).<br>• Live in-RAM stimulus toggling without hardware JTAG.<br>• Waveform stimulus painter (drawing clock/vector sequences with mouse).<br>• Interactive net/pin forcing with instant downstream re-evaluation. |
 | **`11_timing_radar_and_slack_waterfall.md`** | **Timing Radar & Slack Waterfall** | • Real-time setup and hold slack histogram across clock domains.<br>• Interactive critical path waterfall with cell vs interconnect breakdown.<br>• Visual Clock Domain Crossing (CDC) synchronizer validation matrix. |
 | **`12_hierarchical_energy_treemap_and_thermal.md`** | **Energy Treemap & Thermal Model** | • Proportional tile treemap of dynamic module energy dissipation.<br>• Real-time PDN impedance modeling ($V_{sag} = IR + L di/dt$).<br>• Simultaneous switching noise (SSN) and rail bounce warnings. |
+| **`13_omnibar_and_scripting_repl.md`** | **Unified Omnibar & Scripting REPL** | • Spotlight-style `Ctrl+K` command and netlist fuzzy finder.<br>• In-UI interactive REPL console with command history & auto-complete.<br>• Zero-latency in-memory state manipulation & timing/power queries. |
 
