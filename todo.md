@@ -27,6 +27,15 @@
 
 ## Completed
 
+- [x] **Phase 12.1: Universal Single-Line Installers, Versioning, Source Build Driver & Clean Crate Names - [P1]**
+  - [x] **Clean Crate Names**: Renamed all crate folders to remove `betterado-` prefix (`crates/core`, `crates/syntax`, `crates/ir`, `crates/jit`, `crates/sim`, `crates/telemetry`, `crates/desktop`, `crates/cli`).
+  - [x] **Universal Single-Line Installers**:
+    - Linux & macOS: `curl -fsSL https://axiom.aerovex.net/install.sh | bash`
+    - Windows: `irm https://axiom.aerovex.net/install.ps1 | iex`
+  - [x] **Release Versioning**: Integrated version selection via `AXIOM_VERSION` env var, `--version` flag, and `-Version` PowerShell parameter with GitHub releases API discovery and fallback.
+  - [x] **Dedicated Build from Source Driver**: Created `scripts/build_from_source.sh` (Linux/macOS) and `scripts/build_from_source.ps1` (Windows) with CLI-only, custom prefix, and debug/release options.
+  - [x] **Documentation Portal**: Updated `docs/index.md` and `docs/guide/quickstart.md` with tabbed single-line installs, versioning guides, and build-from-source instructions.
+
 - [x] **Phase 12: Unified Omnibar (`Ctrl+K`) & Embedded Scripting Shell - [P2]**
   - [x] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation (`OmnibarModal.tsx`).
   - [x] **Interactive In-UI Scripting REPL Console**: Responsive terminal console with command history (`Up`/`Down`), tab completion, direct dispatch to `engineBridge` (`run`, `step`, `step delta`, `reset`, `get`, `set`, `force`, `release`, `report_timing`, `report_power`), and syntax colorized output.
