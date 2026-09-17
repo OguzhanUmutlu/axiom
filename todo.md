@@ -11,26 +11,19 @@
 > 5. **VitePress Documentation Portal**: Hosted on GitHub Pages with custom domain redirect to `axiom.aerovex.net`.
 
 ---
-
 ## In Progress
 
-- [ ] **Phase 8: Advanced Waveform Innovation & Signal Inspection Engine - [P0]**
-  - [ ] **Multi-Radix Bus Exploder**: Expandable multi-bit vector buses into bit-indexed sub-lanes with real-time radix switching (Hex, Binary, Unsigned, Signed Decimal, ASCII).
-  - [ ] **Dual-Cursor Monotonic Time Measurement**: Cursor A and Cursor B pins with floating delta badge ($\Delta t$ in ps/ns, frequency $f = 1/\Delta t$ in MHz/GHz).
-  - [ ] **Zero-Time Delta Accordion Viewer**: Expandable timeline accordion revealing internal $\delta$-cycles ($\delta_0 \to \delta_1 \to \dots \to \delta_n$) with glitch hazard ribbons ($0 \to 1 \to 0$ and $1 \to 0 \to 1$).
-  - [ ] **Interactive Signal/Pin Forcing & Probing**: Live inspector panel allowing engineers to force `0`, `1`, `X`, `Z` or clock square waves directly into running simulation state.
+- [ ] **Phase 9: GPU-Accelerated Hardware Schematic DAG & Logic Cone Slicer - [P1]**
+  - [ ] **Interactive Canvas/WebGL Schematic DAG**: Render elaborated BIR netlist nodes (ports, registers, multiplexers, adders, operators) with auto-layout routing.
+  - [ ] **Semantic Level-of-Detail (LOD)**: Zoom from macro module blocks with activity heatmaps down to internal Cranelift logic gates.
+  - [ ] **Bidirectional Cross-Probing**: Seamless synchronization across Schematic $\leftrightarrow$ Waveform $\leftrightarrow$ Monaco HDL Code Editor.
+  - [ ] **1-Click Critical Logic Cone Slicer**: Instant fan-in datapath extraction and fan-out load tree isolation with timing delay heatmaps.
 
 ---
 
 ## Todo
 
 ### Multi-Phase Innovation Roadmap
-
-#### Phase 9: GPU-Accelerated Hardware Schematic DAG & Logic Cone Slicer - [P1]
-- [ ] **Interactive Canvas/WebGL Schematic DAG**: Render elaborated BIR netlist nodes (ports, registers, multiplexers, adders, operators) with auto-layout routing.
-- [ ] **Semantic Level-of-Detail (LOD)**: Zoom from macro module blocks with activity heatmaps down to internal Cranelift logic gates.
-- [ ] **Bidirectional Cross-Probing**: Seamless synchronization across Schematic $\leftrightarrow$ Waveform $\leftrightarrow$ Monaco HDL Code Editor.
-- [ ] **1-Click Critical Logic Cone Slicer**: Instant fan-in datapath extraction and fan-out load tree isolation with timing delay heatmaps.
 
 #### Phase 10: Virtual Lab & Stimulus Rack (Zero-Boilerplate Hardware Prototyping) - [P1]
 - [ ] **Virtual Instrument Rack**: Front-panel palette with interactive DIP switches, momentary pushbuttons, rotary encoders, and multi-digit 7-segment displays.
@@ -47,10 +40,15 @@
 - [ ] **Omnibar Command Palette (`Ctrl+K` / `Cmd+K`)**: Instant fuzzy search across signals, netlist hierarchy, actions, fixtures, and documentation.
 - [ ] **Interactive In-UI Tcl/Python/Rust REPL Console**: Unified scriptable command console with command history, syntax highlighting, and tab completion.
 
-
 ---
 
 ## Completed
+
+- [x] **Phase 8: Advanced Waveform Innovation & Signal Inspection Engine - [P0]**
+  - [x] **Multi-Radix Bus Exploder**: Expandable multi-bit vector buses into bit-indexed sub-lanes (`bus[0]..bus[W-1]`) with real-time radix switching (Hex, Binary, Unsigned, Signed Decimal, ASCII).
+  - [x] **Dual-Cursor Monotonic Time Measurement**: Cursor A and Cursor B pins with floating HUD badge ($\Delta t$ in ps/ns/$\mu$s, frequency $f = 1/\Delta t$ in MHz/GHz).
+  - [x] **Zero-Time Delta Accordion Viewer**: Expandable timeline drawer revealing internal $\delta$-cycles ($\delta_0 \to \delta_1 \to \dots$) with glitch hazard ribbons ($0 \to 1 \to 0$ and $1 \to 0 \to 1$).
+  - [x] **Interactive Signal/Pin Forcing & Probing**: Live inspector modal allowing engineers to force `0`, `1`, `X`, `Z` or custom bus values with sub-microsecond in-RAM re-evaluation and release.
 
 - [x] **Phase 7: Documentation Portal, Rebranding, Cloudflare Edge & CI/CD - [P0]**
   - [x] Rebranded to **Axiom EDA** under Aerovex (`axiom.aerovex.net`).
