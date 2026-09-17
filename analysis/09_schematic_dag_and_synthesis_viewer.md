@@ -85,3 +85,24 @@ pub struct LogicCone {
 - **Fan-In Extraction**: Selecting a register input pin and pressing `F` dims all unrelated circuitry into 10% opacity, rendering an illuminated datapath cone tracing back to the primary inputs and source flip-flops.
 - **Fan-Out Extraction**: Selecting a clock or enable net highlights its entire downstream load tree, displaying fan-out count and total lumped capacitive load.
 - **Timing Heatmap Overlay**: Logic cells along the critical path are shaded on a gradient from Emerald Green (positive slack) to Crimson Red (negative slack).
+
+---
+
+## 5. Production Implementation & Studio Architecture
+
+Axiom EDA implements this architecture natively in TypeScript, Canvas 2D, and React 19:
+
+- **Graph & Slicing Model (`ui/src/engine/schematicModel.ts`)**:
+  - Sugiyama layered DAG placement algorithm with Manhattan orthogonal wire channel routing.
+  - $O(V + E)$ breadth-first critical fan-in and fan-out cone extractors.
+  - Real-time setup slack calculation: $T_{\text{slack}} = T_{\text{clk}} - \sum t_{\text{cell}} - \sum t_{\text{net}} - t_{\text{setup}}$.
+- **Hardware Schematic Viewer (`ui/src/components/SchematicViewer.tsx`)**:
+  - 60+ FPS Canvas 2D engine with smooth mouse-wheel centered zooming (0.2x to 3.5x) and drag panning.
+  - Semantic LOD: Macro blocks with heatmaps $\to$ Structural datapath MUXes/adders/registers $\to$ Primitive gates with Cranelift JIT machine instructions (`iadd`, `isub`, `band`, `icmp eq`).
+  - Wire callout badges displaying real-time logic values from `SimulationState.signals`.
+  - Interactive Minimap camera viewport navigator.
+  - 1-Click Cone Slicing with `[F]` (Fan-In), `[O]` (Fan-Out), and `[Esc]` (Clear) shortcuts, dimming unrelated logic to 12% opacity.
+- **Split Studio Workspace (`ui/src/App.tsx`)**:
+  - Studio view switcher: `[ 📈 Waveforms ]` | `[ 🔀 Schematic DAG ]` | `[ ◫ Split Studio ]`.
+  - 3-way bidirectional cross-probing: selecting a gate/net highlights its trace in `WaveformViewer.tsx` and scrolls to/highlights its exact source lines in `HdlEditor.tsx`.
+
