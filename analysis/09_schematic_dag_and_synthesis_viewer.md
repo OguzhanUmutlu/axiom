@@ -1,0 +1,87 @@
+# Axiom EDA: GPU-Accelerated Hardware Schematic DAG & Logic Cone Architecture
+
+## 1. Overview & Vision
+
+In traditional EDA tools like AMD Vivado, the schematic viewer is a sluggish, static Java Swing view. Navigating large designs with hundreds of thousands of gates leads to visual stuttering, modal window freezing, and opaque netlist hierarchies. Furthermore, the schematic is isolated from the simulation waveform and HDL source code—tracing a bug across schematic, waveform, and code requires manual search and mental mapping.
+
+**Axiom EDA replaces this with a GPU-accelerated, infinite-canvas Hardware Directed Acyclic Graph (DAG)** engine built with WebGL / HTML5 Canvas. It connects the elaborated **BIR (Betterado Intermediate Representation)** netlist directly to an interactive, 60+ FPS visual representation with **bidirectional cross-probing** and **instant critical logic cone tracing**.
+
+---
+
+## 2. DAG Topology & Representation
+
+The schematic engine consumes the elaborated `BirCircuit` and maps every entity into a graph node:
+
+```
+                                    BirCircuit
+                                        |
+                 +----------------------+----------------------+
+                 |                                             |
+                 v                                             v
+        Structural Hierarchy Nodes                     Primitive Leaf Nodes
+   - Modules & Submodule Instances             - State Registers (FDRE / Latch)
+   - Clock Domains & Reset Trees               - Combinational Operators (+, -, *, /)
+   - Port Envelopes (Inputs/Outputs)           - Multiplexers & Decoders
+                                               - Bitwise & Reduction Gates
+```
+
+### 2.1. Multi-Level Semantic Zooming
+
+To prevent visual clutter on designs with $>10^5$ nets, the Axiom Schematic Engine employs continuous semantic level-of-detail (LOD):
+
+1. **Macro Level (Zoom 0.05x – 0.3x)**:
+   - Displays high-level module hierarchy blocks with aggregate bus widths.
+   - Modules are shaded according to dynamic switching activity heatmaps.
+2. **Structural Level (Zoom 0.3x – 1.0x)**:
+   - Expands submodule boundaries to reveal registers, arithmetic datapaths, and control multiplexers.
+   - Multi-bit buses render as thick bundle conduits with width callouts (e.g. `[31:0]`).
+3. **Primitive & Gate Level (Zoom 1.0x – 5.0x)**:
+   - Displays individual 4-state logic gates (AND, OR, XOR, NOT) and target FPGA primitives (LUT6, FDRE, CARRY4).
+   - In-RAM Cranelift JIT machine code operations and truth tables can be inspected on hover.
+
+---
+
+## 3. Bidirectional Cross-Probing & Synchronization
+
+Axiom enforces seamless synchronization across the three primary views of hardware logic:
+
+```
+     +-------------------------------------------------------------+
+     |                       HDL Source Editor                     |
+     |                       (Monaco / Text AST)                   |
+     +------------------------------+------------------------------+
+                                    ^
+                                    | (Byte Span AST Mapping)
+                                    v
++-----------------------------------+-----------------------------------+
+|     Interactive Schematic DAG     |        Digital Waveform Canvas    |
+|     (WebGL / Canvas 2D)           |<------>|        (Time & Delta Steps)      |
++-----------------------------------+        +-----------------------------------+
+             (Selected Net)                              (Signal Trace)
+```
+
+1. **Schematic -> Waveform**: Clicking any wire or port pin in the schematic automatically brings that signal to the top of the waveform viewer and highlights its trace.
+2. **Waveform -> Schematic**: Selecting a signal label in the waveform viewer automatically pans and focuses the schematic camera onto the driving gate with a soft cyan pulsing glow.
+3. **Schematic -> Code**: Double-clicking any gate or register jumps directly to the line of Verilog/SystemVerilog in the editor that instantiated or inferred that logic.
+
+---
+
+## 4. 1-Click Critical Logic Cone Slicing
+
+When debugging timing violations or incorrect simulation values, engineers must isolate the exact fan-in logic cone feeding a flip-flop. In Vivado, this requires multiple nested menu clicks and manually unhiding components.
+
+In Axiom, logic cone isolation is an instantaneous $O(V + E)$ graph traversal:
+
+```rust
+pub struct LogicCone {
+    pub target_net: NetId,
+    pub fanin_cells: HashSet<CellId>,
+    pub fanin_nets: HashSet<NetId>,
+    pub logic_depth: usize,
+    pub estimated_delay_ps: u64,
+}
+```
+
+- **Fan-In Extraction**: Selecting a register input pin and pressing `F` dims all unrelated circuitry into 10% opacity, rendering an illuminated datapath cone tracing back to the primary inputs and source flip-flops.
+- **Fan-Out Extraction**: Selecting a clock or enable net highlights its entire downstream load tree, displaying fan-out count and total lumped capacitive load.
+- **Timing Heatmap Overlay**: Logic cells along the critical path are shaded on a gradient from Emerald Green (positive slack) to Crimson Red (negative slack).
