@@ -70,3 +70,27 @@ For automated multi-cycle testing without writing HDL testbenches:
 2. **Mouse Stimulus Painting**: Click and drag on the waveform canvas to draw high pulses, low pulses, or random data vectors.
 3. **Pattern Sequencer**: Repeat sequences (e.g. Count up, Gray code, PRBS7 pseudo-random) with 1 click.
 4. **Testbench Export**: Auto-generate synthesizable IEEE 1800 SystemVerilog testbenches (`tb_generated.sv`) from the recorded stimulus for archival and CI/CD conformance.
+
+---
+
+## 5. Production Implementation & Studio Architecture
+
+Axiom EDA implements this architecture natively in TypeScript, SVG, and React 19:
+
+- **Virtual Instrument Rack (`ui/src/components/VirtualLabRack.tsx`)**:
+  - **8-Bit DIP Switch Bank**: Dynamic bit manipulation (`[0]`..`[7]`) driving top-level ports (`a[7:0]`, `b[7:0]`, `opcode[2:0]`, `enable`, `up_down`, `data_in[7:0]`) with live Hex, Binary, and Decimal readouts.
+  - **Tactile Pushbuttons**: Active-low `RESET (rst_n)` strobe and `STEP CLOCK (clk)` single-cycle pulsing.
+  - **Rotary Quadrature Hex Dial**: Smooth knurled dial sweeping values from `0x00` to `0xFF` with directional stepper buttons (`-16`, `-1`, `+1`, `+16`).
+  - **Dual 7-Segment LED Displays**: Authentic SVG 7-segment display decoding registers (`result[7:0]`, `count[7:0]`, `accum_out[15:0]`) with red glowing drop shadows (`#ef4444`).
+  - **16-Bit SMD LED Bar Graph**: Discrete surface-mount LED pips displaying bitwise logic states in real time.
+- **Waveform Stimulus Painter Modal (`ui/src/components/StimulusPainterModal.tsx`)**:
+  - Preset test pattern generator: Linear Ramp, Alternating 0xAA/55, Walking Ones, and PRBS7 pseudo-random.
+  - In-RAM multi-cycle execution engine running test sequences without JTAG hardware.
+  - 1-Click IEEE 1800-2017 SystemVerilog Testbench Exporter (`${topModule}_tb.sv`) with copy-to-clipboard and file download.
+- **In-RAM Stimulus Injection API (`ui/src/engine/engineBridge.ts`)**:
+  - `injectStimulus(signalId, value)`: Modifies state memory word and re-evaluates combinational and sequential processes in single-digit microseconds.
+  - `pulseSignal(signalId)`: Generates cycle pulses advancing simulation time.
+  - `generateSystemVerilogTestbench(topModule)`: Emits clean, synthesizable SystemVerilog testbench.
+- **Integrated Studio Workspace (`ui/src/App.tsx`)**:
+  - Studio view tabs: `[ 📈 Waveforms ]` | `[ 🔀 Schematic DAG ]` | `[ 🎛️ Virtual Lab ]` | `[ ◫ Split Studio ]`.
+
