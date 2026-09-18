@@ -159,13 +159,15 @@ When working in the repository, verify changes using these standard commands:
   ```
   *(Launches Vite dev server on `http://localhost:3000/`)*
 
-- **Build Rust Desktop / CLI Binary**:
+- **Build Rust Desktop & CLI Binaries**:
   ```bash
-  cargo build --release --bin axiom
+  cargo build --release --bin axiom --bin axiom-desktop
   ```
 
-- **Run Cli In-RAM GUI Server**:
+- **Run Native Standalone Desktop Studio (Zero-Port Tauri Window)**:
   ```bash
+  ./target/release/axiom-desktop
+  # or via CLI launcher:
   cargo run --bin axiom -- gui
   ```
 
