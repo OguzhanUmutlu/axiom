@@ -1,55 +1,117 @@
-# Axiom: A High-Performance Rust Remake of Vivado's HDL Processor & Simulator
+# Axiom: High-Performance Rust Remake of AMD Vivado's HDL Engine & Studio
 
 ## 1. Project Manifesto & Core Mission
 
-**Axiom** is a ground-up, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust**.
+**Axiom** is an aerospace-grade, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust** and deployed live at **`https://axiom.aerovex.net`**.
 
-Vivado is the undisputed industry standard for FPGA development, yet it suffers from decades of technical bloat: 100+ GB installations, sluggish Java Swing interfaces, multi-stage file-based elaboration pipelines, and a complete lack of support for modern operating systems like macOS (Apple Silicon) or web browsers. Furthermore, Vivado treats zero-time delta cycles as a black box, hiding critical combinational glitches and race conditions from the engineer.
+Vivado is the industry standard for FPGA development, yet it suffers from severe legacy bloat: 100+ GB installations, sluggish Java Swing interfaces, multi-stage file-based elaboration pipelines, zero-time delta cycle black-boxing, and zero support for modern platforms like macOS (Apple Silicon) or standard web browsers.
 
-**Axiom dismantles these limitations.** It provides a lightweight (<50 MB), lightning-fast, and deeply introspectable HDL engine paired with an elegant, modern dark-themed desktop and web application.
+**Axiom eliminates these limitations.** It provides a lightweight (<50 MB), lightning-fast, and deeply introspectable HDL engine paired with an elegant, modern dark-themed desktop (Tauri v2) and web application (WebAssembly).
 
 ---
 
-## 2. Core Architecture & Architectural Techniques
+## 2. Current Implementation Status & Production Deliverables
 
-As defined by the project specification, Axiom incorporates the following core technical capabilities and architectural techniques:
+As of **Phase 12.5**, the entire core engine, compiler, scheduler, telemetry system, and modern studio are **fully implemented, tested, and active**:
+- **48 / 48 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, and conformance tests across all crates.
+- **Dual-Runtime Execution**:
+  - **Desktop Native**: Native Cranelift JIT compiling Verilog/SystemVerilog directly to x86_64 / AArch64 machine code in RAM with zero disk turnaround.
+  - **In-Browser WebAssembly**: Pure client-side `wasm32-unknown-unknown` simulation kernel (322 KB, ~102 KB gzipped) running 100% in-browser with zero backend dependencies.
+- **Production Web Deployment**: Live at **`https://axiom.aerovex.net/studio/`** (and docs at `https://axiom.aerovex.net/`) served via GitHub Pages with CNAME.
+- **Vivado Project Management System**: File sets (`sources_1`, `sim_1`, `constrs_1`), multi-file bundling, target FPGA parts, and active `[TOP]` module designation.
+- **De-Cramped Layout System**: Unified collapsible bottom dock (collapses to a 28px status bar), collapsible 38px sidebar, and 1-click panel maximization (`⛶`).
 
-### 2.1. In-RAM JIT Machine Code Execution Engine
-- **End-to-End HDL Understanding**: Full lexical analysis, AST parsing, and semantic elaboration of Verilog and SystemVerilog without relying on external compilers (GCC/Clang) or intermediate C++ file dumps.
-- **Direct JIT Compilation to Machine Code**: The engine compiles elaborated hardware netlists and procedural blocks directly into native machine code in RAM using **Cranelift** (x86_64, AArch64).
-- **Zero-Disk Turnaround**: The entire parse-elaborate-compile pipeline executes entirely in memory within milliseconds, enabling instant test iteration.
-- **Cache-Optimized 4-State State Arena**: Signals and registers are laid out contiguously in memory using dual-vector bit representations (`value` and `mask`) for hyper-efficient 4-state logic (0, 1, X, Z) execution.
+---
 
-### 2.2. Manual Delta-Time Tick & Event Inspection API
-- **Caller-Controlled Stepping**: The simulation engine exposes an embeddable API that allows the caller to manually advance simulation time by an arbitrary delta time:
-  ```rust
-  engine.tick(delta_time);
-  ```
-- **Granular Delta-Cycle Step**: In addition to physical time advances, the caller can execute single discrete delta cycles ($\delta$-steps) within zero simulation time:
-  ```rust
-  engine.step_delta();
-  ```
-- **Event-Driven Introspection**: The engine emits granular event callbacks letting the caller know *what happens when*:
-  - Net transitions and signal value changes.
-  - Process activations and sensitivity list evaluations.
-  - Active, Inactive, and Non-Blocking Assignment (NBA) phase updates.
-  - Combinational glitch detection and race-condition warnings.
+## 3. Repository & Workspace Architecture
 
-### 2.3. Real-Time Voltage, Energy & Power Telemetry
-- **Physics-Informed Dynamic Power**: Implements dynamic power modeling based on physical capacitance, switching activity, and voltage supply rails:
+The repository is organized as a Cargo multi-crate workspace and modern TypeScript/React frontend:
+
+```
+axiom/
+├── Cargo.toml                          # Master workspace configuration
+├── GEMINI.md                           # Single-source-of-truth project context for AI agents
+├── todo.md                             # Master task & milestone priority tracker
+├── install.sh / install.ps1            # Universal single-line installation scripts
+│
+├── crates/                             # Rust Simulation Engine Workspace
+│   ├── core/                           # Four-state logic (0,1,X,Z), SimTime, diagnostics & spans
+│   ├── syntax/                         # Streaming zero-copy lexer, preprocessor, and Pratt AST parser
+│   ├── ir/                             # Elaborator, symbol tables, module hierarchy & BIR (IR)
+│   ├── jit/                            # Cranelift in-RAM JIT backend & 4-state memory manager
+│   ├── sim/                            # Stratified event queue, delta-cycle loop, glitch detector
+│   ├── telemetry/                      # Dynamic power, PDN inductive sag ($V_{sag} = IR + L di/dt$), VCD/SAIF
+│   ├── desktop/                        # DesktopEngine library and native Tauri v2 IPC handlers
+│   ├── cli/                            # Unified CLI & In-RAM GUI server (embedded Zstd UI bundle)
+│   └── wasm/                           # wasm-bindgen WebAssembly wrapper for in-browser simulation
+│
+├── ui/                                 # React 19 + TypeScript + PostCSS Web & Desktop Studio
+│   ├── src/
+│   │   ├── engine/
+│   │   │   ├── engineBridge.ts         # Dual-runtime bridge (auto-detects Tauri IPC vs WebAssembly)
+│   │   │   ├── projectModel.ts         # Vivado project model (sources_1, sim_1, constrs_1, templates)
+│   │   │   ├── schematicModel.ts       # Synthesizes hardware netlist DAG for schematic viewer
+│   │   │   ├── timingModel.ts          # Static timing analysis, slack radar, CDC matrix, energy treemap
+│   │   │   └── sampleDesigns.ts        # 7 production Verilog hardware systems
+│   │   ├── components/
+│   │   │   ├── Header.tsx              # Execution control (Run, Step, +1ns, +100ps, Step δ, Reset)
+│   │   │   ├── Sidebar.tsx             # Collapsible sidebar (Sources explorer vs Netlist hierarchy)
+│   │   │   ├── ProjectManager.tsx      # Vivado file sets explorer, top-module picker, templates
+│   │   │   ├── NewProjectModal.tsx     # Vivado project creation wizard with target FPGA part selection
+│   │   │   ├── AddSourceModal.tsx      # Add source dialog for sources_1, sim_1, constrs_1
+│   │   │   ├── HdlEditor.tsx           # Multi-tab code editor with [TOP] tag, close buttons, breadcrumb
+│   │   │   ├── UnifiedBottomDock.tsx   # Collapsible dock: Console & REPL, Power, Glitches, Timing
+│   │   │   ├── WaveformViewer.tsx      # Multi-radix traces, dual cursors, delta-cycle accordion
+│   │   │   ├── SchematicViewer.tsx     # GPU-accelerated netlist DAG, semantic LOD, logic cone slicer
+│   │   │   ├── VirtualLabRack.tsx      # DIP switches, buttons, 7-seg LEDs, UART/SPI/PWM/RISC-V bays
+│   │   │   ├── TimingRadarViewer.tsx   # Slack waterfall, CDC matrix, hierarchical energy treemap
+│   │   │   ├── OmnibarModal.tsx        # Ctrl+K Spotlight-style command palette & fuzzy finder
+│   │   │   └── ResizableSplitter.tsx   # Zero-dependency draggable splitter handles
+│   │   └── styles/theme.css            # Dark engineering aesthetic design system
+│   └── dist/                           # Production web bundle (pre-compiled into CLI)
+│
+├── docs/                               # VitePress Documentation Portal (https://axiom.aerovex.net)
+├── analysis/                           # Axiom Architectural Blueprints (14 detailed specs)
+└── vivadoanalysis/                     # AMD Vivado Reverse-Engineering & Architecture Critique
+```
+
+---
+
+## 4. Key Architectural Subsystems
+
+### 4.1. In-RAM JIT Machine Code & WebAssembly Engine
+- **No External Compilers**: Verilog/SystemVerilog parsing and elaboration occur entirely in Rust.
+- **Cranelift Native JIT**: Directly emits native machine instructions into executable memory in RAM in milliseconds.
+- **WebAssembly Client**: Compiles to `wasm32-unknown-unknown`, allowing browser simulation without server computation.
+- **Contiguous 4-State Arena**: All signal states reside in contiguous `values: Box<[u64]>` and `masks: Box<[u64]>` memory, guaranteeing L1/L2 cache locality.
+
+### 4.2. Stratified Event Scheduler & Delta-Cycle Introspection
+- **Full IEEE 1800 Compliance**: Implements Stratified Event Queue phases: Active $\rightarrow$ Inactive $\rightarrow$ NBA (Non-Blocking Assignments) $\rightarrow$ Observed $\rightarrow$ Reactive.
+- **Granular Stepping APIs**:
+  - `engine.tick(delta_ps)`: Advances physical simulation time by arbitrary picoseconds.
+  - `engine.step_delta()`: Advances a discrete zero-time $\delta$-cycle within current time.
+- **Glitch & Hazard Radar**: Automatically intercepts and flags zero-time combinational glitches (static-0, static-1, dynamic hazards) that Vivado conceals.
+
+### 4.3. Physics-Informed Voltage, Energy & Power Telemetry
+- **Dynamic Power**: Modeled from net capacitance, voltage rails, and toggle rate:
   $$P_{\text{dynamic}} = \frac{1}{2} C_{\text{net}} V_{\text{dd}}^2 f \alpha$$
-- **Instantaneous Energy & Current Spikes**: Calculates instantaneous energy dissipation per event ($E = \frac{1}{2} C V^2$), capturing micro-spikes during clock transitions that Vivado's static reports miss.
-- **Live Synchronized Graphing**: Streams real-time telemetry over high-frequency ring buffers to power and voltage visualizers in the UI, perfectly synchronized with digital logic waveforms.
+- **Inductive PDN Droop**: Models power distribution network inductance ($V_{\text{sag}} = IR + L \frac{di}{dt}$), flagging micro-spikes during clock transitions.
+- **Export Standards**: Generates standard Value Change Dump (VCD) and Switching Activity Interchange Format (SAIF 2.0).
 
-### 2.4. Cross-Platform Desktop & Web Architecture
-- **OS-Independent Desktop Application**: Built with **Tauri v2**, running natively on Linux, macOS (Intel & Apple Silicon), and Windows.
-- **Modern Dark-Themed UI**: Designed with a clean, organized, dark aesthetic using **React 19**, **TypeScript**, and **PostCSS**.
-- **Vite Development & Web Parity**: Built using Vite, allowing instant development in standard browsers.
-- **Native WebAssembly (WASM) Engine Support**: The Rust HDL engine compiles to WebAssembly (`wasm32-unknown-unknown`), enabling 100% in-browser simulation and analysis with zero backend server dependencies.
+### 4.4. Vivado Project Management & De-Cramped Ergonomic Studio
+- **Authentic Vivado File Sets**:
+  - `Design Sources (sources_1)`: Verilog / SystemVerilog RTL modules.
+  - `Simulation Sources (sim_1)`: Testbenches with stimulus generators.
+  - `Constraints (constrs_1)`: Timing & pin constraints (`timing.xdc`).
+- **Target Silicon Devices**: Artix-7 (`xc7a35t`, `xc7a100t`), Zynq-7000 (`xc7z020`), Kintex-7 (`xc7k325t`), Kintex UltraScale+ (`xcku5p`), Axiom Virtual Silicon.
+- **Ergonomic De-Cramping**:
+  - **Unified Bottom Dock**: Collapsible to a 28px status bar, liberating ~250px of vertical space.
+  - **Collapsible Sidebar**: Shrinks to a 38px vertical icon strip, liberating 222px of horizontal space.
+  - **1-Click Panel Maximization (`⛶`)**: Expands Editor, Waveforms, Schematic DAG, or Virtual Lab to 100% full screen.
 
 ---
 
-## 3. Strict Operating Guidelines & Constraints
+## 5. Strict Operating Guidelines & Git Workflow Policy
 
 > [!NOTE]
 > **Git Workflow Policy:**
@@ -59,39 +121,59 @@ As defined by the project specification, Axiom incorporates the following core t
 
 ---
 
-## 4. Documentation & Analysis Organization
+## 6. Build, Test & Verification Commands
 
-The project maintains two distinct, highly organized research and architecture domains:
+When working in the repository, verify changes using these standard commands:
 
-1. **`vivadoanalysis/`**:
-   Comprehensive, deep analysis of AMD Vivado's architecture, documentation, and subsystems:
-   - `01_vivado_design_suite_overview.md`
-   - `02_hdl_parsing_xvlog_xvhdl.md`
-   - `03_elaboration_pipeline_xelab.md`
-   - `04_simulation_kernel_xsim.md`
-   - `05_power_and_voltage_analysis_ug907.md`
-   - `06_waveform_and_inspection_subsystem.md`
-   - `07_vivado_architecture_critique.md`
-   - `08_cli_and_tcl_reference.md`
+- **Build Rust Workspace & Test Suite**:
+  ```bash
+  cargo test --workspace
+  ```
+  *(Ensures all 48 unit, integration, benchmark, and conformance tests pass)*
 
-2. **`analysis/`**:
-   In-depth technical architecture and specification for **Axiom itself** (the actual project, not Vivado). The master index is located at:
-   - `analysis/analysis.md` (stores the directory tree structure and defines the exact purpose of every markdown file).
+- **Build TypeScript / React UI**:
+  ```bash
+  npm --prefix ui run build
+  ```
+  *(Runs TypeScript `tsc` check and Vite production bundling)*
 
-3. **`todo.md`**:
-   Master task and priority tracker containing:
-   - Feature explanation at the top.
-   - `## In Progress` section.
-   - `## Todo` section with clear priority ratings (`[P0]`, `[P1]`, `[P2]`).
-   - `## Completed` section tracking finished items with filled checkboxes `[x]`.
+- **Run UI Development Server**:
+  ```bash
+  npm --prefix ui run dev
+  ```
+  *(Launches Vite dev server on `http://localhost:3000/`)*
+
+- **Build Rust Desktop / CLI Binary**:
+  ```bash
+  cargo build --release --bin axiom
+  ```
+
+- **Run Cli In-RAM GUI Server**:
+  ```bash
+  cargo run --bin axiom -- gui
+  ```
 
 ---
 
-## 5. Development Roadmap Summary
+## 7. Master Documentation & Analysis Index
 
-- **Phase 1 (Immediate Target)**: Core HDL Engine Foundation (Rust Lexer, Parser, AST, Elaboration & Netlist IR).
-- **Phase 2**: JIT Machine Code Compiler (Cranelift in-RAM compilation & WASM codegen).
-- **Phase 3**: Stratified Event Scheduler & Manual Delta-Time Tick Engine.
-- **Phase 4**: Voltage, Energy & Power Telemetry Engine.
-- **Phase 5**: Modern Dark Desktop & Web Application (Tauri v2 + React 19 + TypeScript + PostCSS + WebGL/Canvas Waveform Viewer).
-- **Phase 6**: Verification, Conformance Testing vs Vivado, and Benchmarks.
+For deep architectural and implementation specifications, refer to:
+
+1. **`analysis/analysis.md`**: Master index of the 14 comprehensive technical blueprints:
+   - `01_engine_architecture.md`: Multi-crate workspace & zero-allocation memory model.
+   - `02_lexer_parser_ast.md`: Zero-copy lexer, preprocessor & resilient AST parser.
+   - `03_elaboration_and_netlist_ir.md`: Elaboration pipeline & BIR netlist intermediate representation.
+   - `04_jit_machine_code_compiler.md`: Cranelift in-RAM JIT & WebAssembly codegen.
+   - `05_event_scheduler_and_delta_stepping.md`: Stratified IEEE 1800 event queue & delta API.
+   - `06_voltage_energy_telemetry_model.md`: Physics-informed dynamic power & PDN droop.
+   - `07_api_and_runtime_interface.md`: Embeddable Rust, C-ABI & WASM API.
+   - `08_desktop_and_web_ui.md`: Tauri v2 + React 19 + PostCSS desktop and web studio.
+   - `09_schematic_dag_and_synthesis_viewer.md`: GPU-accelerated hardware DAG & cone slicer.
+   - `10_virtual_lab_and_stimulus_rack.md`: Zero-JTAG virtual instruments & stimulus injection.
+   - `11_timing_radar_and_slack_waterfall.md`: Setup/hold slack waterfall & CDC matrix.
+   - `12_hierarchical_energy_treemap_and_thermal.md`: Silicon energy treemap & SSN model.
+   - `13_omnibar_and_scripting_repl.md`: Ctrl+K Omnibar palette & interactive shell.
+
+2. **`vivadoanalysis/`**: Deep comparative analysis of AMD Vivado's internal tools (`xvlog`, `xelab`, `xsim`, `ug907`, TCL CLI).
+
+3. **`todo.md`**: Full milestone tracker detailing completed phases and future enhancements.
