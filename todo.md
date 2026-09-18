@@ -27,6 +27,26 @@
 
 ## Completed
 
+- [x] **Phase 12.6: In-RAM Verilog/SystemVerilog LSP, Static Analysis Linter & Monaco Editor Integration - [P0]**
+  - [x] **In-RAM LSP & Static Analysis Linter Crate (`crates/lsp`, `axiom-lsp`)**:
+    - High-performance zero-copy linter running directly against AST in milliseconds.
+    - 10 static analysis rules: syntax error mapping (`AXIOM_E001`), blocking assignment in clocked sequential blocks (`AXIOM_W001`), non-blocking assignment in combinational blocks (`AXIOM_W002`), undriven nets (`AXIOM_W003`), unused signals (`AXIOM_W004`), multi-driver net contention (`AXIOM_E002`), latch inference from incomplete if (`AXIOM_W006`), missing case default (`AXIOM_W007`), width mismatches & bit truncation (`AXIOM_W008`).
+    - Standard JSON-RPC Language Server Protocol 3.17 stdio server (`LspServer`).
+    - CLI commands `axiom lsp` (stdio JSON-RPC daemon) and `axiom lint <FILE>` (colorized CLI diagnostic report).
+  - [x] **WebAssembly LSP Bindings (`crates/wasm`)**:
+    - Exported `lint`, `hover`, and `complete` to JavaScript/TypeScript with full WebAssembly support with zero backend/network overhead.
+  - [x] **Monaco Editor HDL Integration (`HdlEditor.tsx`, `monacoVerilog.ts`)**:
+    - Replaced simple textarea with Monaco Editor (`@monaco-editor/react`).
+    - Custom Monarch Verilog/SystemVerilog tokenizer with dedicated IEEE 1800 syntax tokens, directives, operators, and radix literals.
+    - Custom engineering dark palette (`axiom-dark`) with sky-cyan keywords, pink directives, purple literals, and emerald strings.
+    - Real-time debounced squiggly marker underlines (`monaco.editor.setModelMarkers`) and status pill (`Clean` / `X Warnings` / `X Errors`).
+    - Markdown hover provider (`VerilogHover`) displaying port directions, data types, declaration coordinates, and enclosing scopes.
+    - Autocompletion provider (`VerilogCompletion`) with templates, snippets (`always_ff`, `case`, `module`), and in-scope AST signals.
+  - [x] **Problems & Linter Dock Panel (`UnifiedBottomDock.tsx`)**:
+    - "Problems & Linter" dock tab displaying total issues, errors, warnings, and hints.
+    - Interactive diagnostic cards with rule codes, messages, help tips, and clickable line/column navigation that jumps directly to the problem in Monaco.
+    - Clean AST state illustration with zero issues detected.
+
 - [x] **Phase 12.5: Vivado Project Management Architecture & De-Cramped Studio Layout - [P0]**
   - [x] **Vivado-Style Project Model & File Sets (`projectModel.ts`)**:
     - Project file sets structure: Design Sources (`sources_1`), Simulation Sources (`sim_1`), Constraints (`constrs_1`).

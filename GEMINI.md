@@ -12,11 +12,17 @@ Vivado is the industry standard for FPGA development, yet it suffers from severe
 
 ## 2. Current Implementation Status & Production Deliverables
 
-As of **Phase 12.5**, the entire core engine, compiler, scheduler, telemetry system, and modern studio are **fully implemented, tested, and active**:
-- **48 / 48 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, and conformance tests across all crates.
-- **Dual-Runtime Execution**:
+As of **Phase 12.6**, the entire core engine, compiler, scheduler, telemetry system, language server (LSP), linter, and modern studio are **fully implemented, tested, and active**:
+- **55 / 55 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, and linter tests across all crates.
+- **Dual-Runtime Execution & WebAssembly LSP**:
   - **Desktop Native**: Native Cranelift JIT compiling Verilog/SystemVerilog directly to x86_64 / AArch64 machine code in RAM with zero disk turnaround.
-  - **In-Browser WebAssembly**: Pure client-side `wasm32-unknown-unknown` simulation kernel (322 KB, ~102 KB gzipped) running 100% in-browser with zero backend dependencies.
+  - **In-Browser WebAssembly**: Pure client-side `wasm32-unknown-unknown` simulation kernel and in-RAM LSP static analysis linter running 100% in-browser with zero backend dependencies.
+- **In-RAM Verilog/SystemVerilog LSP & Static Analysis Linter (`crates/lsp`)**:
+  - 10 static design rules: syntax error mapping, blocking assignment in sequential blocks (`AXIOM_W001`), non-blocking in combinational blocks (`AXIOM_W002`), undriven nets (`AXIOM_W003`), unused signals (`AXIOM_W004`), multi-driver net contention (`AXIOM_E002`), transparent latch inference (`AXIOM_W006`), missing case default (`AXIOM_W007`), bit width mismatch (`AXIOM_W008`).
+  - Standard JSON-RPC stdio daemon (`axiom lsp`) and colorized CLI reporter (`axiom lint <FILE>`).
+- **Monaco Editor Integration with Custom Monarch Verilog Tokenizer**:
+  - Dark engineering palette (`axiom-dark`), live debounced squiggly marker underlines (`monaco.editor.setModelMarkers`), hover tooltips with IEEE 1800 AST metadata, and autocompletion snippets/signals.
+- **Problems & Linter Dock**: Dedicated collapsible dock tab with active diagnostic cards and 1-click jump-to-line navigation.
 - **Production Web Deployment**: Live at **`https://axiom.aerovex.net/studio/`** (and docs at `https://axiom.aerovex.net/`) served via GitHub Pages with CNAME.
 - **Vivado Project Management System**: File sets (`sources_1`, `sim_1`, `constrs_1`), multi-file bundling, target FPGA parts, and active `[TOP]` module designation.
 - **De-Cramped Layout System**: Unified collapsible bottom dock (collapses to a 28px status bar), collapsible 38px sidebar, and 1-click panel maximization (`⛶`).
@@ -41,15 +47,17 @@ axiom/
 │   ├── jit/                            # Cranelift in-RAM JIT backend & 4-state memory manager
 │   ├── sim/                            # Stratified event queue, delta-cycle loop, glitch detector
 │   ├── telemetry/                      # Dynamic power, PDN inductive sag ($V_{sag} = IR + L di/dt$), VCD/SAIF
+│   ├── lsp/                            # In-RAM Verilog/SystemVerilog LSP 3.17 server & static analysis linter
 │   ├── desktop/                        # DesktopEngine library and native Tauri v2 IPC handlers
 │   ├── cli/                            # Unified CLI & In-RAM GUI server (embedded Zstd UI bundle)
-│   └── wasm/                           # wasm-bindgen WebAssembly wrapper for in-browser simulation
+│   └── wasm/                           # wasm-bindgen WebAssembly wrapper for in-browser simulation & LSP
 │
 ├── ui/                                 # React 19 + TypeScript + PostCSS Web & Desktop Studio
 │   ├── src/
 │   │   ├── engine/
 │   │   │   ├── engineBridge.ts         # Dual-runtime bridge (auto-detects Tauri IPC vs WebAssembly)
 │   │   │   ├── projectModel.ts         # Vivado project model (sources_1, sim_1, constrs_1, templates)
+│   │   │   ├── monacoVerilog.ts        # Monarch Verilog tokenizer, axiom-dark theme & LSP providers
 │   │   │   ├── schematicModel.ts       # Synthesizes hardware netlist DAG for schematic viewer
 │   │   │   ├── timingModel.ts          # Static timing analysis, slack radar, CDC matrix, energy treemap
 │   │   │   └── sampleDesigns.ts        # 7 production Verilog hardware systems
@@ -59,8 +67,8 @@ axiom/
 │   │   │   ├── ProjectManager.tsx      # Vivado file sets explorer, top-module picker, templates
 │   │   │   ├── NewProjectModal.tsx     # Vivado project creation wizard with target FPGA part selection
 │   │   │   ├── AddSourceModal.tsx      # Add source dialog for sources_1, sim_1, constrs_1
-│   │   │   ├── HdlEditor.tsx           # Multi-tab code editor with [TOP] tag, close buttons, breadcrumb
-│   │   │   ├── UnifiedBottomDock.tsx   # Collapsible dock: Console & REPL, Power, Glitches, Timing
+│   │   │   ├── HdlEditor.tsx           # Monaco multi-tab editor with live markers, [TOP] tag, breadcrumb
+│   │   │   ├── UnifiedBottomDock.tsx   # Collapsible dock: Console & REPL, Problems & Linter, Power, Glitches
 │   │   │   ├── WaveformViewer.tsx      # Multi-radix traces, dual cursors, delta-cycle accordion
 │   │   │   ├── SchematicViewer.tsx     # GPU-accelerated netlist DAG, semantic LOD, logic cone slicer
 │   │   │   ├── VirtualLabRack.tsx      # DIP switches, buttons, 7-seg LEDs, UART/SPI/PWM/RISC-V bays
