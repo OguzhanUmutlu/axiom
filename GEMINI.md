@@ -12,7 +12,7 @@ Vivado is the industry standard for FPGA development, yet it suffers from severe
 
 ## 2. Current Implementation Status & Production Deliverables
 
-As of **Phase 12.6**, the entire core engine, compiler, scheduler, telemetry system, language server (LSP), linter, and modern studio are **fully implemented, tested, and active**:
+As of **Phase 12.8**, the entire core engine, compiler, scheduler, telemetry system, language server (LSP), linter, and modern studio are **fully implemented, tested, and active**:
 - **55 / 55 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, and linter tests across all crates.
 - **Dual-Runtime Execution & WebAssembly LSP**:
   - **Desktop Native**: Native Cranelift JIT compiling Verilog/SystemVerilog directly to x86_64 / AArch64 machine code in RAM with zero disk turnaround.
@@ -22,13 +22,18 @@ As of **Phase 12.6**, the entire core engine, compiler, scheduler, telemetry sys
   - Standard JSON-RPC stdio daemon (`axiom lsp`) and colorized CLI reporter (`axiom lint <FILE>`).
 - **Monaco Editor Integration with Custom Monarch Verilog Tokenizer**:
   - Dark engineering palette (`axiom-dark`), live debounced squiggly marker underlines (`monaco.editor.setModelMarkers`), hover tooltips with IEEE 1800 AST metadata, and autocompletion snippets/signals.
+- **Primary Default Combinational Hardware System (`logic_circuit`)**:
+  - Gate-level boolean logic system: `w1 = ~A; w2 = w1 & B; w3 = w2 & C; w4 = ~B; F = w3 | w4;` ($F = ((\neg A \land B) \land C) \lor \neg B$).
+  - Configured as the #1 featured template on the Welcome Launchpad with full gate-level schematic DAG (9 cells, 9 nets: `inv1`, `inv2`, `and1`, `and2`, `or1`) and dedicated Virtual Lab bay with tactile switches, gate probes, output LED, and 8-row Truth Table HUD.
+- **Spacious Dual-Pane Studio & Scaled Typography**:
+  - Redesigned Split Studio to eliminate quad-split cramping: Left = Monaco HDL Editor; Right = Full-height, full-width Visualizer Pane (`⚡ Schematic DAG`, `🎛 Virtual Lab`, `📈 Waveforms`, `⏱ Timing & Energy`) with optional `+ Waveforms` stack toggle and 1-click Maximize.
+  - Comfortable, readable typography and touch targets across the entire interface (14px base font, 14px Monaco editor, 52px header, 280px sidebar, 32px collapsed status bar).
 - **Problems & Linter Dock**: Dedicated collapsible dock tab with active diagnostic cards and 1-click jump-to-line navigation.
 - **Production Web Deployment**: Live at **`https://axiom.aerovex.net/studio/`** (and docs at `https://axiom.aerovex.net/`) served via GitHub Pages with CNAME.
 - **Vivado Project Management System & Welcome Launchpad**:
   - Starts cleanly from a "No Project Open" standpoint with zero pre-loaded clutter.
   - Aerospace-grade Welcome Launchpad with hero banner, "Create New Project" wizard card, "Open Project from File" (.json) importer, and 7-item interactive starter templates grid.
   - Authentic Vivado file sets (`sources_1`, `sim_1`, `constrs_1`), multi-file bundling, target FPGA parts (Artix-7, Zynq-7000, Kintex-7, Kintex UltraScale+, Axiom Virtual Silicon), active `[TOP]` module designation, and clean "Close Project" lifecycle.
-- **De-Cramped Layout System**: Unified collapsible bottom dock (collapses to a 28px status bar), collapsible 38px sidebar, and 1-click panel maximization (`⛶`).
 
 ---
 
