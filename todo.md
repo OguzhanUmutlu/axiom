@@ -27,6 +27,28 @@
 
 ## Completed
 
+- [x] **Phase 12.9: Full Mobile Studio Support & Off-Canvas Drawer Architecture - [P0]**
+  - [x] **Responsive Mobile Viewport Engine (`App.tsx`)**:
+    - Automatic mobile detection (`window.innerWidth <= 768`) with responsive resize listener.
+    - Completely disables desktop splitters, sidebars, and multi-pane crowding on mobile viewports.
+  - [x] **Off-Canvas Left Drawer (`MobileDrawer.tsx`)**:
+    - Smooth hardware-accelerated drawer sliding from the left (`translateX(-100%)` to `translateX(0)`) with 6px blurred backdrop.
+    - Studio Panels selector (view 1 at once: HDL Code Editor, Schematic DAG, Virtual Lab Rack, Waveforms Viewer, Timing & Energy, Console & REPL).
+    - Authentic Vivado file sets explorer (`sources_1`, `sim_1`, `constrs_1`) with active `[TOP]` module badge, `+ Add Source`, and `Close Project`.
+    - Integrated Simulation Clock display and quick stepping/run controls.
+    - Automatic auto-collapse to the left upon panel, file, or template selection.
+  - [x] **Single-Panel Full-Screen Layout (`App.tsx`)**:
+    - Each tool occupies 100% of the viewport width and height with zero horizontal scrolling or clipping.
+    - Full-fidelity rendering for Monaco HDL Editor, GPU/Canvas Schematic DAG, Virtual Lab Rack with Truth Table HUD, Waveforms Viewer, and Console & REPL dock.
+  - [x] **Tactile Mobile Bottom Navigation Bar (`MobileBottomBar.tsx`)**:
+    - Fixed 56px bottom bar with safe-area notch padding.
+    - 5 thumb-friendly tabs: `Code` (blue), `Schematic` (cyan), `Lab` (amber), `Waves` (emerald), `Console` (purple).
+    - Dynamic notification badges for active LspDiagnostics and zero-time glitches.
+  - [x] **In-Depth Browser QA Mobile Verification**:
+    - Validated with browser subagent under iPhone mobile emulation (`390px × 844px`).
+    - Captured and verified 6 screenshots: `28_mobile_initial_view.png`, `29_mobile_drawer_open.png`, `30_mobile_schematic_panel.png`, `31_mobile_virtual_lab_panel.png`, `32_mobile_editor_panel.png`, `33_mobile_dock_panel.png`.
+    - Confirmed 0px horizontal overflow (`scrollWidth == clientWidth == 390px`).
+
 - [x] **Phase 12.8: Default Combinational Logic Circuit (A, B, C → F) & Spacious Dual-Pane Studio - [P0]**
   - [x] **Default Combinational Logic Hardware System (`sampleDesigns.ts`, `projectModel.ts`)**:
     - Modeled gate-level equation: `F = ((~A & B) & C) | ~B` with intermediate nets `w1 = ~A; w2 = w1 & B; w3 = w2 & C; w4 = ~B; F = w3 | w4;`.
