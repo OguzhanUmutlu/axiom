@@ -71,3 +71,12 @@ Axiom replaces cryptic Vivado error messages with rich, modern diagnostics:
 - **Parsing & Elaboration**: Parallelized across files and module hierarchies using `rayon`. Independent modules compile in parallel without locks.
 - **Simulation Kernel**: Operates on a lock-free, deterministic single-thread event loop for the primary delta cycle, ensuring 100% reproducible bit-level hardware behavior.
 - **Telemetry & Rendering**: Offloaded to dedicated background threads via crossbeam channels and lock-free atomic ring buffers (`atomic-ringbuffer`), ensuring that telemetry calculation never throttles the simulation kernel.
+
+---
+
+## 6. Development & Git Workflow Policy
+
+- **Commit & Push After Every Change**: Developers and automated agents are authorized and encouraged to commit and push after every verified change.
+- **Verification Gates**: Run `cargo test --workspace` and `npm run build` prior to committing.
+- **Commit Quality**: Write clear, descriptive commit messages summarizing the technical accomplishments.
+- **Non-Destructive Operations**: Strictly avoid destructive commands (`git reset --hard`, force pushes, etc.) to safeguard repository history.

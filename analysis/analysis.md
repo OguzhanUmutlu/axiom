@@ -42,3 +42,11 @@ analysis/
 | **`12_hierarchical_energy_treemap_and_thermal.md`** | **Energy Treemap & Thermal Model** | • Proportional tile treemap of dynamic module energy dissipation.<br>• Real-time PDN impedance modeling ($V_{sag} = IR + L di/dt$).<br>• Simultaneous switching noise (SSN) and rail bounce warnings. |
 | **`13_omnibar_and_scripting_repl.md`** | **Unified Omnibar & Scripting REPL** | • Spotlight-style `Ctrl+K` command and netlist fuzzy finder.<br>• In-UI interactive REPL console with command history & auto-complete.<br>• Zero-latency in-memory state manipulation & timing/power queries. |
 
+---
+
+## 3. Development & Git Workflow Policy
+
+- **Continuous Commit & Push**: Agents and contributors can commit and push after every change once verification tests and builds pass.
+- **Verification First**: Always ensure that unit tests (`cargo test --workspace`) and frontend builds (`npm run build`) pass cleanly before pushing.
+- **Clear Commit Messages**: Provide concise, descriptive commit messages summarizing the technical changes and architectural enhancements.
+- **Preserve History**: Non-destructive operations only; destructive actions (e.g. `git reset --hard`, force pushes) remain strictly prohibited.

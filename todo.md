@@ -27,6 +27,31 @@
 
 ## Completed
 
+- [x] **Phase 12.5: Vivado Project Management Architecture & De-Cramped Studio Layout - [P0]**
+  - [x] **Vivado-Style Project Model & File Sets (`projectModel.ts`)**:
+    - Project file sets structure: Design Sources (`sources_1`), Simulation Sources (`sim_1`), Constraints (`constrs_1`).
+    - File format classification (`verilog`, `systemverilog`, `xdc`), active top-module designation (`isTop`), and target FPGA silicon device selection (`FPGA_TARGET_DEVICES`: Artix-7, Zynq-7000, Kintex-7, Kintex UltraScale+, Axiom Virtual Silicon).
+    - 7 pre-configured multi-file Vivado project templates (RV32I RISC-V SoC, Full-Duplex UART, SPI Master, PWM Inverter, 8-Bit ALU, Glitch Counter, Empty RTL).
+    - Multi-file source bundling (`bundleProjectSources`) for monolithic in-RAM JIT elaboration.
+  - [x] **Vivado Project Explorer (`ProjectManager.tsx`)**:
+    - Project header displaying project name, target device badge (e.g. `Artix-7 xc7a35t`), and active `[Top]` module.
+    - Expandable file set folders (`sources_1`, `sim_1`, `constrs_1`) with file icons, cyan `[TOP]` badges, and 1-click "Set as Top" star action.
+    - Actions toolbar: `+ Add Sources`, `+ New Project`, and `Export Project JSON`.
+    - Project templates quick-loader section with one-click project template switching.
+  - [x] **Vivado Project Creation & Source Dialogs**:
+    - **New Project Wizard Modal (`NewProjectModal.tsx`)**: Step 1 project name, Step 2 target FPGA silicon selector, Step 3 starter template cards.
+    - **Add Source to Vivado Project Dialog (`AddSourceModal.tsx`)**: Target file set picker (`sources_1`, `sim_1`, `constrs_1`), file extension validation (`.v`, `.sv`, `.xdc`), and starter templates (Clocked RTL module, Verilog testbench skeleton, XDC constraints).
+  - [x] **Unified Dockable Bottom Drawer (`UnifiedBottomDock.tsx`)**:
+    - Replaced statically stacked Telemetry + Console (300px overhead) with a unified, tabbed bottom drawer (`>_ Console & REPL`, `⚡ Power & Telemetry`, `⚠ Glitches & Hazards`, `⏱ Timing Slack`).
+    - Collapsible to a 28px sleek status bar displaying live simulation time, rail voltage, instant power, and quick jump buttons, liberating ~250px of vertical space.
+    - Resizable height with smooth dragging handle and full Maximize `⛶` / Restore toggle.
+  - [x] **Collapsible Sidebar Strip (`Sidebar.tsx`)**:
+    - Collapses from 260px down to an ultra-compact 38px icon strip, liberating 222px of horizontal screen width for code and visualizers.
+  - [x] **Multi-Tab HDL Editor & Panel Maximization (`HdlEditor.tsx`, `App.tsx`)**:
+    - Open file tab strip with active tab highlight, `[TOP]` module tag, close button (`✕`), and quick `+` add source button.
+    - Hierarchical breadcrumb navigation (`project > sources_1 > file.v > module`).
+    - 1-click panel maximize/restore button (`⛶` / `Minimize2`) across Editor, Waveforms, Schematic DAG, and Virtual Lab.
+
 - [x] **Phase 12.4: Studio Design Evolution — Dynamic Designs, Resizable Architecture & Autonomous Stimulus - [P0]**
   - [x] **7 Production-Grade Dynamic Systems (`sampleDesigns.ts`)**:
     - **32-Bit RISC-V Mini Core Datapath**: RV32I datapath with Program Counter, embedded instruction ROM, 8x32-bit dual-read register file, and single-cycle ALU.
