@@ -51,9 +51,11 @@ As defined by the project specification, Axiom incorporates the following core t
 
 ## 3. Strict Operating Guidelines & Constraints
 
-> [!CRITICAL]
-> **Git Repository Constraint:**
-> For now, **DO NOT commit, push, or touch Git in any destructive way whatsoever**, including `git reset`, `git checkout`, `git clean`, `git rebase`, or force operations. All repository files and branch states must remain preserved and non-destructive.
+> [!NOTE]
+> **Git Workflow Policy:**
+> **You can commit and push after every change.**
+> Always ensure that changes are verified (e.g., `npm run build`, `cargo test`), clean, and committed with clear descriptive messages.
+> Destructive Git operations (such as `git reset --hard`, `git clean -f`, force-pushing `git push --force`, or destructive rebasing) remain strictly forbidden to preserve repository history integrity.
 
 ---
 
