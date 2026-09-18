@@ -27,6 +27,35 @@
 
 ## Completed
 
+- [x] **Phase 12.4: Studio Design Evolution — Dynamic Designs, Resizable Architecture & Autonomous Stimulus - [P0]**
+  - [x] **7 Production-Grade Dynamic Systems (`sampleDesigns.ts`)**:
+    - **32-Bit RISC-V Mini Core Datapath**: RV32I datapath with Program Counter, embedded instruction ROM, 8x32-bit dual-read register file, and single-cycle ALU.
+    - **Full-Duplex UART Transceiver**: Configurable baud clock generator, 8-N-1 framing, start/stop bit validation, and shift registers.
+    - **SPI Master Controller (Modes 0–3)**: Selectable CPOL/CPHA clock polarity/phase, active-low chip select, and 8-bit full-duplex transfers.
+    - **PWM Generator & Power Modulator**: Free-running period counter, duty comparator, and dead-time insertion for half-bridge shoot-through protection.
+    - **8-Bit Arithmetic Logic Unit (ALU)**: Multi-function datapath with carry/zero flags.
+    - **Synchronous Counter with Glitch Hazards**: Asymmetric path delays exhibiting zero-time delta-cycle hazard tracking.
+    - **Hierarchical SoC Subsystem**: Frequency divider and power rail modeling.
+  - [x] **Zero-Dependency Draggable Resizable Splitter (`ResizableSplitter.tsx`)**:
+    - Smooth horizontal and vertical resizing with active dragging feedback and double-click reset.
+    - Integrated across all studio view modes: HDL Editor $\leftrightarrow$ Visualizers, Waveforms $\leftrightarrow$ Schematics/Lab, and Schematics $\leftrightarrow$ Virtual Lab.
+    - Quick layout preset buttons in the tab bar: **Balanced (33/67)**, **Code Focus (52/48)**, and **Visual Focus (20/80)**.
+  - [x] **Autonomous Multi-Domain Stimulus Engine (`engineBridge.ts`)**:
+    - Embedded state machines driving realistic physical transitions: autonomous UART serial frames, SPI bus handshakes, PWM switching ramps, and RISC-V fetch-decode-execute cycles.
+    - Operates seamlessly across both in-browser WebAssembly simulation and desktop native IPC.
+  - [x] **Protocol & Core Customized Virtual Lab Racks (`VirtualLabRack.tsx`)**:
+    - **UART Lab**: ASCII character transmitter with Send Trigger, live RX data hex/ASCII display, and baud status flags.
+    - **SPI Lab**: Byte injector, CPOL/CPHA mode selector, chip select monitor, and transfer speed gauge.
+    - **PWM Lab**: Interactive duty cycle slider (0–100%), dead-time adjustment (0–15 clock cycles), and complimentary gate drive monitors (Gate High / Gate Low).
+    - **RISC-V Lab**: Live 32-bit register file explorer (x0–x7 in hex and decimal), Single-Step instruction execution button, and reset strobe.
+    - **Standard Lab**: 8-bit DIP switch bank, tactile pushbuttons, pulse generator, and authentic 7-segment LED display.
+  - [x] **Categorized Fixture Explorer & Netlist Filter (`Sidebar.tsx`)**:
+    - Filter pills for Cores, Protocols, Power, and Standard designs with color-coded badges and instant fuzzy search.
+    - Netlist filter bar in the Scope Hierarchy tab for rapid signal lookup in complex designs.
+  - [x] **Physics-Informed Analog Power Dial & PDN Status (`TelemetryViewer.tsx`)**:
+    - Sweeping circular analog meter with color gradient arc for instantaneous dynamic power ($P_{\text{dynamic}}$).
+    - Switching activity toggle rate ($\alpha$) gauge and real-time PDN rail voltage sag health alerts.
+
 - [x] **Phase 12.3: Dual-Runtime Simulation Architecture (In-Browser WebAssembly & Native Tauri v2 IPC) - [P0]**
   - [x] **WebAssembly Simulation Kernel (`crates/wasm`)**: Compiled HDL parser, elaborator, 4-state arena (`SimStateArena`), portable evaluator (`PortableEvaluator`), stratified event scheduler, and silicon telemetry engine directly to `wasm32-unknown-unknown` (322 KB, ~102 KB gzipped).
   - [x] **Feature-Gated Cranelift JIT**: Gated Cranelift virtual-memory code generation to `not(target_arch = "wasm32")`, enabling clean compilation across both WebAssembly and native targets with zero host-OS memory protection dependencies.
