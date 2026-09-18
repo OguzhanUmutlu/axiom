@@ -27,6 +27,31 @@
 
 ## Completed
 
+- [x] **Phase 12.8: Default Combinational Logic Circuit (A, B, C → F) & Spacious Dual-Pane Studio - [P0]**
+  - [x] **Default Combinational Logic Hardware System (`sampleDesigns.ts`, `projectModel.ts`)**:
+    - Modeled gate-level equation: `F = ((~A & B) & C) | ~B` with intermediate nets `w1 = ~A; w2 = w1 & B; w3 = w2 & C; w4 = ~B; F = w3 | w4;`.
+    - Authentic Verilog source (`logic_circuit.v`), SystemVerilog self-checking stimulus testbench (`tb_logic_circuit.sv`), and physical XDC constraints (`timing.xdc`).
+    - Configured as the **#1 featured starter template** and primary default system across Axiom Launchpad and Project Manager.
+  - [x] **Gate-Level Schematic DAG Synthesis (`schematicModel.ts`)**:
+    - Synthesizes 9 cells and 9 nets: primary input ports (`A`, `B`, `C`), inverters (`inv1`, `inv2`), 2-input AND gates (`and1`, `and2`), 2-input OR gate (`or1`), and primary output port (`F`).
+    - Live net labeling for intermediate wires `w1`..`w4` and output `F`.
+  - [x] **Interactive Virtual Lab Bay & Truth Table HUD (`VirtualLabRack.tsx`)**:
+    - Tactile input toggle switches for `Input A (SW0)`, `Input B (SW1)`, and `Input C (SW2)` with high/low state pills, glowing LED indicators, and batch controls (`Cycle +1`, `All 0s`, `All 1s`).
+    - Intermediate net probe badges with live operator chips (`NOT w1 = ~A`, `AND w2 = w1 & B`, `AND w3 = w2 & C`, `NOT w4 = ~B`).
+    - Primary output F large circular glowing LED indicator with live active state and pin assignment `Pin H17 • LD0`.
+    - Live 8-state Truth Table HUD (`000` through `111`) displaying `A`, `B`, `C`, `w1`..`w4`, and `F` with real-time active row highlighting.
+  - [x] **Spacious Dual-Pane Studio & De-Cramping (`App.tsx`)**:
+    - Redesigned Split Studio from cramped quad-split into high-productivity Dual-Pane Studio:
+      - Left Pane: Monaco HDL Editor with active `[TOP]` module tag, breadcrumbs, line numbers, and resizable width handle.
+      - Right Pane: Full-height, full-width Visualizer container with ergonomic top switcher tabs (`⚡ Schematic DAG`, `🎛 Virtual Lab`, `📈 Waveforms`, `⏱ Timing & Energy`), optional `[+ Waveforms]` stacked toggle, and 1-click Maximize button.
+      - Each tool gets 100% of the right pane width and height, eliminating all clipping and cramped controls.
+  - [x] **Typography & Touch Target Scaling (`theme.css`, `Header.tsx`, `Sidebar.tsx`, `ProjectManager.tsx`, `UnifiedBottomDock.tsx`)**:
+    - Upgraded base font to 14px (line-height 1.5) in `theme.css`.
+    - Monaco editor font size scaled to 14px (`lineHeight: 22`).
+    - Header height increased to 52px, simulation stepping buttons scaled to 12.5px–13px with 15px icons.
+    - Sidebar width expanded to 280px, project files and netlist items scaled to 12.5px font with comfortable 6px padding.
+    - Dock collapsed status bar height increased to 32px, tab headers to 38px with 12px font and clear badges.
+
 - [x] **Phase 12.7: Vivado Welcome Launchpad & Clean No-Project Standpoint - [P0]**
   - [x] **No-Project Open Standpoint (`projectModel.ts`, `App.tsx`)**:
     - Default startup begins from a clean "No Project Open" standpoint (returns `null` instead of forcing hardcoded default project).
