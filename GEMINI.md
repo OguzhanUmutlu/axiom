@@ -24,7 +24,10 @@ As of **Phase 12.6**, the entire core engine, compiler, scheduler, telemetry sys
   - Dark engineering palette (`axiom-dark`), live debounced squiggly marker underlines (`monaco.editor.setModelMarkers`), hover tooltips with IEEE 1800 AST metadata, and autocompletion snippets/signals.
 - **Problems & Linter Dock**: Dedicated collapsible dock tab with active diagnostic cards and 1-click jump-to-line navigation.
 - **Production Web Deployment**: Live at **`https://axiom.aerovex.net/studio/`** (and docs at `https://axiom.aerovex.net/`) served via GitHub Pages with CNAME.
-- **Vivado Project Management System**: File sets (`sources_1`, `sim_1`, `constrs_1`), multi-file bundling, target FPGA parts, and active `[TOP]` module designation.
+- **Vivado Project Management System & Welcome Launchpad**:
+  - Starts cleanly from a "No Project Open" standpoint with zero pre-loaded clutter.
+  - Aerospace-grade Welcome Launchpad with hero banner, "Create New Project" wizard card, "Open Project from File" (.json) importer, and 7-item interactive starter templates grid.
+  - Authentic Vivado file sets (`sources_1`, `sim_1`, `constrs_1`), multi-file bundling, target FPGA parts (Artix-7, Zynq-7000, Kintex-7, Kintex UltraScale+, Axiom Virtual Silicon), active `[TOP]` module designation, and clean "Close Project" lifecycle.
 - **De-Cramped Layout System**: Unified collapsible bottom dock (collapses to a 28px status bar), collapsible 38px sidebar, and 1-click panel maximization (`⛶`).
 
 ---

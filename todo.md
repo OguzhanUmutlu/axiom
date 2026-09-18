@@ -27,6 +27,23 @@
 
 ## Completed
 
+- [x] **Phase 12.7: Vivado Welcome Launchpad & Clean No-Project Standpoint - [P0]**
+  - [x] **No-Project Open Standpoint (`projectModel.ts`, `App.tsx`)**:
+    - Default startup begins from a clean "No Project Open" standpoint (returns `null` instead of forcing hardcoded default project).
+    - Added `clearSavedProject()` and `saveProjectToStorage(null)` to cleanly reset session.
+  - [x] **Vivado-Style Welcome Launchpad (`WelcomeLaunchpad.tsx`)**:
+    - Aerospace-grade hero banner (`Axiom HDL Studio v0.1.0-jit`) with subtitle and architecture summary.
+    - Two primary interactive cards: "Create New Project" (launching 3-step Vivado Project Wizard) and "Open Project from File" (one-click JSON project bundle importer).
+    - 7-item interactive Quick Start Hardware Templates grid with FPGA target silicon badges and one-click "Open" buttons.
+    - Engineering pillars footer highlighting In-RAM Cranelift JIT, Stratified Delta Stepping, and Physics-Informed PDN telemetry.
+  - [x] **Context-Aware Header & Sidebar (`Header.tsx`, `Sidebar.tsx`, `ProjectManager.tsx`)**:
+    - Header displays "No Project Open" tag, "+ New Project" action button, and cleanly disabled simulation stepping buttons (`Run Free`, `+1 ns`, `Step δ`).
+    - Dedicated "Close" button in header and sidebar allowing one-click return to the Welcome Launchpad.
+    - Sidebar renders a dedicated empty state card with "+ Create New Project" and template quick-loader list.
+    - Netlist hierarchy displays "No Netlist Available" placeholder when no project is loaded.
+  - [x] **One-Click Project Loading & Multi-File Studio Transition**:
+    - Launching a project immediately initializes the file sets (`sources_1`, `sim_1`, `constrs_1`), triggers In-RAM JIT elaboration, and smoothly transitions to Split Studio (Monaco Editor, Waveforms, Schematic DAG, Virtual Lab).
+
 - [x] **Phase 12.6: In-RAM Verilog/SystemVerilog LSP, Static Analysis Linter & Monaco Editor Integration - [P0]**
   - [x] **In-RAM LSP & Static Analysis Linter Crate (`crates/lsp`, `axiom-lsp`)**:
     - High-performance zero-copy linter running directly against AST in milliseconds.
