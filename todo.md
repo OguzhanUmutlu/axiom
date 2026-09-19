@@ -28,6 +28,22 @@
 
 ## Completed
 
+- [x] **Phase 13.2: Industry-Grade Project Lifecycle, Regex Naming & UI Alignment - [P0]**
+  - [x] **Project Registry & Lifecycle Engine (`projectRegistry.ts`)**: Built persistent project registry tracking active vs trashed projects, with dual-runtime synchronization between `localStorage` and FileSystem `/projects/registry.json`.
+  - [x] **Strict Regex Project & Directory Naming**: Enforced strict `[a-zA-Z0-9_.-]+` naming regex with live sanitization and folder preview (`/projects/{name}/`). Enforced matching ID and folder names with collision prevention.
+  - [x] **Disallow Temporary Phantom Projects**: Eliminated unpersisted/transient projects. Creating any project requires user naming and immediately persists to the active FileSystem. Invalid or trashed `?project=` URL parameters clean up gracefully without fabricating phantom projects.
+  - [x] **Trashing (Soft Delete) & Permanent Deletion (Hard Delete)**:
+    - Soft delete: Moving a project to Trash hides it from active views, sets `isTrashed: true` and `trashedAt` timestamp, and cleanly unloads it if currently open.
+    - Restoration: 1-click restoration of any trashed project back to Active state.
+    - Hard delete: Permanently wipes the `/projects/{id}` directory from the FileSystem and removes it from registry and cache, with confirmation prompt.
+    - Empty Trash: 1-click batch permanent deletion of all trashed projects.
+  - [x] **"Create >" Template Actions**: Changed template card action button from "Open >" to "Create >" across all 7 supported languages. Clicking a template card opens `NewProjectModal` with that template pre-selected, prompting the user for a valid project name.
+  - [x] **"Your Projects" Launchpad Management**: Added dedicated "Your Projects" view on the Welcome Launchpad with Active and Trash tabs, project metadata cards, Open/Trash actions, and Empty Trash controls.
+  - [x] **Project Dropdown "Move to Trash" Action**: Added a confirmation-guarded "Move to Trash" action to the top-left Project Header Menu.
+  - [x] **Sources Panel Empty State Matching Netlist**: Redesigned the Sources tab empty state in `ProjectManager.tsx` to match the exact design of the Netlist panel (quiet centered icon, title, description, and no button).
+  - [x] **Header Empty State De-Cluttering**: In `Header.tsx`, removed the redundant and cramped `New Project` button next to `No Project Open`, keeping the header clean and focused.
+  - [x] **Verification**: Verified zero TypeScript/Vite bundling errors (`npm --prefix ui run build` passed) and 55 / 55 passing Rust workspace tests (`cargo test --workspace`).
+
 - [x] **Phase 13.1: Left Panel Empty State Sanitization & Redundancy Removal - [P0]**
   - [x] **Left Panel Starter Templates Removal**: Removed redundant vertical starter templates list from the "No Project Open" empty state in `ProjectManager.tsx`. When no project is open, the left panel presents a focused, clean "No Project Open" card with "+ Create New Project", directing template discovery exclusively to the center Welcome Launchpad.
   - [x] **Unused Exports & Types Cleanup**: Cleaned up unused imports (`PROJECT_TEMPLATES`, `createProjectFromTemplate`, `Sparkles`) and aliased optional props for strict TypeScript compliance.
