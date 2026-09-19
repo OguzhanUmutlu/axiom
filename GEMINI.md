@@ -91,6 +91,12 @@ As of **Phase 12.9**, the entire core engine, compiler, scheduler, telemetry sys
   - **Net Shorthand Initializers & Parameter Ranges**: Continuous assignment initializers on net declarations (`wire [6:0] opcode = instr[6:0];`), unpacked memory arrays (`reg [31:0] regfile [0:7];`), multi-parameter lists, and ranged parameters (`localparam [1:0]`).
   - **Submodule Instance Net Driver Recognition**: Testbench instance port connections (`.F(F)`) properly registered as driven nets to eliminate false `AXIOM_W003_UNDRIVEN_NET` warnings.
   - **100% Zero-Diagnostic Default Codebases**: Complete audit and resolution of all default templates and sample designs in `projectModel.ts`, `sampleDesigns.ts`, and `AddSourceModal.tsx`: added required `default:` branches to finite state machine `case` statements in `uart_transceiver` and `spi_master`, ensuring all default projects start completely clean with 0 warnings and 0 errors.
+- **Phase 13.10: WebAssembly Standalone Worker Sandbox & SharedArrayBuffer Simulation Isolation**:
+  - **Dedicated Background Web Worker (`ui/src/engine/worker/simWorker.ts`)**: Offloaded in-browser WebAssembly simulation execution and LSP processing from the main UI thread to a dedicated background Web Worker, loading `axiom_wasm_bg.wasm` client-side with zero UI freezing during heavy gate-level simulations or complex elaboration.
+  - **High-Speed Autonomous Simulation Loop**: Worker runs autonomous clock ticking and step evaluation at high frequency, batching signal changes and telemetry at 60 FPS (`broadcastBatch`) to eliminate UI thread rendering bottlenecks.
+  - **Lock-Free Atomic SharedArrayBuffer Synchronization (`ui/src/engine/worker/simSharedBuffer.ts`)**: Implemented 128-byte shared ring buffer with atomic sequence counter locking (`Atomics.store`, `Atomics.load`) for zero-copy, lock-free telemetry snapshots (`timePs`, `delta`, `isRunning`, `glitchCount`, `powerMw`, `currentMa`, `voltageSagV`, `railVoltageV`). Automatically falls back to structured clone messaging when `crossOriginIsolated` is false.
+  - **Watchdog Supervisor & Auto-Respawn Recovery (`ui/src/engine/worker/simWorkerClient.ts`)**: 5,000ms watchdog guarding against infinite zero-time delta loops or unstable combinational oscillation hazards, automatically terminating hung workers, cleanly respawning a fresh sandbox, and re-compiling the active design without crashing the browser tab.
+  - **Universal Bridge Integration (`ui/src/engine/engineBridge.ts`)**: Seamless tiered execution hierarchy (Tauri Native JIT IPC $\to$ WebWorker WebAssembly Sandbox $\to$ Main-Thread WASM $\to$ Simulated Fallback) with zero breaking changes to existing UI components.
 
 ---
 
@@ -120,7 +126,12 @@ axiom/
 ├── ui/                                 # React 19 + TypeScript + PostCSS Web & Desktop Studio
 │   ├── src/
 │   │   ├── engine/
-│   │   │   ├── engineBridge.ts         # Dual-runtime bridge (auto-detects Tauri IPC vs WebAssembly)
+│   │   │   ├── worker/                 # Web Worker isolation, SharedArrayBuffer & watchdog supervisor
+│   │   │   │   ├── simWorker.ts        # Standalone worker kernel executing WebAssembly in background
+│   │   │   │   ├── simWorkerClient.ts  # Client coordinator, request-response router & watchdog supervisor
+│   │   │   │   ├── simWorkerProtocol.ts# Strongly typed worker IPC command & event batch message definitions
+│   │   │   │   └── simSharedBuffer.ts  # 128-byte SharedArrayBuffer ring buffer with Atomics synchronization
+│   │   │   ├── engineBridge.ts         # Dual-runtime bridge (auto-detects Tauri IPC vs Web Worker vs WASM)
 │   │   │   ├── projectModel.ts         # Vivado project model (sources_1, sim_1, constrs_1, templates)
 │   │   │   ├── monacoVerilog.ts        # Monarch Verilog tokenizer, axiom-dark theme & LSP providers
 │   │   │   ├── schematicModel.ts       # Synthesizes hardware netlist DAG for schematic viewer
