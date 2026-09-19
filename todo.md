@@ -28,6 +28,11 @@
 
 ## Completed
 
+- [x] **Phase 13.1: Left Panel Empty State Sanitization & Redundancy Removal - [P0]**
+  - [x] **Left Panel Starter Templates Removal**: Removed redundant vertical starter templates list from the "No Project Open" empty state in `ProjectManager.tsx`. When no project is open, the left panel presents a focused, clean "No Project Open" card with "+ Create New Project", directing template discovery exclusively to the center Welcome Launchpad.
+  - [x] **Unused Exports & Types Cleanup**: Cleaned up unused imports (`PROJECT_TEMPLATES`, `createProjectFromTemplate`, `Sparkles`) and aliased optional props for strict TypeScript compliance.
+  - [x] **Verification**: Verified zero TypeScript/Vite bundling errors (`npm --prefix ui run build` passed) and 55 / 55 passing Rust workspace tests.
+
 - [x] **Phase 13.0: Professional Project Lifecycle, Dual-Runtime FileSystem & Dynamic Canvas Centering - [P0]**
   - [x] **Header State Partitioning**: Completely eliminated premature simulation controls when `project === null` on the Welcome screen. Header now cleanly partitions: Welcome mode renders brand, version tag (`v0.1.0-jit`), subtle "No Project Open" badge, and language selector. Active project mode renders the full simulation control ribbon (`Run`, `Pause`, `+1 ns`, `+100 ps`, `Step δ`, `Reset`), sim time, and PDN telemetry meters.
   - [x] **Vivado-Grade Project Header Menu (`ProjectDropdown.tsx`)**: Replaced the tiny ghost `X` close button with an aerospace-grade Project Menu badge in the top-left showing project identity, target FPGA chip, active top module `[TOP]`, file count, manual save (`Ctrl+S` with instant badge), project bundle export (`.json`), Add Source modal trigger, New Project wizard trigger, and a clean Close Project lifecycle.
