@@ -28,6 +28,35 @@
 
 ## Completed
 
+- [x] **Phase 13.8: Vivado XDC LSP Engine, Fileset Plus (+) Actions, 3-Dot File Menus & Lean Viewport/Scroll Caching - [P0]**
+  - [x] **Vivado XDC Constraints LSP Engine & Monaco Monarch Tokenizer**:
+    - Built comprehensive Vivado XDC constraint static analysis linter (`XdcLinter`), hover documentation provider (`XdcHover`), and completion provider (`XdcCompletion`) in `crates/lsp/src/xdc.rs`.
+    - Validates all core Vivado XDC commands (`set_property`, `create_clock`, `create_generated_clock`, `set_input_delay`, `set_output_delay`, `set_false_path`, `set_max_delay`, `get_ports`, `get_pins`, `get_nets`), physical properties (`PACKAGE_PIN`, `IOSTANDARD`, `DRIVE`, `SLEW`, `PULLUP`, `PULLDOWN`), and IO standards (`LVCMOS33`, `LVCMOS25`, `LVCMOS18`, `LVDS_25`, etc.).
+    - Integrated with LSP server (`textDocument/hover`, `textDocument/completion`, `publish_diagnostics`), CLI (`axiom lint`), and WebAssembly (`crates/wasm/src/lib.rs`).
+    - Implemented client Monarch tokenizer and language configuration in `ui/src/engine/monacoXdc.ts` supporting `#` line comments and dark engineering syntax highlighting.
+    - Updated `HdlEditor.tsx` to automatically switch editor language (`language={isXdc ? "xdc" : "verilog"}`), display "Vivado XDC" breadcrumb badge, and provide dedicated "Check XDC" validation button.
+  - [x] **Fileset Header Plus (+) Buttons & 3-Dot File Kebab Context Menu**:
+    - In `ProjectManager.tsx`, replaced static `({count})` file badges on **Design Sources**, **Simulation Sources**, and **Constraints** with interactive `<Plus size={13} />` icon buttons.
+    - Clicking the fileset `+` button opens `AddSourceModal` with that exact fileset pre-selected and pre-filled with the corresponding template and extension (`sources_1` -> `.v`, `sim_1` -> `_tb.v`, `constrs_1` -> `.xdc`).
+    - Replaced the exposed `<Trash2>` button on each file row with a sleek 3-vertical-dot button (`MoreVertical`) that opens a floating context menu.
+    - Context menu provides "Set as Top Module" (for eligible design sources) and "Delete" (triggering unified dark-acrylic `confirmDialog`).
+    - Corrected `isTop` module detection to strictly target `sources_1` design files (`file.name === "${topModule}.v"`), eliminating false `[TOP]` badges on simulation testbenches (e.g. `tb_logic_circuit.sv`).
+  - [x] **Lean Workspace, Viewport & Scroll Position Persistence**:
+    - **Open Files & Active Tab**: Fixed `handleSelectFile` and `handleCloseTab` in `App.tsx` to immediately save project state (`saveProjectToStorage(updated)`), ensuring open tabs and active file are never lost across page reloads.
+    - **Project Fileset Folders**: Persisted collapsed/expanded state of `sourcesOpen`, `simOpen`, and `constrsOpen` in `localStorage` under `axiom_folders_${project.id}`.
+    - **Monaco ViewState & File Scroll Index**: `HdlEditor.tsx` preserves Monaco editor view states across tab switches in-memory and caches scroll index (`top`, `left`, `line`, `col`) in `localStorage` under `axiom_file_scroll_${fileId}` with debounced scroll event listeners, returning users to their exact cursor and scroll location.
+    - **Schematic Camera Viewport**: `SchematicViewer.tsx` caches pan coordinates (`offsetX`, `offsetY`) and zoom (`scale`) under `axiom_schematic_cam_${activeDesignId}`, restoring camera viewport on mount or design switch without unwanted auto-fit resets. Also caches `showLiveValues` and `hideClockNets`.
+    - **Waveform Viewport**: `WaveformViewer.tsx` caches `timeOffsetPs` and `pixelsPerPs` under `axiom_wave_viewport_${topModule}`.
+  - [x] **Simulation Reset Engine Fix & Waveform Graph t=0 Viewport Rewind**:
+    - Rewrote `engineBridge.reset()` so that resetting the simulation clock to $t=0$ keeps `compiled = true` and leaves the circuit fully initialized with valid states, eliminating the annoying behavior where the compile button turned on and forced manual recompilation.
+    - Dispatches an `axiom_sim_reset` event that triggers `WaveformViewer` to smoothly rewind its viewport back to $t=0$ (`timeOffsetPs = 0`).
+  - [x] **Modern Drag-to-Measure Waveform Window Selection & Non-Wrapping HUD**:
+    - Replaced the rigid two-click A-B cursor workflow with a modern drag-to-measure window system (inspired by Saleae Logic 2 and Chrome DevTools). Dragging across the graph highlights a translucent shaded measurement window with draggable boundary edges and window panning.
+    - Fixed text wrapping on the measurement HUD by enforcing `whiteSpace: "nowrap"`, `flexShrink: 0`, and using compact engineering units (`formatTimeCompact`).
+    - Added an intuitive "Zoom into Window" button (`<Search size={11} />`) that fits the selected measurement interval to 100% of the waveform viewport.
+    - Added mouse-wheel and trackpad zooming and panning directly on the waveform canvas via `onWheel`.
+  - [x] **Verification**: All 55 Rust workspace tests passing (`cargo test --workspace`) and frontend production build verified (`npm run build`).
+
 - [x] **Phase 13.7: Precise Cursor-Tracking Wire & Net Hover Card Positioning - [P0]**
   - [x] **Fixed Broken Wire Hover Tooltip Positioning**:
     - Identified that `tooltipPos` only handled `hoveredNodeId` and `selectedNodeId`, completely omitting `hoveredEdgeId` and falling back to a static `{ x: 20, y: 50 }` window coordinate.
