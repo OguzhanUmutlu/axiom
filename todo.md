@@ -14,7 +14,7 @@
 ---
 ## In Progress
 
-*(None currently active - Phase 12.12 complete)*
+*(None currently active - Phase 14.1 complete)*
 
 ---
 
@@ -27,6 +27,26 @@
 ---
 
 ## Completed
+
+- [x] **Phase 14.1: Explorer Ergonomics, Right-Click Menus, Netlist Cross-Selection & Language Redesign - [P0]**
+  - [x] **Right-Click Context Menu Support (`ProjectManager.tsx`, `Sidebar.tsx`)**:
+    - Added `onContextMenu` handling to file items in the file tree to open the file actions popup (Set as Top, Delete) on secondary click, matching standard IDE conventions alongside the 3-dot kebab menu.
+    - Supported right-clicking fileset headers (Design Sources, Simulation Sources, Constraints) to trigger "Add Source...".
+  - [x] **Fileset Section Renaming**:
+    - Renamed "Project File Sets" to "Project Files" across UI and all 7 i18n locale definitions (`en`, `tr`, `de`, `es`, `fr`, `ja`, `zh`) for shorter, cleaner presentation.
+  - [x] **Netlist Tree Streamlining & Redundant Header Removal (`Sidebar.tsx`)**:
+    - Removed redundant "Elaborated Netlist Tree" subheader title under the search input since the top tab is already titled "Netlist".
+    - Clarified multi-select purpose (traces filtered in Waveform Viewer) with an active status strip showing visible trace count and a 1-click Reset button.
+  - [x] **Bi-Directional Graph <-> Netlist Cross-Selection**:
+    - Wired `activeCrossProbeSignal` into `Sidebar.tsx` and ensured clicking gates, ports, or wires in `SchematicViewer.tsx` highlights the matching signal/module in the Netlist tree.
+    - Added logic circuit & DSP MAC accurate signal hierarchy in `engineBridge.ts` so schematic signals (`A`, `B`, `C`, `w1`, `w2`, `w3`, `w4`, `F`) map 1:1 with netlist nodes.
+    - Auto-expanded parent hierarchy nodes when a child signal is selected in the graph.
+  - [x] **Eliminate Off-Canvas Drawer Shadow Bleed (`MobileDrawer.tsx`, `App.tsx`)**:
+    - Removed closed drawer shadow leak: set `boxShadow: isOpen ? ... : "none"`, `visibility: isOpen ? "visible" : "hidden"`, and prevented DOM mounting on desktop (`{isMobile && <MobileDrawer ... />}`).
+  - [x] **Aerospace-Grade Language Selector Redesign (`LanguageDropdown.tsx`, `Header.tsx`)**:
+    - Built dedicated acrylic popover dropdown eliminating the cramped 165px box, ugly native scrollbar steppers, and loud cyan boxes.
+    - Clean single-line ergonomic rows with flag, native name, subtle English translation, and muted 2-letter uppercase code.
+
 
 - [x] **Phase 14: Direct Xilinx 7-Series & UltraScale+ Primitive Library Emulation - [P0]**
   - [x] **Direct In-Engine Primitive Lowering (`crates/ir/src/primitives/`)**:

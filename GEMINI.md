@@ -279,4 +279,7 @@ For deep architectural and implementation specifications, refer to:
 2. **Strict Master Task Tracker Policy (`todo.md`)**:
    - `todo.md` is the single source of truth for all milestone progress.
    - Every user request, agent modification, architectural enhancement, and bugfix must be documented in `todo.md` with explicit task breakdowns and completion checkboxes.
+3. **Automatic User Feedback & Request Ingestion Policy**:
+   - Anytime the user provides a prompt containing feedback, UX/UI critiques, feature adjustments, or bug reports (e.g. context menus, naming, tree styling, selection mechanics), you MUST immediately record all requested items into `todo.md` under an active priority section before proceeding with execution.
+
 
