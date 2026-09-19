@@ -199,4 +199,16 @@ For deep architectural and implementation specifications, refer to:
 
 2. **`vivadoanalysis/`**: Deep comparative analysis of AMD Vivado's internal tools (`xvlog`, `xelab`, `xsim`, `ug907`, TCL CLI).
 
-3. **`todo.md`**: Full milestone tracker detailing completed phases and future enhancements.
+3. **`todo.md`**: Master milestone and task priority tracker. Must strictly record every change, user request, phase progression, and architectural enhancement.
+
+---
+
+## 8. Continuous Documentation & Task Tracking Policies
+
+1. **Continuous Analysis Documentation Currency**:
+   - All architectural blueprints under `analysis/` and `analysis/uiux/` are living documents.
+   - Whenever any subsystem, UI/UX layout, theme token, engine API, or interaction pattern is created, modified, or refined, the corresponding architectural documents must be continuously updated in tandem to prevent architectural drift.
+2. **Strict Master Task Tracker Policy (`todo.md`)**:
+   - `todo.md` is the single source of truth for all milestone progress.
+   - Every user request, agent modification, architectural enhancement, and bugfix must be documented in `todo.md` with explicit task breakdowns and completion checkboxes.
+

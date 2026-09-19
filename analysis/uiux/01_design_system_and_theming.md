@@ -224,3 +224,38 @@ Axiom adheres to a **4px Base Geometry Grid** with standardized component height
 ```
 
 This strict geometry ensures that across a standard $1920 \times 1080$ display, over **88% of vertical viewport pixels** are dedicated exclusively to hardware design visualization and code inspection.
+
+---
+
+## 7. Standardized Micro-Transitions & Motion Curves
+
+Axiom forbids garish, slow, or distracting animations that impede engineering workflow. All interface transitions strictly adhere to:
+- **Standard Duration**: `150ms` (imperceptible latency, eliminates optical pop/snap).
+- **Standard Curve**: `cubic-bezier(0.16, 1, 0.3, 1)` (snappy ease-out).
+- **Tactile Depression**: Interactive buttons use `transform: scale(0.97)` on `:active` with `0.05s ease`.
+- **CSS Utility Classes**:
+  - `.btn`: Standardized button base with focus rings, hover fills, and active scale.
+  - `.badge`: Micro status pill with color variants (`.badge-cyan`, `.badge-emerald`, `.badge-amber`, `.badge-rose`, `.badge-purple`).
+  - `.axiom-card`: Interactive panel container with subtle border lighting and 150ms hover glow.
+
+---
+
+## 8. Precision Vector Brand Identity (`logo.svg`)
+
+Axiom's brand identity reflects precision aerospace and digital logic synthesis:
+- **Geometry**: Dual-faceted nested chevrons converging toward a central logic core.
+- **Color Gradients**: Precision linear gradient from Neon Cyan (`#00f2fe`) to Hyper Blue (`#3b82f6`).
+- **Aspect Ratio**: 1:1 square vector with embedded `defs` gradients and drop shadow filters.
+- **Assets**: Rendered natively via SVG in both `ui/public/logo.svg` and documentation `docs/public/logo.svg`.
+
+---
+
+## 9. Global Multi-Language Architecture & Browser Locale Detection
+
+Axiom supports seamless multi-lingual engineering environments without external library overhead:
+- **TypeScript Contract**: `Translations` interface in `ui/src/i18n/types.ts` defines all UI tokens.
+- **Zero-Desync Two-Stage Deployment**:
+  1. All component strings cataloged and verified in English (`en.ts`).
+  2. Complete, idiomatic, verified translations generated simultaneously for Turkish (`tr.ts`), German (`de.ts`), Spanish (`es.ts`), French (`fr.ts`), Japanese (`ja.ts`), and Simplified Chinese (`zh.ts`).
+- **Dual Accessor (`TFunction`)**: Seamlessly supports both `t("namespace.key")` and typed `t.namespace.key`.
+- **Automatic Language Detection**: Uses `navigator.language` to match the user's browser locale with persistent storage in `localStorage.axiom_language`.
