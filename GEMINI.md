@@ -64,10 +64,27 @@ As of **Phase 12.9**, the entire core engine, compiler, scheduler, telemetry sys
   - **Fixed Wire Hover Positioning**: Resolved bug where hovering a wire in `SchematicViewer.tsx` triggered a fallback to `{ x: 20, y: 50 }` (rendering fixed at the top-left screen corner). Replaced with `edgeTooltipPos` calculating live viewport cursor coordinates (`mousePos.x + 16, mousePos.y + 16`) with viewport boundary clamping (`maxX = window.innerWidth - 270`, `maxY = window.innerHeight - 160`) preventing viewport overflow.
   - **Hover vs. Selection Priority**: Refactored `activeHoverNode` and `activeHoverEdge` memoizers so wire hovering cleanly takes priority over previously selected nodes and works even while a gate is active.
   - **Canvas Pointer Exit Cleanup**: Implemented `handleMouseLeave` on `<canvas>` clearing `hoveredNodeId` and `hoveredEdgeId` so transient hover cards disappear immediately when pointer leaves the canvas.
-- **Phase 13.6: Resizable De-Cramped Sidebar & Non-Wrapping File Tree Architecture**:
-  - **Interactive Draggable Sidebar Splitter (`ResizableSplitter.tsx`)**: Replaced fixed 228px width with dynamic, user-resizable sidebar (default 285px, range 220px–500px) with double-click reset and `localStorage` persistence (`axiom_sidebar_width`).
-  - **Project Header De-Cramping**: Removed cramped `+ Create` and `Close` text buttons that squeezed `project.name` down to 58px. The project title now renders fully without `logi...` truncation, accompanied by a clean `<X size={14} />` icon button.
-  - **Zero-Wrap Typography**: Applied `whiteSpace: "nowrap"`, `overflow: "hidden"`, and `textOverflow: "ellipsis"` across all file tree items and fileset headers, completely eliminating unsightly text wrapping.
+- **Phase 13.8: Vivado XDC LSP Engine, Fileset Plus (+) Actions, Lean Caching & Modern Drag-to-Measure Waveforms**:
+  - **Vivado XDC Constraints LSP & Syntax Engine (`crates/lsp/src/xdc.rs`, `ui/src/engine/monacoXdc.ts`)**:
+    - Full static analysis linter, hover docs, and autocompletions for Vivado XDC physical and timing constraints (`set_property`, `PACKAGE_PIN`, `IOSTANDARD`, `create_clock`, etc.) with zero false-positive errors on standard constraint files like `timing.xdc`.
+    - Integrated with Monaco tokenizer supporting `#` comments, breadcrumb badges, and on-demand XDC validation.
+  - **Fileset Plus (+) Action Buttons & 3-Dot Kebab File Context Menus**:
+    - Replaced static file count badges with interactive `+` buttons on **Design Sources**, **Simulation Sources**, and **Constraints** opening `AddSourceModal` with that exact fileset pre-selected.
+    - Replaced exposed file trash buttons with 3-vertical-dot kebab (`MoreVertical`) dropdowns offering "Set as Top Module" and styled "Delete" dialogs.
+    - Fixed top-module tagging to prevent testbenches (`tb_*.v`, `*.sv`) from falsely inheriting `[TOP]` badges.
+  - **Lean Viewport, Tab & Scroll Position Persistence ("Don't Overcache")**:
+    - Persists active tabs and active file on selection/closure across page reloads.
+    - Persists fileset folder expand/collapse state per project in `localStorage`.
+    - Monaco editor scroll coordinates (`top`, `left`, `line`, `col`) debounced and restored per file.
+    - Schematic camera pan (`offsetX`, `offsetY`), zoom (`scale`), live values, and clock nets persisted per design.
+  - **Simulation Reset Rewind Fix (`engineBridge.ts`)**:
+    - Resolved bug where clicking Reset uncompiled the circuit; Reset now rewinds to $t=0$, resets signal states to initial vectors, and keeps `compiled: true` so the user can immediately step or run without recompilation.
+    - Dispatches `axiom_sim_reset` event.
+  - **Modern Drag-to-Measure Waveform Window System & Reset-to-Zero Viewport**:
+    - Replaced clunky single-click A-B cursor workflow with a modern Saleae Logic 2 / Chrome DevTools drag-to-measure window: dragging across the graph highlights a shaded measurement window with $[A, B]$ boundary handles, draggable edges, and window sliding.
+    - Fixed text wrapping on the measurement HUD by enforcing `whiteSpace: "nowrap"`, compact engineering units (`formatTimeCompact`), and added a 1-click "Zoom into Window" button.
+    - Attached `onWheel` to the waveform canvas for trackpad/mouse-wheel zooming and horizontal panning.
+    - Added an automatic listener on `axiom_sim_reset` that rewinds the waveform graph viewport back to $t=0$ (`timeOffsetPs = 0`).
 
 ---
 
