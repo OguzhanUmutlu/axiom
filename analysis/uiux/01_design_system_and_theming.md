@@ -259,3 +259,20 @@ Axiom supports seamless multi-lingual engineering environments without external 
   2. Complete, idiomatic, verified translations generated simultaneously for Turkish (`tr.ts`), German (`de.ts`), Spanish (`es.ts`), French (`fr.ts`), Japanese (`ja.ts`), and Simplified Chinese (`zh.ts`).
 - **Dual Accessor (`TFunction`)**: Seamlessly supports both `t("namespace.key")` and typed `t.namespace.key`.
 - **Automatic Language Detection**: Uses `navigator.language` to match the user's browser locale with persistent storage in `localStorage.axiom_language`.
+
+---
+
+## 10. UI Materials Componentization & Custom Aerospace Dropdown Architecture
+
+To eliminate inconsistent, un-themed, and visually dated browser-native `<select>` dropdowns across different operating systems, Axiom encapsulates all core interaction materials in `ui/src/components/ui/`:
+
+### 10.1. Primitives Library Architecture
+- **`Select.tsx`**: Custom dark-acrylic popover dropdown supporting:
+  - **3 Density Sizing Tiers**: `xs` (24px, for 42px header bars and bay toolbars), `sm` (28px, for secondary controls), `md` (34px, for modal forms).
+  - **Grouped Options (`SelectGroup`)**: Categorized sections with uppercase headers and subtle divider borders (e.g. `Input Ports` vs `Output Ports`).
+  - **Rich Option Items**: Left-aligned icons, country flags, right-aligned status badges, and active `<Check>` markers.
+  - **Keyboard Accessibility**: `Space`/`Enter` to toggle, `Up`/`Down` arrows to navigate with live focus highlight, `Escape` to dismiss.
+  - **Alignment Physics**: `align="left" | "right"` prevents viewport clipping when anchored near screen edges.
+- **`Input.tsx`**: Unified text/number input supporting density sizing (`xs`, `sm`, `md`), left icons, error validation messages, and inline `clearable` buttons (`✕`).
+- **`Button.tsx`**: Semantic variants (`primary`, `secondary`, `ghost`, `danger`, `success`, `cyan`, `icon`) with standardized `:active: scale(0.97)` haptic feedback.
+- **`Modal.tsx`**, **`Card.tsx`**, **`Badge.tsx`**, **`Breadcrumbs.tsx`**, **`Tabs.tsx`**: High-density engineering components adhering to the 4px spatial grid and dark surface elevation hierarchy.

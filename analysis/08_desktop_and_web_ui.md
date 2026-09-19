@@ -132,3 +132,12 @@ To enhance the kinetic responsiveness and tactile feel of the Monaco HDL Editor 
 - **Curved Slash Strike Arcs (*Sori*)**: Cursor jumps $> 12\text{px}$ trigger a quadratic bezier slash arc with subtle natural katana curvature and 2–3 microscopic luminous cutting glints, dissolving exponentially in 180ms.
 - **Self-Sleeping RAF Pipeline**: When the cursor rests and strikes fade, the render loop automatically stops and clears the canvas, guaranteeing 0% idle CPU and GPU consumption.
 - **User Control & Persistence**: Integrated `Swords` button in the editor tab bar allows toggling the effect on or off, with preference persisted in `localStorage.getItem("axiom_katana_cursor")`.
+
+---
+
+## 10. UI Primitives & Custom Aerospace Dropdown Architecture
+
+To eliminate un-themed, visually dated browser-native `<select>` dropdowns across different client operating systems, all UI interaction primitives are centralized and componentized in `ui/src/components/ui/`:
+- **`Select.tsx`**: Custom dark-acrylic popover dropdown supporting 3 density sizing tiers (`xs`: 24px, `sm`: 28px, `md`: 34px), categorized option groups (`groups`) with uppercase headers, country flags/icons, status badges, alignment controls (`align="left" | "right"`), active `<Check>` markers, rotating chevron, and full keyboard navigation (`ArrowUp`/`ArrowDown`/`Enter`/`Escape`).
+- **`Input.tsx`**: Unified text and numeric input supporting density sizing (`xs`, `sm`, `md`), left icons, validation error text, and inline clearable buttons (`✕`).
+- **Unified Adoption**: Native `<select>` elements in `Header.tsx` (desktop & mobile language selectors), `VirtualLabRack.tsx` (DIP switch & 7-segment display port selectors), and `StimulusPainterModal.tsx` (clock frequency selector) are replaced with the custom `Select` component.

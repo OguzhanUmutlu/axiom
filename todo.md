@@ -14,7 +14,7 @@
 ---
 ## In Progress
 
-*(None currently active - Phase 12.11 complete)*
+*(None currently active - Phase 12.12 complete)*
 
 ---
 
@@ -27,6 +27,16 @@
 ---
 
 ## Completed
+
+- [x] **Phase 12.12: UI Materials Componentization & Custom Aerospace Dropdown Architecture - [P0]**
+  - [x] Upgraded `ui/src/components/ui/Select.tsx` with density sizes (`xs`, `sm`, `md`), alignment (`left`, `right`), option groups (`groups`), keyboard navigation, and dark acrylic popover.
+  - [x] Upgraded `ui/src/components/ui/Input.tsx` with density sizes (`xs`, `sm`, `md`) and clearable button support.
+  - [x] Added `.custom-scrollbar` and custom dropdown popover animations in `ui/src/styles/theme.css`.
+  - [x] Replaced native `<select>` in `Header.tsx` (desktop & mobile language selectors) with `<Select size="xs" />`.
+  - [x] Replaced native `<select>` in `VirtualLabRack.tsx` (DIP switch & 7-seg port selectors) with `<Select size="xs" />` using grouped options.
+  - [x] Replaced native `<select>` in `StimulusPainterModal.tsx` (clock frequency selector) with `<Select size="sm" />`.
+  - [x] Updated living documentation in `analysis/uiux/01_design_system_and_theming.md` and `analysis/08_desktop_and_web_ui.md`.
+  - [x] Verified build via TypeScript compile (`npm run build` - 0 errors) and Rust workspace test suite (`cargo test` - 55/55 passed).
 
 - [x] **Phase 12.11: White Katana Slash Cursor Effect in Monaco HDL Editor - [P0]**
   - [x] Master i18n translations across 7 locales (`editor.katanaSlash`, `editor.katanaSlashTooltip`).
