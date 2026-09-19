@@ -21,11 +21,41 @@
 ## Todo
 
 ### Future Enhancement Roadmap
-- [ ] **Phase 14: Direct Xilinx 7-Series & UltraScale+ Primitive Library Emulation**: Pre-compiled primitives for LUT6_2, DSP48E2, RAMB36E2, and BUFG.
+- [ ] **Phase 15: Automated Static Timing Analysis (STA) Engine & SDC / XDC Timing Constraints Propagation**: False paths, multi-cycle paths, and topological graph slack calculation.
+- [ ] **Phase 16: Interactive Micro-Architectural Block Diagram Synthesis**: Automatic macro-clustering for FSMs, ALUs, memory arrays, and register files.
 
 ---
 
 ## Completed
+
+- [x] **Phase 14: Direct Xilinx 7-Series & UltraScale+ Primitive Library Emulation - [P0]**
+  - [x] **Direct In-Engine Primitive Lowering (`crates/ir/src/primitives/`)**:
+    - Built comprehensive Xilinx primitive catalog (`PrimitiveCatalog`) intercepting unknown hardware modules during AST elaboration without requiring external Verilog library definitions.
+    - Implemented cycle-accurate lowering modules for all key primitives:
+      - `LUT6_2` / `LUT1..6`: Dual-output 6-input LUTs evaluating 64-bit hexadecimal truth tables with bit shifts and masking for both $O6$ and $O5$.
+      - `BUFG` / `BUFGCE` / `IBUF` / `OBUF`: Global low-skew clock buffers, gated clock buffers, and package I/O buffers.
+      - `FDRE` / `FDSE` / `FDCE` / `FDPE`: D flip-flops with clock enable, synchronous/asynchronous reset and set, and initial power-on state parameter (`INIT`).
+      - `DSP48E2` / `DSP48E1`: UltraScale+ / 7-Series 27x18 two's complement multiplier, pre-adder, pipeline stages (A, B, M, P), and 48-bit accumulator.
+      - `RAMB36E2` / `RAMB18E2`: 36 Kbit True Dual-Port synchronous Block RAM with independent port clocks, addresses, byte-write enables, and dual read data outputs.
+      - `CARRY4` / `CARRY8`: High-speed 4-bit and 8-bit carry lookahead arithmetic chains.
+  - [x] **Cranelift Native JIT & Portable Evaluator Concat/Slice Engine (`crates/jit/src/compiler.rs`, `portable.rs`)**:
+    - Extended Cranelift JIT compiler to compile `BirExpr::Concat(items)` directly to native 64-bit machine instructions (`ishl`, `band`, `bor`) with exact IEEE 1800 bit-ordering.
+    - Added bit-masking to `BirExpr::Slice` in Cranelift JIT preventing high-bit leakage on sub-64-bit slices.
+    - Added `expr_width(&self, expr: &BirExpr) -> u32` to `BirCircuit` for accurate dynamic width sizing.
+  - [x] **In-RAM LSP Primitive Documentation, Hover & Completion (`crates/lsp/src/primitives_doc.rs`)**:
+    - Created dedicated primitive documentation catalog providing IEEE 1800 markdown documentation, port listings, and parameter definitions on hover for all Xilinx primitives.
+    - Added snippet templates for instant primitive instantiation (`LUT6_2`, `FDRE`, `BUFG`, `DSP48E2`, `RAMB36E2`, `CARRY4`).
+    - Updated static analysis linter (`crates/lsp/src/linter.rs`) to recognize primitive output driver ports (`O`, `O5`, `O6`, `Q`, `P`, `DOUT...`), preventing false `AXIOM_W003_UNDRIVEN_NET` and `AXIOM_W004_UNUSED_SIGNAL` warnings.
+  - [x] **Schematic DAG Synthesis & Visualizer Primitive Badging (`ui/src/engine/schematicModel.ts`, `SchematicViewer.tsx`)**:
+    - Synthesized dedicated schematic DAG for `dsp_bram_mac` with clock distribution, control decode LUT, 36Kb Block RAM, DSP48E2 slice, and pipeline valid flip-flop.
+    - Added specialized badges, IEEE symbols, and colors for Xilinx primitives (`DSP SLICE (DSP48E2)`, `BLOCK RAM (RAMB36E2)`, `LOOK-UP TABLE (LUT6_2)`, `GLOBAL CLOCK BUFFER (BUFG)`, `CARRY CHAIN (CARRY4)`).
+  - [x] **Production Template & Sample Design (`ui/src/engine/sampleDesigns.ts`, `projectModel.ts`)**:
+    - Added `dsp_bram_mac` sample design and `dsp_bram_mac_project` template (targeted for Kintex UltraScale+ `xcku5p-ffvb676-2-e`) with complete design source, testbench, and XDC constraints.
+    - Verified 100% clean linter validation across all workspace files with 0 warnings and 0 errors.
+  - [x] **Verification & Workspace Tests**:
+    - 63 / 63 tests passing across all crates in `cargo test --workspace` (including new unit and integration tests in `axiom-ir`, `axiom-sim`, and `axiom-lsp`).
+    - Frontend TypeScript and Vite production build verified (`npm --prefix ui run build`).
+    - VitePress documentation portal compiled cleanly (`npm --prefix docs run docs:build`).
 
 - [x] **Phase 13.10: WebAssembly Standalone Worker Sandbox & SharedArrayBuffer Simulation Isolation - [P0]**
   - [x] **Dedicated Simulation Web Worker (`simWorker.ts`)**:
