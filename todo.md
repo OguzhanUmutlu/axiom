@@ -28,6 +28,25 @@
 
 ## Completed
 
+- [x] **Phase 13.5: Toast Notification System, Unified Confirm Dialogs, 3-Dot Project Trashing & Fileset Architecture - [P0]**
+  - [x] **Aerospace Toast Notification System (`toast.ts` & `ToastContainer.tsx`)**:
+    - Built lightweight reactive singleton toast manager supporting `toast.success`, `toast.error`, `toast.info`, and `toast.warning`.
+    - Floating dark-acrylic glassmorphism container fixed at top-right with smooth `toastSlideIn` CSS animation, auto-dismiss, manual dismiss, and distinct status icons.
+    - Completely replaced all legacy browser `alert(...)` calls in the application with reactive toasts.
+  - [x] **Unified Dark-Acrylic Confirm Dialog (`ConfirmModal.tsx`)**:
+    - Created styled modal dialog subsystem with promise-based `confirmDialog(...)` helper replacing all native browser `confirm(...)` dialogs.
+    - Supports `variant: "danger" | "primary" | "warning"`, customizable confirm/cancel button text, keyboard shortcuts (`Enter` to confirm, `Escape` to cancel), and auto-focus.
+    - Completely eliminated `prompt()` and native `confirm()` across the entire codebase.
+  - [x] **Main Page 3-Vertical-Dot Kebab Menu & Trashing Isolation**:
+    - Completely removed "Move to Trash" from the in-project header menu (`ProjectDropdown.tsx`), keeping project header focused purely on design workflow.
+    - On `WelcomeLaunchpad.tsx`, replaced exposed red trash buttons with a three-vertical-dot button (`MoreVertical`).
+    - Clicking the 3-dot button opens a card dropdown menu with "Move to Trash" (with click-outside auto-close and event stop-propagation).
+    - Trashing, restoring, and permanent deletion trigger the styled `confirmDialog` with toast confirmations.
+  - [x] **Vivado Fileset Label Cleanup & Standardization**:
+    - Standardized sidebar fileset headers across all 7 supported languages (`en`, `de`, `es`, `fr`, `ja`, `tr`, `zh`) to clean, unified titles: **Design Sources**, **Simulation Sources**, and **Constraints** (removing confusing `(sim_1)` and `(constrs_1)` suffixes).
+    - Updated `AddSourceModal.tsx` to display clean primary labels with technical `sources_1`, `sim_1`, and `constrs_1` identifiers in secondary subtext.
+  - [x] **Verification**: All 55 Rust workspace tests passing (`cargo test --workspace`) and frontend production build verified (`npm run build`).
+
 - [x] **Phase 13.4: Lock-Safe Multi-Session Concurrency, Desktop Single-Instance Multi-Window & Welcome Ergonomics - [P0]**
   - [x] **Welcome Launchpad Ergonomics & Direct Project Card Clicking**:
     - Project cards are now directly clickable (`cursor: pointer`, opens project immediately on click).
