@@ -39,6 +39,10 @@ As of **Phase 12.9**, the entire core engine, compiler, scheduler, telemetry sys
   - Off-canvas left drawer (`MobileDrawer.tsx`) with smooth slide-out (`translateX(-100%)` to `translateX(0)`), dark blur backdrop, full Vivado project file set explorer, 1-panel-at-a-time switcher, and simulation controls.
   - 1-Panel-at-a-Time Viewing: full 100% width and 100% height single-panel rendering for Monaco HDL Code Editor, IEEE Gate Schematic DAG, Virtual Lab Rack, Waveforms, Timing Radar, or Console & REPL.
   - Tactile Mobile Bottom Bar (`MobileBottomBar.tsx`): 5 thumb-friendly tabs (`Code`, `Schematic`, `Lab`, `Waves`, `Console`) with live diagnostic and glitch badges.
+- **Vivado-Grade Collision-Free Wire Routing & Text Knockout Plates**:
+  - Grid datapath row alignment (`gridRow` on `SchematicNode`) allowing functional pathways to share horizontal tracks while bypass wires travel through clear inter-layer corridors.
+  - Obstacle-aware orthogonal channel routing (`routeOrthogonalEdge`) dynamically avoiding `KeepOutBox` clearance bounding boxes ($y - 18$ top margin) to detour around intermediate gates and labels.
+  - Solid `#0c1017` protective background knockout plates behind all gate instance labels (`inv1`, `inv2`, `and1`, `or1`) in `SchematicViewer.tsx` guaranteeing 100% collision-free text rendering without wire overlap.
 
 ---
 
