@@ -85,6 +85,12 @@ As of **Phase 12.9**, the entire core engine, compiler, scheduler, telemetry sys
     - Fixed text wrapping on the measurement HUD by enforcing `whiteSpace: "nowrap"`, compact engineering units (`formatTimeCompact`), and added a 1-click "Zoom into Window" button.
     - Attached `onWheel` to the waveform canvas for trackpad/mouse-wheel zooming and horizontal panning.
     - Added an automatic listener on `axiom_sim_reset` that rewinds the waveform graph viewport back to $t=0$ (`timeOffsetPs = 0`).
+- **Phase 13.9: IEEE 1800 System Tasks ($), Procedural Delays (#), and Default Codebase Lint Sanitization**:
+  - **IEEE 1800 System Tasks & Functions (`$`)**: Full lexer and parser support for identifiers starting with `$` (`$dumpfile`, `$dumpvars`, `$finish`, `$stop`, `$display`, `$monitor`, `$time`, `$realtime`, `$random`, `$clog2`) with statement-level `Statement::TaskCall` and expression-level `Expr::Call`.
+  - **Procedural Delays & Event Controls**: Full support for `#` delays (`#10;`, `#20 rst_n = 1;`, `always #5 clk = ~clk;`) and event controls (`@(posedge clk);`), with graceful elaborator unwrapping and simulation filtering.
+  - **Net Shorthand Initializers & Parameter Ranges**: Continuous assignment initializers on net declarations (`wire [6:0] opcode = instr[6:0];`), unpacked memory arrays (`reg [31:0] regfile [0:7];`), multi-parameter lists, and ranged parameters (`localparam [1:0]`).
+  - **Submodule Instance Net Driver Recognition**: Testbench instance port connections (`.F(F)`) properly registered as driven nets to eliminate false `AXIOM_W003_UNDRIVEN_NET` warnings.
+  - **100% Zero-Diagnostic Default Codebases**: Complete audit and resolution of all default templates and sample designs in `projectModel.ts`, `sampleDesigns.ts`, and `AddSourceModal.tsx`: added required `default:` branches to finite state machine `case` statements in `uart_transceiver` and `spi_master`, ensuring all default projects start completely clean with 0 warnings and 0 errors.
 
 ---
 

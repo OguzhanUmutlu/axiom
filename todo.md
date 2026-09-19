@@ -28,6 +28,30 @@
 
 ## Completed
 
+- [x] **Phase 13.9: IEEE 1800 System Tasks ($), Procedural Delays (#), and Default Codebase Lint Sanitization - [P0]**
+  - [x] **IEEE 1800 System Tasks & Identifiers (`$`) Support**:
+    - Extended lexer (`crates/syntax/src/lexer.rs`) to treat `$` as a valid leading and intermediate identifier character, supporting all Verilog / SystemVerilog system tasks and functions (`$dumpfile`, `$dumpvars`, `$finish`, `$stop`, `$display`, `$monitor`, `$time`, `$realtime`, `$random`, `$clog2`).
+    - Added AST representation for statement-level task calls (`Statement::TaskCall`) and expression function calls (`Expr::Call`).
+    - Added LSP hover docs and autocompletions for system tasks in `crates/lsp/src/hover.rs` and `completion.rs`.
+  - [x] **Procedural Delays (`#`), Delayed Statements & Event Controls**:
+    - Added `Statement::Delay` and expression prefix support for delay controls (`#10;`, `#20 rst_n = 1;`, `always #5 clk = ~clk;`) and event controls (`@(posedge clk);`).
+    - Extended elaborator (`crates/ir/src/elaborator.rs`) to gracefully lower delays and ignore simulation-only task calls without crashing hardware synthesis.
+  - [x] **Net Declaration Initializations, Unpacked Arrays & Parameter Ranges**:
+    - Added continuous assignment shorthand in net declarations (`wire [6:0] opcode = instr[6:0];`, `wire path_a = count[0] & count[1];`).
+    - Added unpacked array dimensions (`reg [31:0] regfile [0:7];`), multi-parameter declarations, and ranged parameters (`localparam [1:0]`).
+    - Extended replication operator syntax (`{20{instr[31]}}`).
+  - [x] **Linter Accuracy & Submodule Port Binding Driver Tracking**:
+    - Fixed false-positive `AXIOM_W003_UNDRIVEN_NET` on testbenches by tracking nets connected to submodule instance output ports (`.F(F)`).
+    - Recursively collects signal reads inside `Statement::TaskCall`, `Expr::Call`, and `Statement::Delay`.
+  - [x] **Complete Default Codebase Audit & Sanitization (Zero Diagnostics Guarantee)**:
+    - Added explicit `default:` branches to state machine `case` statements in `uart_transceiver` (`tx_state`, `rx_state`) and `spi_master` (`state`) across `projectModel.ts` and `sampleDesigns.ts`, eliminating `AXIOM_W007_CASE_NO_DEFAULT` warnings.
+    - Updated `AddSourceModal.tsx` testbench skeleton so `rst_n` is read in `$display`, eliminating `AXIOM_W004_UNUSED_SIGNAL`.
+    - Added comprehensive automated test suite in `crates/lsp/src/lib.rs` verifying that **100% of all default design sources, simulation testbenches, and XDC constraint files produce exactly 0 diagnostics**.
+  - [x] **WebAssembly & Workspace Verification**:
+    - Recompiled `axiom_wasm.wasm` with `wasm-bindgen` for client-side in-browser LSP and simulation.
+    - All 57 unit, integration, benchmark, and conformance tests passing (`cargo test --workspace`).
+    - UI bundle and VitePress documentation portal compiled cleanly (`npm --prefix ui run build`, `npm --prefix docs run docs:build`).
+
 - [x] **Phase 13.8: Vivado XDC LSP Engine, Fileset Plus (+) Actions, 3-Dot File Menus & Lean Viewport/Scroll Caching - [P0]**
   - [x] **Vivado XDC Constraints LSP Engine & Monaco Monarch Tokenizer**:
     - Built comprehensive Vivado XDC constraint static analysis linter (`XdcLinter`), hover documentation provider (`XdcHover`), and completion provider (`XdcCompletion`) in `crates/lsp/src/xdc.rs`.
