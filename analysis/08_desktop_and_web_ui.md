@@ -81,3 +81,40 @@ Rendering thousands of digital signal transitions in the DOM via SVGs causes cat
 - In **Desktop mode** (`npm run tauri dev`), the UI calls Tauri IPC commands that invoke the native Cranelift JIT engine.
 - In **Web mode** (`npm run dev`), the UI instantiates `axiom-wasm` inside a Web Worker and communicates via typed message channels.
 - Zero conditional code in UI components—both modes share the identical React frontend code.
+
+---
+
+## 6. Ergonomic De-cramping & Spatial Rhythm (Phase 12.10)
+
+To resolve the dense, claustrophobic nature typical of legacy EDA suites (e.g. Vivado's tiny 11px font sizes and multi-split crowding), Axiom Phase 12.10 enforces clean spatial breathing room:
+- **Collapsed Status Bar Mode**: Unified bottom dock collapses from ~280px to a sleek 28px status strip, liberating ~252px of vertical canvas.
+- **Collapsible Sidebar**: Shrinks to a 38px icon rail, giving code editors and schematics +242px of uninterrupted horizontal width.
+- **Single-Panel Mobile Drawer**: On viewports $\le 768\text{px}$, resizable multi-pane splitters are completely disabled. An off-canvas slide-out drawer (`MobileDrawer.tsx`) and thumb-friendly bottom bar (`MobileBottomBar.tsx`) render 1 full-viewport panel at a time.
+- **De-cramped Tree Items & Touch Targets**: File tree items and breadcrumbs maintain $\ge 5\text{px}$ vertical padding and $\ge 28\text{px}$ row height; mobile touch targets enforce $\ge 40\text{px}$ hitbox boundaries.
+
+---
+
+## 7. Unified Engineering Design System & Motion Curves
+
+All UI components adhere to standardized semantic CSS tokens and utility classes defined in `ui/src/styles/theme.css`:
+- **Button System**: `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-ghost`, `.btn-cyan`, `.btn-danger`, `.btn-icon` with `:active: scale(0.97)` tactile depression.
+- **Micro-Transitions**: Strictly capped at `150ms cubic-bezier(0.16, 1, 0.3, 1)` to eliminate sluggishness while preventing abrupt layout jumps.
+- **Accessibility & Focus Rings**: Every interactive element features high-contrast `focus-visible: 2px solid var(--accent-blue)` with `outline-offset: 1px`.
+- **Aerospace Brand Mark**: Faceted precision chevron vector mark (`ui/public/logo.svg`) featuring cyan-to-blue neon glow and crisp geometry.
+
+---
+
+## 8. Global Multi-Language (i18n) Architecture
+
+Axiom features full internationalization without heavyweight external runtime dependencies:
+- **Typed Translation Catalog**: Fully typed `Translations` interface in `ui/src/i18n/types.ts` guaranteeing compile-time detection of missing translation keys.
+- **Dual-Mode Accessor (`TFunction`)**: Supports both callable path lookup `t("timing.wns")` and strongly-typed direct property access `t.timing.wns`.
+- **Browser Language Auto-Detection**: Reads `navigator.language` on first visit and persists user preferences in `localStorage` under `axiom_language`.
+- **7 Supported Production Locales**:
+  1. `en`: English (Master Catalog)
+  2. `tr`: Türkçe (Turkish - natively translated with standard digital logic terminology)
+  3. `de`: Deutsch (German)
+  4. `es`: Español (Spanish)
+  5. `fr`: Français (French)
+  6. `ja`: 日本語 (Japanese)
+  7. `zh`: 简体中文 (Simplified Chinese)
