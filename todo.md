@@ -28,6 +28,16 @@
 
 ## Completed
 
+- [x] **Phase 12.13: Schematic Ergonomics: Clean Default State & Auto-Fit Zoom Framing - [P0]**
+  - [x] Configured `showLiveValues` to `false` by default in `SchematicViewer.tsx` for clean, clutter-free gate-level reading.
+  - [x] Re-calibrated layer horizontal pitch to 64px in `schematicModel.ts` (eliminating long empty horizontal wire stretches).
+  - [x] Calculated tight, exact geometric bounding boxes across all cells and routed wire points in `schematicModel.ts`.
+  - [x] Upgraded `fitToScreen` algorithm in `SchematicViewer.tsx`: symmetrically centers the circuit horizontally and vertically on screen and zooms in up to 1.35x to fill the viewport cleanly.
+  - [x] Added `ResizeObserver` on `containerRef` to ensure auto-fit executes once real layout dimensions are present.
+  - [x] Updated minimap coordinate framing to use tight bounds relative offsets.
+  - [x] Updated living documentation in `analysis/09_schematic_dag_and_synthesis_viewer.md` and `analysis/uiux/04_complex_eda_visualization_ergonomics.md`.
+  - [x] Verified build (`npm run build` - 0 errors) and test suite (`cargo test` - 55/55 passed).
+
 - [x] **Phase 12.12: UI Materials Componentization & Custom Aerospace Dropdown Architecture - [P0]**
   - [x] Upgraded `ui/src/components/ui/Select.tsx` with density sizes (`xs`, `sm`, `md`), alignment (`left`, `right`), option groups (`groups`), keyboard navigation, and dark acrylic popover.
   - [x] Upgraded `ui/src/components/ui/Input.tsx` with density sizes (`xs`, `sm`, `md`) and clearable button support.
