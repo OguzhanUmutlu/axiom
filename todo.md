@@ -28,6 +28,29 @@
 
 ## Completed
 
+- [x] **Phase 13.4: Lock-Safe Multi-Session Concurrency, Desktop Single-Instance Multi-Window & Welcome Ergonomics - [P0]**
+  - [x] **Welcome Launchpad Ergonomics & Direct Project Card Clicking**:
+    - Project cards are now directly clickable (`cursor: pointer`, opens project immediately on click).
+    - Trash button stops click propagation (`e.stopPropagation()`) so clicking trash does not accidentally open the project.
+    - Vertically centered the `FolderOpen` icon with text inside the Open button using standard `.btn .btn-primary` and flex alignment.
+    - Updated trash tab action buttons to standard `.btn .btn-danger` and `.btn .btn-cyan`.
+  - [x] **Consolidated Single GitHub Footer Mention**:
+    - Removed GitHub links from desktop and mobile `Header.tsx` and the Launchpad hero section.
+    - Positioned GitHub link exclusively once at the bottom footer of `WelcomeLaunchpad.tsx`.
+  - [x] **Web Cross-Tab Lock Safety & Atomic Concurrency (`sessionSync.ts`)**:
+    - Implemented `withLock` concurrency coordinator using the modern Web Locks API (`navigator.locks.request`) with an in-memory sequential promise queue fallback for unsupported environments.
+    - Implemented `sessionBroadcaster` using `BroadcastChannel("axiom_session_sync")` with cross-window `storage` event fallback.
+    - Wrapped all critical project registry mutations (`saveProjectRegistry`, `createAndPersistProject`, `trashProject`, `permanentDeleteProject`) with `withLock`.
+    - Wrapped `BrowserIndexedDbFileSystem` file operations (`writeFile`, `deleteFile`, `rmdir`) with resource-scoped locks.
+    - Subscribed `App.tsx` to `sessionBroadcaster` to auto-synchronize project lists and reload active project state when modified in other tabs/windows.
+  - [x] **Desktop Single-Instance Multi-Window Architecture (`axiom-desktop`)**:
+    - Integrated `tauri-plugin-single-instance = "2"` into `crates/desktop/Cargo.toml`.
+    - Initialized single-instance plugin in `run_desktop_app()`: secondary process executions notify the primary Rust process to spawn another window via `WebviewWindowBuilder`, maintaining 1 single Rust process for multiple GUI windows.
+    - Implemented `MultiEngineManager` in `crates/desktop/src/lib.rs` isolating in-RAM Cranelift JIT simulation sessions per window label.
+    - Window close handler dynamically prunes destroyed window simulation engines from memory.
+    - Added global thread-safe `FS_MUTEX: Mutex<()>` guarding host filesystem commands (`fs_read_file`, `fs_write_file`, `fs_remove_file`, `fs_list_dir`, `fs_create_dir`, `fs_exists`) against cross-window file race conditions.
+  - [x] **Verification**: All 55 workspace tests passing (`cargo test --workspace`) and frontend production build verified (`npm run build`).
+
 - [x] **Phase 13.3: Minimalist Header Controls & Open Source GitHub Integration - [P0]**
   - [x] **Flag-Only Language Selector**:
     - Removed `Globe` icon (`🌐`) and text ("English") from the language selector trigger button in `Header.tsx`.
