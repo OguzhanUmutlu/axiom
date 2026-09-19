@@ -168,3 +168,32 @@ User Action (Force Signal "0xFF")
 - **Optimistic Phase**: Input controls (DIP switches, rotary dial, force modal) immediately reflect user intent visually, preventing sluggish tactile feedback.
 - **Verification Phase**: The JIT engine elaborates and steps the event queue. Once execution completes, all downstream visualizers (waveforms, schematic wire probes, power dials) receive the validated engine state.
 - **Rollback Handling**: If an invalid state or compile error occurs during the operation, the UI rolls back the optimistic control to the last stable checkpoint and displays an inline toast notification.
+
+---
+
+## 6. Monaco Editor Katana Slash Kinetic Cursor Physics
+
+To transform code authoring and navigation into a fluid, tactile experience while maintaining professional aesthetic discipline, Axiom implements a custom **White Katana Slash Cursor Effect** directly over the Monaco Editor canvas:
+
+### 6.1. Exponential Follower Physics ($\lambda \approx 18\text{ s}^{-1}$)
+Rather than an instantaneous caret snap or a sluggish linear tween, the trailing blade follower coordinates $\vec{p}_{\text{trail}}$ track the true editor caret $\vec{p}_{\text{target}}$ using continuous exponential decay:
+$$\vec{p}_{\text{trail}}(t + \Delta t) = \vec{p}_{\text{target}} + (\vec{p}_{\text{trail}}(t) - \vec{p}_{\text{target}}) \cdot e^{-\lambda \Delta t}$$
+- $\lambda = 18.0$: At 60 FPS, the follower catches up $\sim 50\%$ in 38ms and $\sim 85\%$ in 100ms, creating a tuned $\sim 90\text{ms}$ trailing lag.
+- **Frame-Rate Invariant**: The decay is calculated against true elapsed time $\Delta t$, ensuring completely identical kinetic velocity on 60Hz, 120Hz ProMotion, and 240Hz monitors.
+
+### 6.2. Tapered Katana Blade Geometry
+When moving ($|\vec{p}_{\text{target}} - \vec{p}_{\text{trail}}| > 0.4\text{px}$), the space between the follower and caret is filled as a tapered Japanese katana blade:
+- **Leading Edge**: The vertical line height ($H \approx 20\text{px}$) of the active line caret in pure white (`#ffffff`).
+- **Trailing Edge**: A needle-sharp point at $(x_{\text{trail}}, y_{\text{trail}} + 0.5 H)$.
+- **Blade Contours**: Quadratic curves arcing from the leading edge corners back to the trailing apex, filled with a white-to-transparent linear gradient (`rgba(255, 255, 255, 0.95)` to `0.0`).
+- **Hamon / Central Spine**: A razor-thin luminous line ($1.2\text{px}$, `#ffffff`) along the center of the cut stroke.
+
+### 6.3. Sori-Curved Slash Strike Arcs
+When jumping between lines or across words ($d > 12\text{px}$):
+- Generates a transient slash strike with natural katana blade curvature (*sori*) perpendicular to the movement vector.
+- Emits 2–3 microscopic luminous cutting glints that disperse along the cutting arc.
+- Dissolves with a quadratic fade-out $\alpha(t) = (1 - t/T)^2$ over $T = 180\text{ms}$.
+
+### 6.4. Self-Sleeping Rendering Lifecycle
+- The `requestAnimationFrame` loop executes only when the cursor is in motion or when active strikes are dissolving.
+- As soon as the trailing follower reaches equilibrium ($d < 0.25\text{px}$) and all strikes fade, the canvas is cleared and the RAF loop halts, ensuring **0% idle CPU and GPU load**.

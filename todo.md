@@ -14,7 +14,7 @@
 ---
 ## In Progress
 
-*(None currently active - Phase 12.10 complete)*
+*(None currently active - Phase 12.11 complete)*
 
 ---
 
@@ -27,6 +27,16 @@
 ---
 
 ## Completed
+
+- [x] **Phase 12.11: White Katana Slash Cursor Effect in Monaco HDL Editor - [P0]**
+  - [x] Master i18n translations across 7 locales (`editor.katanaSlash`, `editor.katanaSlashTooltip`).
+  - [x] Canvas overlay component (`ui/src/components/KatanaCursorOverlay.tsx`) with high-DPI retina support and self-sleeping RAF loop.
+  - [x] Frame-rate independent exponential follower physics ($\lambda \approx 18\text{ s}^{-1}$) for a smooth $\sim 90\text{ms}$ delay.
+  - [x] Tapered katana blade polygon geometry with radiant white core, silver-white glow, and razor-sharp cutting edge.
+  - [x] *Sori* curved slash strike arcs on line jumps ($d > 12\text{px}$) with rapid 180ms exponential dissolve and microscopic glints.
+  - [x] `Swords` toggle button in `HdlEditor.tsx` actions strip with `localStorage` persistence.
+  - [x] Living documentation updates in `analysis/08_desktop_and_web_ui.md` and `analysis/uiux/03_interaction_design_and_haptics.md`.
+  - [x] Verification via TypeScript build (0 errors) and Rust test suite (55/55 passed).
 
 - [x] **Phase 12.10: Ergonomic Studio De-Cramping, Unified Theme System, Precision Iconography & Global Multi-Language (i18n) Engine - [P0]**
   - [x] **Unified Theme Management & Subtle Transitions (`theme.css`)**:
