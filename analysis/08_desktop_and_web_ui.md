@@ -118,3 +118,17 @@ Axiom features full internationalization without heavyweight external runtime de
   5. `fr`: Français (French)
   6. `ja`: 日本語 (Japanese)
   7. `zh`: 简体中文 (Simplified Chinese)
+
+---
+
+## 9. White Katana Slash Cursor Effect Architecture
+
+To enhance the kinetic responsiveness and tactile feel of the Monaco HDL Editor without introducing visual clutter or obstruction:
+- **Canvas Overlay (`KatanaCursorOverlay.tsx`)**: High-DPI canvas overlay placed directly above the editor text layer (`pointer-events: none`, `z-index: 10`).
+- **Frame-Rate Independent Follower Physics**: Exponential decay formula:
+  $$\vec{p}_{\text{trail}}(t + \Delta t) = \vec{p}_{\text{target}} + (\vec{p}_{\text{trail}}(t) - \vec{p}_{\text{target}}) \cdot e^{-\lambda \Delta t}$$
+  with $\lambda = 18.0\text{ s}^{-1}$, yielding a fluid $\sim 90\text{ms}$ smooth trailing lag across 60Hz, 120Hz, and 144Hz displays.
+- **Tapered Katana Blade Polygon**: As the cursor moves, a dynamic polygon connects the trailing needle-point to the leading cutting edge with a radiant pure-white core (`#ffffff`), glowing silver aura (`rgba(255, 255, 255, 0.85)`), and a razor-thin central spine line (*hamon*).
+- **Curved Slash Strike Arcs (*Sori*)**: Cursor jumps $> 12\text{px}$ trigger a quadratic bezier slash arc with subtle natural katana curvature and 2–3 microscopic luminous cutting glints, dissolving exponentially in 180ms.
+- **Self-Sleeping RAF Pipeline**: When the cursor rests and strikes fade, the render loop automatically stops and clears the canvas, guaranteeing 0% idle CPU and GPU consumption.
+- **User Control & Persistence**: Integrated `Swords` button in the editor tab bar allows toggling the effect on or off, with preference persisted in `localStorage.getItem("axiom_katana_cursor")`.
