@@ -28,6 +28,22 @@
 
 ## Completed
 
+- [x] **Phase 13.3: Minimalist Header Controls & Open Source GitHub Integration - [P0]**
+  - [x] **Flag-Only Language Selector**:
+    - Removed `Globe` icon (`🌐`) and text ("English") from the language selector trigger button in `Header.tsx`.
+    - Enhanced `Select.tsx` with `hideChevron`, `buttonClassName`, and `renderTrigger` properties.
+    - Rendered the active language's flag emoji (e.g., `🇺🇸`, `🇹🇷`, `🇩🇪`) in a clean, standardized 28x28 square button matching all other header icon buttons.
+    - Clicking the flag opens the full language dropdown with flags, native names, localized names, and language codes (`EN`, `TR`, etc.).
+  - [x] **Single-Icon Omnibar / Search Button**:
+    - Replaced the wide `[ 🔍 Omnibar ⌘K ]` button with a minimalist single-icon button `<Search size={14} />`.
+    - Maintained accessible tooltip (`title="Omnibar (Ctrl+K / ⌘K)"`) and keyboard shortcut handlers.
+  - [x] **Open Source GitHub Integration**:
+    - Created reusable `GithubIcon` SVG component in `ui/src/components/ui/GithubIcon.tsx` and exported via `ui/src/components/ui/index.ts`.
+    - Added GitHub repository icon button in `Header.tsx` (desktop and mobile) linked to `https://github.com/OguzhanUmutlu/axiom`.
+    - Added Open Source GitHub collaboration badge, repository link card (`OguzhanUmutlu/axiom`), "Star & Collaborate" action, and documentation link in the Welcome Launchpad hero section.
+    - Added an open-source collaboration note and PR invitation in the Welcome Launchpad footer.
+  - [x] **Verification**: Built UI with 0 errors (`npm run build`) and verified all 55 Rust workspace tests passing (`cargo test --workspace`).
+
 - [x] **Phase 13.2: Industry-Grade Project Lifecycle, Regex Naming & UI Alignment - [P0]**
   - [x] **Project Registry & Lifecycle Engine (`projectRegistry.ts`)**: Built persistent project registry tracking active vs trashed projects, with dual-runtime synchronization between `localStorage` and FileSystem `/projects/registry.json`.
   - [x] **Strict Regex Project & Directory Naming**: Enforced strict `[a-zA-Z0-9_.-]+` naming regex with live sanitization and folder preview (`/projects/{name}/`). Enforced matching ID and folder names with collision prevention.
