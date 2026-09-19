@@ -141,3 +141,28 @@ To eliminate un-themed, visually dated browser-native `<select>` dropdowns acros
 - **`Select.tsx`**: Custom dark-acrylic popover dropdown supporting 3 density sizing tiers (`xs`: 24px, `sm`: 28px, `md`: 34px), categorized option groups (`groups`) with uppercase headers, country flags/icons, status badges, alignment controls (`align="left" | "right"`), active `<Check>` markers, rotating chevron, and full keyboard navigation (`ArrowUp`/`ArrowDown`/`Enter`/`Escape`).
 - **`Input.tsx`**: Unified text and numeric input supporting density sizing (`xs`, `sm`, `md`), left icons, validation error text, and inline clearable buttons (`✕`).
 - **Unified Adoption**: Native `<select>` elements in `Header.tsx` (desktop & mobile language selectors), `VirtualLabRack.tsx` (DIP switch & 7-segment display port selectors), and `StimulusPainterModal.tsx` (clock frequency selector) are replaced with the custom `Select` component.
+
+---
+
+## 11. Professional Project Lifecycle, Header Partitioning & Dual-Runtime FileSystem (Phase 13.0)
+
+### 11.1. Header State Partitioning
+- **Welcome State (`project === null`)**: Clean, distraction-free header displaying brand mark, title, version badge (`v0.1.0-jit`), subtle "No Project Open" badge, and language selector. Simulation controls (`Run`, `Pause`, `+1 ns`, `+100 ps`, `Step δ`, `Reset`), sim time, and PDN telemetry HUD are completely hidden.
+- **Active Project State (`project !== null`)**: Dynamically reveals the clickable Project Dropdown Menu, Compile button, full Stratified Event Scheduler ribbon, simulation time counter, and PDN telemetry HUD.
+
+### 11.2. Vivado-Grade Project Header Menu (`ProjectDropdown.tsx`)
+- Prominent project identity badge in the top-left showing project name and target FPGA family.
+- Clicking opens a dark acrylic dropdown menu displaying:
+  - Project Info Card: Target Device, Active Top Module `[TOP]`, and file count.
+  - **Save Project** (`Ctrl+S` / `Cmd+S`) with immediate "Saved" status badge.
+  - **Export Project Bundle** (`.json`) downloading `{project.name}.axiom.json`.
+  - **Add Source to Project...** opening `AddSourceModal`.
+  - **New Project...** opening `NewProjectModal`.
+  - **Close Project** with clean teardown, FileSystem flush, and transition back to Welcome Launchpad.
+
+### 11.3. Dual-Runtime FileSystem Architecture (`ui/src/engine/fs/`)
+- **Abstract `FileSystem` Class**: POSIX-style asynchronous file and directory operations (`readFile`, `writeFile`, `deleteFile`, `exists`, `listDir`, `mkdir`, `rmdir`).
+- **`BrowserIndexedDbFileSystem`**: Backed by IndexedDB (`axiom_vfs` database, `files` store) using `idb` for durable in-browser VFS storage, with synchronous `localStorage` caching for instant zero-flash initial hydration.
+- **`TauriIpcFileSystem`**: Interacts with native Rust host OS filesystem commands registered in `crates/desktop/src/lib.rs` (`fs_read_file`, `fs_write_file`, `fs_remove_file`, `fs_list_dir`, `fs_create_dir`, `fs_exists`) via `@tauri-apps/api/core` `invoke`.
+- **Automatic Multi-File Sync**: Auto-persists projects into `/projects/{id}/project.json` and `/projects/{id}/{fileSet}/{filename}` on creation, editing, and source file changes.
+
