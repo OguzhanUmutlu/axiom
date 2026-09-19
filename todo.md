@@ -28,6 +28,22 @@
 
 ## Completed
 
+- [x] **Phase 12.14: Vivado-Grade Collision-Free Wire Routing, Datapath Alignment & Text Knockout Plates - [P0]**
+  - [x] **Root Cause Analysis & Vivado Reverse Engineering**: Identified that the wire from input $B$ to gate `and1` in `logic_circuit` passed horizontally through the instance label `inv2` because Layer 1's 2 nodes were centered vertically as a cluster right across Row 1, and `routeOrthogonalEdge` lacked intermediate obstacle awareness.
+  - [x] **Vivado-Grade Datapath Grid Alignment (`gridRow`)**: Added `gridRow?: number` to `SchematicNode` interface and updated `layoutAndRouteGraph` in `ui/src/engine/schematicModel.ts` to support both explicit grid datapath row positioning and automatic vertical centering.
+  - [x] **Harmonious `logic_circuit` Datapath Grid Layout**: Assigned explicit datapath rows matching Vivado's standard layout:
+    - Primary datapath: Input A (Row 0) $\to$ `inv1` (Row 0) $\to$ `and1` (Row 0.55) $\to$ `and2` (Row 0.75) $\to$ `or1` (Row 0.95) $\to$ Output F (Row 1.15).
+    - Input B (Row 1): Runs horizontally through an empty 130px open corridor in Layer 1 directly to `and1.in2` with zero obstacles.
+    - Input C (Row 2): Runs horizontally through Layer 1 & 2 before stepping up to `and2.in2`.
+    - Gate `inv2` (Row 2.8): Placed at the bottom datapath row, fed from B via the first inter-layer channel and feeding `or1.in2` along the bottom corridor.
+  - [x] **Obstacle-Aware Orthogonal Channel Routing (`routeOrthogonalEdge`)**:
+    - Pre-calculates `KeepOutBox` clearance bounding boxes for all graph nodes (including $y - 18$ margin above nodes to protect instance labels).
+    - Added horizontal and vertical segment collision detection (`getHCollision`, `getVCollision`).
+    - When a vertical trunk or horizontal segment intersects an intermediate node, router automatically shifts the trunk to an open channel or jogs around the obstacle.
+  - [x] **Solid Background Text Knockout Plates**: In `ui/src/components/SchematicViewer.tsx`, added solid `#0c1017` protective plates behind instance labels (`inv1`, `inv2`, `and1`, `or1`) using `ctx.fillRect(textX - w/2 - 4, textY - 10, w + 8, 14)`, completely eliminating wire/text collisions.
+  - [x] **Continuous Documentation Currency**: Updated `analysis/09_schematic_dag_and_synthesis_viewer.md` and `GEMINI.md`.
+  - [x] **Verification**: Verified zero TypeScript/Vite bundling errors (`npm --prefix ui run build` passed) and 55 / 55 passing Rust workspace tests (`cargo test --workspace`).
+
 - [x] **Phase 12.13: Schematic Ergonomics: Clean Default State & Auto-Fit Zoom Framing - [P0]**
   - [x] Configured `showLiveValues` to `false` by default in `SchematicViewer.tsx` for clean, clutter-free gate-level reading.
   - [x] Re-calibrated layer horizontal pitch to 64px in `schematicModel.ts` (eliminating long empty horizontal wire stretches).

@@ -94,10 +94,13 @@ Axiom EDA implements this architecture natively in TypeScript, Canvas 2D, and Re
 
 - **Graph & Slicing Model (`ui/src/engine/schematicModel.ts`)**:
   - Sugiyama layered DAG placement algorithm with Manhattan orthogonal wire channel routing.
+  - **Vivado-Grade Datapath Grid Alignment (`gridRow`)**: Nodes can specify precise datapath rows (`gridRow: number`) to align functional pathways horizontally across layers. For example, in `logic_circuit`, input $A$, $B$, $C$ and intermediate gates align along dedicated datapath corridors, ensuring forward bypass wires have wide, unobstructed routing channels.
+  - **Obstacle-Aware Orthogonal Channel Router (`routeOrthogonalEdge`)**: Dynamically computes `KeepOutBox` clearance bounding boxes for all intermediate nodes (including a top margin of $y - 18$ to protect instance labels). Vertical trunks and horizontal corridors automatically jog around intermediate obstacles into open channels before or after the node.
   - $O(V + E)$ breadth-first critical fan-in and fan-out cone extractors.
   - Real-time setup slack calculation: $T_{\text{slack}} = T_{\text{clk}} - \sum t_{\text{cell}} - \sum t_{\text{net}} - t_{\text{setup}}$.
 - **Hardware Schematic Viewer (`ui/src/components/SchematicViewer.tsx`)**:
   - 60+ FPS Canvas 2D engine with smooth mouse-wheel centered zooming (0.2x to 3.5x) and drag panning.
+  - **Solid Background Text Knockout Plates**: Renders solid `#0c1017` protective plates behind instance labels (`inv1`, `inv2`, `and1`, `or1`) using `ctx.fillRect(textX - w/2 - 4, textY - 10, w + 8, 14)`, completely eliminating text/wire collisions and matching Vivado's clean visual hierarchy.
   - Semantic LOD: Macro blocks with heatmaps $\to$ Structural datapath MUXes/adders/registers $\to$ Primitive gates with Cranelift JIT machine instructions (`iadd`, `isub`, `band`, `icmp eq`).
   - Wire callout badges displaying real-time logic values from `SimulationState.signals` (toggled via `⚡ Live Values`, configured **off by default** for clean, clutter-free gate readability).
   - High-Precision Auto-Fit Framing: Exact geometric bounding box calculation across all cells and routed nets, dynamically auto-scaling and symmetrically centering the circuit to fill the visualizer pane cleanly with comfortable margins.
@@ -106,4 +109,5 @@ Axiom EDA implements this architecture natively in TypeScript, Canvas 2D, and Re
 - **Split Studio Workspace (`ui/src/App.tsx`)**:
   - Studio view switcher: `[ 📈 Waveforms ]` | `[ 🔀 Schematic DAG ]` | `[ ◫ Split Studio ]`.
   - 3-way bidirectional cross-probing: selecting a gate/net highlights its trace in `WaveformViewer.tsx` and scrolls to/highlights its exact source lines in `HdlEditor.tsx`.
+
 
