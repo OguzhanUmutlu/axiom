@@ -94,7 +94,9 @@ Axiom EDA implements this architecture natively in TypeScript, Canvas 2D, and Re
 
 - **Graph & Slicing Model (`ui/src/engine/schematicModel.ts`)**:
   - Sugiyama layered DAG placement algorithm with Manhattan orthogonal wire channel routing.
-  - **Vivado-Grade Datapath Grid Alignment (`gridRow`)**: Nodes can specify precise datapath rows (`gridRow: number`) to align functional pathways horizontally across layers. For example, in `logic_circuit`, input $A$, $B$, $C$ and intermediate gates align along dedicated datapath corridors, ensuring forward bypass wires have wide, unobstructed routing channels.
+  - **Zero-Turn Datapath Pin Alignment (`fixedY`)**: Precise horizontal alignment of connected pins ($Y_{\text{out}} = Y_{\text{in}}$) eliminating unnecessary bends. For example, in `logic_circuit`, 5 of 9 connections ($A \to \text{inv1}$, $B \to \text{and1.in2}$, $\text{and1.out} \to \text{and2.in1}$, $\text{and2.out} \to \text{or1.in1}$, $\text{or1.out} \to F$) are rendered as 100% straight horizontal lines with **0 turns**.
+  - **Multi-Layer Destination Stepping**: For wires spanning multiple layers ($dx \ge 150\text{px}$, such as $C \to \text{and2}$ and $\text{inv2} \to \text{or1}$), the router keeps the wire running horizontally at its low source track across intermediate layers, and executes the vertical step in the open channel immediately preceding the destination node ($dstX - 28$).
+  - **Generous Inter-Layer Padding (`layerSpacingX = 92px`)**: Spacious 92px routing channels provide clean corridors for vertical drops, eliminating cramped wire bundles.
   - **Obstacle-Aware Orthogonal Channel Router (`routeOrthogonalEdge`)**: Dynamically computes `KeepOutBox` clearance bounding boxes for all intermediate nodes (including a top margin of $y - 18$ to protect instance labels). Vertical trunks and horizontal corridors automatically jog around intermediate obstacles into open channels before or after the node.
   - $O(V + E)$ breadth-first critical fan-in and fan-out cone extractors.
   - Real-time setup slack calculation: $T_{\text{slack}} = T_{\text{clk}} - \sum t_{\text{cell}} - \sum t_{\text{net}} - t_{\text{setup}}$.

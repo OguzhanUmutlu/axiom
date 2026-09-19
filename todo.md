@@ -28,6 +28,14 @@
 
 ## Completed
 
+- [x] **Phase 12.15: Zero-Turn Datapath Pin Alignment & Multi-Layer Destination Stepping - [P0]**
+  - [x] **Zero-Turn Pin Alignment (`fixedY`)**: Added `fixedY?: number` to `SchematicNode` and aligned connected pin heights ($Y_{\text{out}} = Y_{\text{in}}$) across the entire circuit. Completely eliminated micro-jogs for 5 major connections ($A \to \text{inv1}$, $B \to \text{and1.in2}$, $\text{and1.out} \to \text{and2.in1}$, $\text{and2.out} \to \text{or1.in1}$, $\text{or1.out} \to F$), rendering them as 100% straight horizontal lines with **zero turning movements**.
+  - [x] **Multi-Layer Channel Destination Stepping**: Enhanced `routeOrthogonalEdge` so wires traversing multiple layers ($dx \ge 150\text{px}$, such as $C \to \text{and2}$ and $\text{inv2} \to \text{or1}$) maintain horizontal momentum across intermediate layers and execute their vertical jog in the dedicated open channel immediately before the destination ($dstX - 28$), preventing wire bends from cluttering intermediate gates.
+  - [x] **Spacious Inter-Layer Padding**: Increased `layerSpacingX` from 72px to 92px in `layoutAndRouteGraph`, providing wide inter-layer corridors for vertical drops with generous clearance around all gates and labels.
+  - [x] **Equidistant Primary Input Ports**: Positioned input ports $A$, $B$, and $C$ at exactly 75px vertical intervals ($Y = 47, 122, 197$), providing visual balance and clarity.
+  - [x] **Continuous Documentation Currency**: Updated `analysis/09_schematic_dag_and_synthesis_viewer.md` and `GEMINI.md`.
+  - [x] **Verification**: Verified zero TypeScript/Vite bundling errors (`npm --prefix ui run build` passed) and 55 / 55 passing Rust workspace tests (`cargo test --workspace`).
+
 - [x] **Phase 12.14: Vivado-Grade Collision-Free Wire Routing, Datapath Alignment & Text Knockout Plates - [P0]**
   - [x] **Root Cause Analysis & Vivado Reverse Engineering**: Identified that the wire from input $B$ to gate `and1` in `logic_circuit` passed horizontally through the instance label `inv2` because Layer 1's 2 nodes were centered vertically as a cluster right across Row 1, and `routeOrthogonalEdge` lacked intermediate obstacle awareness.
   - [x] **Vivado-Grade Datapath Grid Alignment (`gridRow`)**: Added `gridRow?: number` to `SchematicNode` interface and updated `layoutAndRouteGraph` in `ui/src/engine/schematicModel.ts` to support both explicit grid datapath row positioning and automatic vertical centering.
