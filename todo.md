@@ -21,12 +21,34 @@
 ## Todo
 
 ### Future Enhancement Roadmap
-- [ ] **Phase 13: WebAssembly Standalone Worker Sandbox**: WebWorker multithreaded simulation isolation with SharedArrayBuffer.
 - [ ] **Phase 14: Direct Xilinx 7-Series & UltraScale+ Primitive Library Emulation**: Pre-compiled primitives for LUT6_2, DSP48E2, RAMB36E2, and BUFG.
 
 ---
 
 ## Completed
+
+- [x] **Phase 13.10: WebAssembly Standalone Worker Sandbox & SharedArrayBuffer Simulation Isolation - [P0]**
+  - [x] **Dedicated Simulation Web Worker (`simWorker.ts`)**:
+    - Offloaded in-browser WebAssembly simulation execution and LSP processing from the main UI thread to a dedicated background Web Worker (`ui/src/engine/worker/simWorker.ts`).
+    - Worker loads `axiom_wasm_bg.wasm` client-side with zero main-thread freezing during heavy gate-level simulations or complex elaboration.
+    - Autonomous background ticking loop with 60 FPS throttled batch broadcasting to the UI thread (`broadcastBatch`), delivering high-speed execution without UI stutter.
+    - Full support for continuous execution (`startPlay`), pausing (`pause`), stepping (`stepTime`, `stepDelta`), signal forcing (`forceSignal`), reset rewinding (`reset`), and VCD/SAIF trace exports.
+  - [x] **Lock-Free Atomic SharedArrayBuffer Synchronization (`simSharedBuffer.ts`)**:
+    - Implemented a 128-byte shared memory ring buffer (`SharedSimBufferWriter` & `SharedSimBufferReader`) for zero-copy, lock-free telemetry snapshots.
+    - Atomic sequence counter locking (`Atomics.store`, `Atomics.load`) ensuring torn-read prevention across threads for physical simulation time (uint64 high/low), delta cycles, active state, glitch counters, power, current, voltage sag, and rail voltage.
+    - Universal fallback: automatically detects `crossOriginIsolated` and seamlessly falls back to 60 FPS structured clone message passing on platforms without isolation headers (e.g. GitHub Pages).
+  - [x] **Watchdog Supervisor & Auto-Respawn Recovery (`simWorkerClient.ts`)**:
+    - Integrated watchdog supervisor with a 5,000ms timeout guarding against infinite zero-time delta loops or unstable combinational oscillation hazards.
+    - Automatically terminates hanging worker threads without crashing the browser tab, cleanly respawns a fresh sandbox, and re-compiles the active design in the background.
+    - Strongly typed request-response correlation protocol with promise timeouts and log broadcasting.
+  - [x] **Seamless Universal Engine Bridge Integration (`engineBridge.ts`)**:
+    - Integrated `simWorkerClient` into `AxiomEngineBridge` with 100% backward-compatible public APIs for all React components.
+    - Automatic runtime tiered hierarchy: Tauri Native JIT IPC $\to$ WebWorker WebAssembly Sandbox $\to$ Main-Thread WASM $\to$ Simulated Circuit Fallback.
+    - State snapshot checks in `getState()`, background worker compile, single delta and time steps, and real-time event batch updates for waveform and schematic views.
+  - [x] **Verification & Workspace Testing**:
+    - Production UI bundle compiled cleanly with Vite worker chunking (`simWorker-BY1BNJXi.js`).
+    - Static VitePress documentation and live studio build verified (`npm run docs:build`).
+    - All 57 Rust workspace tests passing (`cargo test --workspace`).
 
 - [x] **Phase 13.9: IEEE 1800 System Tasks ($), Procedural Delays (#), and Default Codebase Lint Sanitization - [P0]**
   - [x] **IEEE 1800 System Tasks & Identifiers (`$`) Support**:
