@@ -113,9 +113,10 @@ The critique evaluates the application across all visual and interactive dimensi
 - **Tactile FPGA Breadboard Emulation**: Recreates physical FPGA development board interfaces (DIP switches, pushbuttons, rotary dials, 7-segment hex displays, SMD LEDs).
 - **Instant Stimulus Injection**: Toggling any switch immediately forces in-RAM signal re-evaluation without requiring manual batch compilation.
 - **Dedicated Hardware Bays**: Features specialized analyzers for UART (terminal console), SPI (mode 0–3 bus inspector), PWM (duty cycle slider & dead-time monitor), RISC-V (live 32-bit register file explorer), and Combinational Logic (8-state Truth Table HUD with active row highlighting).
+- **Custom Aerospace Select Dropdowns**: Port mapping and signal monitoring controls use custom dark acrylic popovers (`Select.tsx`) with categorized groups (`Input Ports` vs `Output Ports`), bit-width metadata badges, and active checkmark indicators—completely eliminating un-themed OS dropdown bleed.
 
 #### Identified Friction Points & Critique
-1. **Flat Signal Select Dropdowns** *(Severity: P2)*: The target port mapping `<select>` dropdown lists all design signals in a flat list without grouping by input ports vs internal nets. Grouping via `<optgroup label="Inputs">` and `<optgroup label="Outputs">` would improve usability in large designs.
+1. **Flat Signal Select Dropdowns** *(Resolved in Phase 12.12)*: Previously, signal mapping controls used flat un-grouped lists. Resolved by upgrading to `<Select>` with structured `SelectGroup` options (`Input Ports` vs `Output Ports`).
 2. **Mobile DIP Switch Hitboxes** *(Severity: P2)*: On narrow mobile screens (<400px), DIP switch toggle touch targets are roughly 24px wide, falling below the recommended 44px mobile touch target standard.
 
 ---
@@ -173,6 +174,23 @@ The critique evaluates the application across all visual and interactive dimensi
 
 ---
 
+### 2.11. Interactive UI Primitives & Design System Materials (`ui/src/components/ui/`)
+
+#### Usability Strengths
+- **100% Zero Native Bleed**: All raw browser `<select>` controls have been eliminated across Header, Virtual Lab Rack, and Stimulus Painter in favor of `<Select>` popovers.
+- **Unified Density Hierarchy**: Primitives (`Select`, `Input`, `Button`) strictly adhere to three spatial density tiers:
+  - `xs` (24px height, 11px font): Engineered for dense top headers, compact status strips, and instrument bay headers.
+  - `sm` (28px height, 12px font): Engineered for secondary toolbars, docking panels, and filter search bars.
+  - `md` (34px height, 13px font): Engineered for modal dialogs and primary project creation wizards.
+- **Categorized Option Grouping (`SelectGroup`)**: Supports clean uppercase headers with subtle divider borders (e.g., separating `Input Ports` from `Output Ports`).
+- **Rich Slotting & Visual Anchoring**: Custom options display left-aligned icons, country flags, right-aligned status badges, and active checkmarks.
+- **Tactile Popover Transitions**: Popovers use `.axiom-popover` keyframe animations (`scale(0.98) -> scale(1)` with `opacity: 0 -> 1` in 120ms) and sleek `.custom-scrollbar` styling.
+- **Full Keyboard Accessibility**: Supports `ArrowUp`/`ArrowDown` cycling with live focus states, `Enter`/`Space` selection, and `Escape` dismissal.
+- **Boundary-Safe Alignment**: `align="left" | "right"` prevents dropdown popovers from overflowing viewport edges when docked near window boundaries.
+- **Clearable Inputs**: Search bars and text fields feature inline `✕` clear buttons to instantly reset filters.
+
+---
+
 ## 3. Prioritized UI/UX Enhancement Roadmap
 
 Based on the empirical audit, the following concrete improvements are prioritized for future milestone releases:
@@ -183,8 +201,8 @@ Rank  Severity  Component          Recommendation & Architectural Action
 1.    P1        theme.css          Refine secondary text contrast: Update --text-muted from 
                                    #64748b (3.6:1) to #94a3b8 (7.2:1) for text < 12px.
                                    
-2.    P2        VirtualLabRack     Increase touch target hitboxes on mobile DIP switches to 
-                                   >= 40px, and group port selector dropdown by direction.
+2.    P2        VirtualLabRack     [RESOLVED in Phase 12.12] Grouped port selector dropdowns 
+                                   via custom Popover Select; increase mobile DIP switch hitboxes.
                                    
 3.    P2        WaveformViewer     Implement draggable / collapsible signal name gutter to 
                                    liberate horizontal space on narrow viewports.

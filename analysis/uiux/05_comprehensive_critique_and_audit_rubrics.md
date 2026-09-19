@@ -76,7 +76,7 @@ This manual provides an **Industry-Grade Audit Framework** composed of:
 
 ---
 
-## 4. The 50-Point Industry-Grade UI/UX Audit Checklist
+## 4. The 60-Point Industry-Grade UI/UX Audit Checklist
 
 ```
 Category 1: Visual Design & Design Tokens (Items 1–8)
@@ -140,6 +140,18 @@ Category 6: Responsive & Mobile Viewport Ergonomics (Items 41–50)
 [ ] 48. Are mobile drawer selections automatically closed upon navigation?
 [ ] 49. Is safe-area inset padding respected for mobile device notches and home bars?
 [ ] 50. Does the Welcome Launchpad render clean single-column cards on narrow screens?
+
+Category 7: Primitive Componentization & Zero Native Bleed (Items 51–60)
+[ ] 51. Are 100% of interactive controls composed from abstract UI primitives (ui/src/components/ui/)?
+[ ] 52. Are raw browser-native <select> tags completely eliminated in favor of custom Popover Selects?
+[ ] 53. Do all dropdowns support standardized density tiers: xs (24px), sm (28px), and md (34px)?
+[ ] 54. Do dropdowns support categorized option groups (SelectGroup) for logical grouping (e.g. Inputs vs Outputs)?
+[ ] 55. Do select options support rich metadata (custom left icons, country flags, right-hand bit-width badges)?
+[ ] 56. Do custom popovers support viewport-safe boundary alignment (align="left" | "right")?
+[ ] 57. Is full keyboard parity implemented for custom dropdowns (ArrowUp/ArrowDown, Enter, Space, Escape)?
+[ ] 58. Do text input fields provide inline clearable action buttons (✕) and left icon slots?
+[ ] 59. Are custom scrollbars (.custom-scrollbar) applied to all popovers and overflow containers?
+[ ] 60. Do button primitives provide tactile haptic micro-scaling (:active: scale(0.97)) and semantic color tokens?
 ```
 
 ---
@@ -183,6 +195,19 @@ Category 6: Responsive & Mobile Viewport Ergonomics (Items 41–50)
 │                                      │ scroll off-screen on touch devices or trackpads.        │
 │                                      │ Fix: html, body, #root fixed at 100vw, 100dvh, overflow:│
 │                                      │ hidden with internal virtualized scroll containers.     │
+├──────────────────────────────────────┼─────────────────────────────────────────────────────────┤
+│ 8. The Leaky Native Control          │ Rendering un-styled, default browser-native <select> or │
+│                                      │ raw <input> tags that leak bright white OS menus,       │
+│                                      │ clunky platform chrome, and break dark mode immersion. │
+│                                      │ Fix: Encapsulate all interactive materials into         │
+│                                      │ abstract primitives (ui/src/components/ui/Select.tsx)   │
+│                                      │ with dark acrylic glassmorphism and custom scrollbars.  │
+├──────────────────────────────────────┼─────────────────────────────────────────────────────────┤
+│ 9. Concrete Primitive Sprawl         │ Inlining repetitive custom <div> and <button> styling   │
+│                                      │ across disparate components instead of composing from   │
+│                                      │ centralized design system primitives (<Button>, <Card>).│
+│                                      │ Fix: Enforce strict single-source-of-truth UI primitive │
+│                                      │ imports from ui/src/components/ui/.                     │
 └──────────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ```
 

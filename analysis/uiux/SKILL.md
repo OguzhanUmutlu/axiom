@@ -15,6 +15,7 @@ When acting under the **UI/UX Design & Critique** skillset, the agent operates a
 3. **Progressive Disclosure**: High-frequency primary actions belong in the primary viewport; deep diagnostics, raw registers, and specialized configuration tools must be accessible within 1 to 2 predictable gestures or keystrokes, rather than cluttering idle viewports.
 4. **Zero-Lag Perceptual Continuity**: High-performance visualizations (60+ FPS digital waveforms, interactive hardware DAGs, real-time analog power curves) must never block the main UI thread. Long-running compilation or elaboration tasks must convey granular intermediate progress.
 5. **Accessibility as Engineering Rigor**: WCAG 2.2 contrast compliance, optical legibility of subscripts and bus vectors, keyboard navigation parity, and colorblind-safe semantic palettes are not optional cosmetics—they are core engineering requirements for mission-critical tooling.
+6. **Strict Primitive Abstraction & Zero Native Bleed**: Never leak un-themed, raw, platform-default native OS controls (e.g. browser `<select>`, raw `<input>`, or OS-default scrollbars) into professional applications. All interactive materials (dropdowns, inputs, buttons, modals, tabs, badges) must be encapsulated into abstract, reusable design system primitives supporting strict density tiers (`xs`, `sm`, `md`), dark glassmorphism elevation, rich content slotting, and full keyboard accessibility.
 
 ---
 
@@ -106,6 +107,16 @@ When conducting a comprehensive design critique or auditing an interface, evalua
 * **1-Panel-at-a-Time Viewing**: Each tool (Code, Schematic, Lab, Waves, Console) expands to 100% width and 100% height on small viewports with zero horizontal overflow.
 * **Thumb-Reach Bottom Bars**: Fixed 52px–56px bottom navigation bar with $\ge 44\text{px} \times 44\text{px}$ touch targets, active icon badges, and iOS home indicator safe-area padding (`env(safe-area-inset-bottom)`).
 
+### Pillar 7: Primitive Componentization & Design System Encapsulation
+* **Zero Platform Bleed**: The application must never render un-styled, default browser controls (e.g. gray OS `<select>` menus, un-themed `<input>` fields, or system scrollbars). All interactive elements must strictly adhere to the engineering design system.
+* **Abstract Primitives Hierarchy (`ui/src/components/ui/`)**: Every interactive material (Dropdowns/Selects, Inputs, Buttons, Badges, Modals, Tabs, Breadcrumbs, Cards) must be abstracted into a componentized primitive. Developers authoring features must compose using primitives rather than raw HTML tags.
+* **Density Sizing Tiers**: Input primitives must provide unified density sizing:
+  * `xs` (24px): For dense application headers, toolbars, and virtual instrument bay headers.
+  * `sm` (28px): For secondary toolbars, docking panels, and filters.
+  * `md` (34px): For modal dialogs, configuration wizards, and primary forms.
+* **Rich Slotting & Grouping**: Select/Dropdown primitives must support categorized option groups (`groups`), rich metadata (icons, flags, bit-width badges, sublabels), custom dark-acrylic popovers, custom scrollbars, and viewport-safe boundary alignment (`align="left" | "right"`).
+* **Keyboard Parity on Custom Materials**: Custom dropdowns and input components must guarantee full keyboard navigation parity (`ArrowUp`/`ArrowDown`, `Enter`, `Space`, `Escape`, `Tab`).
+
 ---
 
 ## 4. Standard UI/UX Audit Protocol
@@ -126,6 +137,7 @@ graph TD
    $$\text{Ratio} = \frac{L_1 + 0.05}{L_2 + 0.05}$$
 3. Check for hardcoded inline hex colors that bypass design tokens.
 4. Verify consistent border radii (`--radius-sm`, `--radius-md`, `--radius-lg`) and spacing increments.
+5. Inspect the DOM for raw/native platform elements (`<select>`, raw `<input>`) that leak default OS styling, and verify all controls import from the abstract UI primitives layer (`ui/src/components/ui/`).
 
 ### Step 2: Layout & Viewport Stress-Testing
 1. Test standard desktop viewports ($1920\times1080$, $1440\times900$, $1280\times720$).
@@ -144,18 +156,20 @@ Walk through each subsystem in isolation and in concert:
 * Waveform Viewer, Signal Gutter, Cursors & Accordion.
 * Timing Radar, Slack Waterfall & Telemetry Meters.
 * Unified Bottom Dock & Interactive Scripting REPL.
+* Modal Dialogs (New Project, Add Source, Stimulus Painter, Omnibar).
 
 ### Step 4: Dynamic Interaction & State Inspection
 1. Trigger simulation actions: Run, Pause, Single Step, Delta Step, Reset.
 2. Force signals (`0`, `1`, `X`, `Z`) and observe cross-probing synchronization.
 3. Test modal trapping, Escape key dismissal, and backdrop click handling.
 4. Verify hover feedback, cursor types (`pointer`, `col-resize`, `row-resize`, `grab`), and disabled states.
+5. Test custom dropdown menus: keyboard navigation (`ArrowUp`/`ArrowDown`/`Enter`), option grouping, and outside click dismissal.
 
 ### Step 5: Synthesis & Prioritized Defect Reporting
 Document findings using the standard Defect Severity Classification:
 * **P0 (Blocker)**: Critical layout breakage, overlapping unclickable elements, unusable viewports.
 * **P1 (Critical Usability)**: Severe contrast failures ($<3:1$), unreadable text, broken responsive layouts, trapped modal states.
-* **P2 (Moderate Friction)**: Inefficient space allocation, cramped splitters, missing tooltips, touch target size $<36\text{px}$.
+* **P2 (Moderate Friction)**: Un-themed raw platform controls (e.g. default browser `<select>` menus leaking OS chrome), inefficient space allocation, cramped splitters, missing tooltips, touch target size $<36\text{px}$.
 * **P3 (Minor Polish)**: Inconsistent padding, subtle alignment offsets, missing hover transitions, lack of dirty state indicators.
 * **P4 (Cosmetic)**: Micro-typography adjustments, icon weight nuances, subtle color saturation tweaks.
 

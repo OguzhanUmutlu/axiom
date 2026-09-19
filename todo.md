@@ -36,6 +36,12 @@
   - [x] Replaced native `<select>` in `VirtualLabRack.tsx` (DIP switch & 7-seg port selectors) with `<Select size="xs" />` using grouped options.
   - [x] Replaced native `<select>` in `StimulusPainterModal.tsx` (clock frequency selector) with `<Select size="sm" />`.
   - [x] Updated living documentation in `analysis/uiux/01_design_system_and_theming.md` and `analysis/08_desktop_and_web_ui.md`.
+  - [x] Formally integrated primitive abstraction & componentization into UI/UX Skillset:
+    - `analysis/uiux/SKILL.md`: Added Principle 6 ("Strict Primitive Abstraction & Zero Native Bleed") and Pillar 7 ("Primitive Componentization & Design System Encapsulation").
+    - `analysis/uiux/05_comprehensive_critique_and_audit_rubrics.md`: Expanded to 60-Point Audit Checklist (Category 7: Primitive Componentization & Zero Native Bleed, Items 51–60) and added Anti-Pattern 8 ("The Leaky Native Control") and Anti-Pattern 9 ("Concrete Primitive Sprawl").
+    - `analysis/uiux/06_axiom_studio_audit_and_design_critique.md`: Added Section 2.11 for UI Primitives and marked port group selector issue as resolved.
+    - `analysis/uiux/03_interaction_design_and_haptics.md`: Added Section 7 detailing popover mechanics, keyboard parity, density tiers, and clearable actions.
+    - `analysis/analysis.md`: Updated master blueprint tree to register the full `analysis/uiux/` architectural suite.
   - [x] Verified build via TypeScript compile (`npm run build` - 0 errors) and Rust workspace test suite (`cargo test` - 55/55 passed).
 
 - [x] **Phase 12.11: White Katana Slash Cursor Effect in Monaco HDL Editor - [P0]**
