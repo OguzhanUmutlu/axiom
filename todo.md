@@ -28,6 +28,18 @@
 
 ## Completed
 
+- [x] **Phase 13.7: Precise Cursor-Tracking Wire & Net Hover Card Positioning - [P0]**
+  - [x] **Fixed Broken Wire Hover Tooltip Positioning**:
+    - Identified that `tooltipPos` only handled `hoveredNodeId` and `selectedNodeId`, completely omitting `hoveredEdgeId` and falling back to a static `{ x: 20, y: 50 }` window coordinate.
+    - Implemented dedicated `edgeTooltipPos` calculating real-time cursor coordinates from `mousePos.x + 16, mousePos.y + 16` with viewport boundary clamping (`maxX = window.innerWidth - 270`, `maxY = window.innerHeight - 160`) to prevent off-screen clipping.
+    - Updated wire hover tooltip component to bind directly to `edgeTooltipPos.x` and `edgeTooltipPos.y`.
+  - [x] **Hover Priority Resolution & Selection Isolation**:
+    - Refactored `activeHoverNode` and `activeHoverEdge` memoizers so that hovering an edge cleanly takes priority over any previously selected node (`hoveredEdgeId` yields `activeHoverNode = null`).
+    - Removed `selectedNodeId` suppression from `activeHoverEdge`, ensuring wires can be hovered and inspected even while a cell in the schematic DAG is selected.
+  - [x] **Canvas Mouse Leave Cleanup**:
+    - Added `handleMouseLeave` to clear `hoveredNodeId` and `hoveredEdgeId` immediately when cursor leaves the canvas, preventing lingering frozen hover cards.
+  - [x] **Verification**: All 55 Rust workspace tests passing (`cargo test --workspace`) and frontend production build verified (`npm run build`).
+
 - [x] **Phase 13.6: Resizable De-Cramped Sidebar & Non-Wrapping File Tree Architecture - [P0]**
   - [x] **Spacious Resizable Sidebar with Draggable Splitter Handle**:
     - Expanded default sidebar width from cramped `228px` to spacious `285px` (configurable between `220px` and `500px`).
