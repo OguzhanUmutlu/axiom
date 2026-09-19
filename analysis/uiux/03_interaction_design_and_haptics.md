@@ -197,3 +197,31 @@ When jumping between lines or across words ($d > 12\text{px}$):
 ### 6.4. Self-Sleeping Rendering Lifecycle
 - The `requestAnimationFrame` loop executes only when the cursor is in motion or when active strikes are dissolving.
 - As soon as the trailing follower reaches equilibrium ($d < 0.25\text{px}$) and all strikes fade, the canvas is cleared and the RAF loop halts, ensuring **0% idle CPU and GPU load**.
+
+---
+
+## 7. Tactile Form Controls & Custom Popover Micro-Interactions
+
+### 7.1. Acrylic Popover Dropdown Mechanics (`Select.tsx`)
+Replacing browser-native `<select>` elements with custom React popovers requires precise kinetic physics and focus choreography:
+- **Optical Entrance Animation**: Popovers open using `@keyframes axiom-popover-in` transitioning from `opacity: 0; transform: translateY(-4px) scale(0.98)` to `opacity: 1; transform: translateY(0) scale(1)` over $120\text{ms}$ with `cubic-bezier(0.16, 1, 0.3, 1)`.
+- **Z-Index & Stacking Isolation**: The popover container sits at `z-index: 10000` with `background: #0f1217`, a subtle `1px solid var(--border-subtle)` border, and an acrylic box shadow (`0 12px 32px rgba(0, 0, 0, 0.6)`), preventing visual bleed into adjacent panels.
+- **Boundary-Safe Alignment Physics**: Anchoring supports `align="left" | "right"`. Right-aligned popovers (used in the global header for language and layout pickers) anchor to the right edge (`right: 0`), completely eliminating horizontal off-screen clipping.
+- **Outside Click & Blur Dismissal**: Clicking outside the trigger button or popover immediately closes the menu and smoothly restores document focus.
+
+### 7.2. Full Keyboard Navigation Parity
+Custom dropdowns must meet or exceed native browser accessibility:
+- **`Space` / `Enter`**: Toggles popover open/closed state. When focused on a list item, `Enter` commits the selection.
+- **`ArrowDown` / `ArrowUp`**: Cycles through selectable options, auto-skipping disabled items and section group headers (`SelectGroup`). The active item receives a visible cyan highlight pill (`rgba(59, 130, 246, 0.15)`).
+- **`Escape`**: Immediately dismisses the popover and returns focus to the parent trigger button without side effects.
+
+### 7.3. Unified Density Tiers (`xs`, `sm`, `md`)
+To maintain visual hierarchy across different IDE contexts, all UI form primitives (`Select`, `Input`, `Button`) strictly adhere to three standardized vertical density tiers:
+- **`xs` (24px height, 11px font)**: Engineered for the dense 42px header bar, compact status strips, and instrument bay headers.
+- **`sm` (28px height, 12px font)**: Engineered for secondary panel toolbars, collapsible bottom dock tabs, and signal hierarchy search filters.
+- **`md` (34px height, 13px font)**: Engineered for modal dialogs (New Project, Add Source, Stimulus Painter) and primary configuration wizards.
+
+### 7.4. Micro-Tactile Button Scaling & Clearable Actions
+- **Button Haptics**: Button primitives implement `:active: scale(0.97)` physical micro-scaling with `transition: transform 60ms cubic-bezier(0.2, 0.8, 0.2, 1)`, providing immediate visual confirmation of physical depression.
+- **Clearable Inputs (`Input.tsx`)**: Text inputs with `clearable={true}` render an inline `✕` button when non-empty, clearing search filters with a single tap/click and restoring input focus.
+

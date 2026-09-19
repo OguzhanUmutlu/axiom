@@ -19,7 +19,15 @@ analysis/
 ├── 10_virtual_lab_and_stimulus_rack.md     # Virtual front-panel instruments, live stimulus & pin forcing
 ├── 11_timing_radar_and_slack_waterfall.md  # SDC/XDC constraint visualizer, slack waterfall & CDC matrix
 ├── 12_hierarchical_energy_treemap_and_thermal.md # Module energy treemap, PDN droop & thermal margin
-└── 13_omnibar_and_scripting_repl.md        # Unified Ctrl+K Omnibar palette & in-UI interactive REPL shell
+├── 13_omnibar_and_scripting_repl.md        # Unified Ctrl+K Omnibar palette & in-UI interactive REPL shell
+└── uiux/                                   # In-Depth UI/UX Architecture, Critique & Skillset Suite
+    ├── SKILL.md                            # Master UI/UX engineering critique skillset & core principles
+    ├── 01_design_system_and_theming.md     # Dark engineering theme tokens, materials & typography
+    ├── 02_information_architecture_and_layouts.md # Dual-pane layout, docks, splitters & mobile drawer
+    ├── 03_interaction_design_and_haptics.md # State machines, popover mechanics, katana cursor
+    ├── 04_complex_eda_visualization_ergonomics.md # Waveforms, schematic DAG & telemetry HUD
+    ├── 05_comprehensive_critique_and_audit_rubrics.md # 60-point checklist & anti-pattern catalog
+    └── 06_axiom_studio_audit_and_design_critique.md # Empirical audit of Axiom HDL Studio
 ```
 
 ---
