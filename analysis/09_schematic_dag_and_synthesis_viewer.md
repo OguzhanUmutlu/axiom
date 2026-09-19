@@ -99,7 +99,8 @@ Axiom EDA implements this architecture natively in TypeScript, Canvas 2D, and Re
 - **Hardware Schematic Viewer (`ui/src/components/SchematicViewer.tsx`)**:
   - 60+ FPS Canvas 2D engine with smooth mouse-wheel centered zooming (0.2x to 3.5x) and drag panning.
   - Semantic LOD: Macro blocks with heatmaps $\to$ Structural datapath MUXes/adders/registers $\to$ Primitive gates with Cranelift JIT machine instructions (`iadd`, `isub`, `band`, `icmp eq`).
-  - Wire callout badges displaying real-time logic values from `SimulationState.signals`.
+  - Wire callout badges displaying real-time logic values from `SimulationState.signals` (toggled via `⚡ Live Values`, configured **off by default** for clean, clutter-free gate readability).
+  - High-Precision Auto-Fit Framing: Exact geometric bounding box calculation across all cells and routed nets, dynamically auto-scaling and symmetrically centering the circuit to fill the visualizer pane cleanly with comfortable margins.
   - Interactive Minimap camera viewport navigator.
   - 1-Click Cone Slicing with `[F]` (Fan-In), `[O]` (Fan-Out), and `[Esc]` (Clear) shortcuts, dimming unrelated logic to 12% opacity.
 - **Split Studio Workspace (`ui/src/App.tsx`)**:
