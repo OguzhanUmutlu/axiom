@@ -28,6 +28,23 @@
 
 ## Completed
 
+- [x] **Phase 13.6: Resizable De-Cramped Sidebar & Non-Wrapping File Tree Architecture - [P0]**
+  - [x] **Spacious Resizable Sidebar with Draggable Splitter Handle**:
+    - Expanded default sidebar width from cramped `228px` to spacious `285px` (configurable between `220px` and `500px`).
+    - Added interactive `ResizableSplitter` handle between the Sidebar and the Center Simulation Workspace.
+    - Double-clicking the splitter snaps sidebar width back to the default `285px`.
+    - Persists user's preferred sidebar width in `localStorage` (`axiom_sidebar_width`).
+    - Automatically updates dynamic editor width percent calculation based on live sidebar width.
+  - [x] **De-Cramped Project Meta Card Header**:
+    - Removed the redundant, wide `+ Create` text button and `Close` text button that squeezed `project.name` into `logi...`.
+    - `project.name` now occupies the full width of the card with `13px` bold typography and clean icon.
+    - Close project is a sleek, compact icon button (`<X size={14} />`) with tooltip.
+  - [x] **Guaranteed Non-Wrapping Typography & File Trees**:
+    - Enforced `whiteSpace: "nowrap"`, `overflow: "hidden"`, and `textOverflow: "ellipsis"` across all file item names and fileset headers.
+    - File names (`logic_circuit.v`, `tb_logic_circuit.v`) now render completely without truncation.
+    - Section headers (**Design Sources**, **Simulation Sources**, **Constraints**) and count chips render cleanly on a single row without wrapping.
+  - [x] **Verification**: All 55 Rust workspace tests passing (`cargo test --workspace`) and frontend production build verified (`npm run build`).
+
 - [x] **Phase 13.5: Toast Notification System, Unified Confirm Dialogs, 3-Dot Project Trashing & Fileset Architecture - [P0]**
   - [x] **Aerospace Toast Notification System (`toast.ts` & `ToastContainer.tsx`)**:
     - Built lightweight reactive singleton toast manager supporting `toast.success`, `toast.error`, `toast.info`, and `toast.warning`.

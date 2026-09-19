@@ -60,6 +60,10 @@ As of **Phase 12.9**, the entire core engine, compiler, scheduler, telemetry sys
   - **Unified Confirm Dialog Subsystem (`ConfirmModal.tsx`)**: Dark acrylic modal dialog with promise-based `confirmDialog(...)` helper replacing all native browser `confirm(...)` dialogs across the app, with keyboard shortcuts (`Enter`/`Escape`) and zero usage of `prompt()`.
   - **3-Vertical-Dot Kebab Trashing on Main Page**: Removed "Move to Trash" from in-project header menu (`ProjectDropdown.tsx`), keeping project header clean and focused. On the main page (`WelcomeLaunchpad.tsx`), project cards house "Move to Trash" inside a 3-vertical-dot button (`MoreVertical`) with click-outside auto-close and confirmation.
   - **Vivado Fileset Label Cleanup**: Standardized sidebar fileset headers across all 7 supported languages to clean, unified titles: **Design Sources**, **Simulation Sources**, and **Constraints**, eliminating confusing `(sim_1)` and `(constrs_1)` suffixes.
+- **Phase 13.6: Resizable De-Cramped Sidebar & Non-Wrapping File Tree Architecture**:
+  - **Interactive Draggable Sidebar Splitter (`ResizableSplitter.tsx`)**: Replaced fixed 228px width with dynamic, user-resizable sidebar (default 285px, range 220px–500px) with double-click reset and `localStorage` persistence (`axiom_sidebar_width`).
+  - **Project Header De-Cramping**: Removed cramped `+ Create` and `Close` text buttons that squeezed `project.name` down to 58px. The project title now renders fully without `logi...` truncation, accompanied by a clean `<X size={14} />` icon button.
+  - **Zero-Wrap Typography**: Applied `whiteSpace: "nowrap"`, `overflow: "hidden"`, and `textOverflow: "ellipsis"` across all file tree items and fileset headers, completely eliminating unsightly text wrapping.
 
 ---
 
