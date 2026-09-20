@@ -27,6 +27,48 @@
 
 ## Completed
 
+- [x] **Phase 27: In-RAM RTL Logic Synthesis, FPGA Technology Mapping & Dual-Mode Schematic DAG (RTL vs. Synthesized Gate Netlist) - [P1]**
+  - [x] **In-RAM RTL Logic Synthesizer & Technology Mapper Engine (`crates/ir/src/synth/`)**:
+    - `types.rs`: Defined `FpgaFamily` (`Artix7`, `Kintex7`, `Virtex7`, `Zynq7000`, `UltraScalePlus`, `VirtualSilicon`), `SynthConfig`, `SynthesizedCircuit`, `SynthesizedCell`, `SynthesizedNet`, `SynthesizedPort`, and `SynthesisStats`.
+    - `lut_mapper.rs`: Combinational $K$-LUT technology mapper ($K \le 6$) with exhaustive bitwise truth table evaluation calculating exact 64-bit `INIT` masks (`INIT[m] = eval(I0..Ik)`) and readable Boolean equation reconstruction.
+    - `seq_mapper.rs`: Clocked process register inferencing emitting `FDRE` (synchronous reset) and `FDCE` (asynchronous clear) primitives with clock enables (`CE`).
+    - `arith_mapper.rs`: Carry lookahead inferencing emitting `CARRY4` (7-Series / Zynq) and `CARRY8` (UltraScale+) primitives with propagate ($S$) and generate ($DI$) net connections.
+    - `io_mapper.rs`: Top-level I/O buffer insertion emitting `IBUF` for primary inputs, `OBUF` for outputs, and `BUFG` global low-skew clock buffers.
+    - `verilog_gen.rs`: Structural IEEE 1364 Verilog netlist generator emitting `<top>_synth.v`.
+    - `mod.rs` & `tests.rs`: Complete synthesis coordinator pipeline with 100% passing tests for truth table extraction, register inferencing, structural netlist generation, and target capacity utilization.
+  - [x] **Dual-Runtime WebAssembly & Native Desktop IPC**:
+    - `crates/wasm/src/lib.rs`: WebAssembly exports `wasm_synthesize_netlist` and `wasm_export_synthesized_verilog`.
+    - `crates/desktop/src/lib.rs`: Tauri IPC commands `synthesize_netlist` and `export_synthesized_verilog`.
+  - [x] **Unified CLI Synthesis Subcommand (`crates/cli/src/main.rs`)**:
+    - Added `axiom synth <FILE> -t <TOP> [--device <PART>] [-o <OUT.v>] [--json]`.
+    - Tabular terminal report detailing cell instances, primitive categories, logic depth, and target device capacity utilization.
+    - Automated unit test: `test_cli_synth_counter`.
+  - [x] **Frontend Synthesis Architecture & Web Worker IPC (`ui/src/engine/`)**:
+    - `synthModel.ts`: TypeScript synthesis data models and deterministic fallback synthesizer for `logic_circuit`, `counter`, and `dsp_bram_mac`.
+    - `simWorkerProtocol.ts`, `simWorker.ts`, `simWorkerClient.ts`: Strongly typed worker messages `SYNTHESIZE_DESIGN` and `EXPORT_SYNTHESIZED_VERILOG`.
+    - `engineBridge.ts`: 4-tier execution hierarchy (Tauri Native JIT IPC $\to$ Web Worker WASM $\to$ Main WASM $\to$ Client Fallback) with `synthesizeDesign` and `exportSynthesizedVerilog`.
+    - `schematicModel.ts`: Implemented `generateSynthesizedSchematicGraph` with `layoutAndRouteGraph` generating Manhattan orthogonal wires with 0 collisions.
+  - [x] **Dual-Mode Schematic DAG Visualizer (`ui/src/components/SchematicViewer.tsx`)**:
+    - Top toolbar segmented toggle: `[ ⚡ RTL Schematic ]` vs `[ 💠 Synthesized Netlist ]`.
+    - Live synthesis telemetry pill showing target device, cell count, LUT count, FF count, and carry chain count.
+    - `[ 📥 Export Netlist ]` action button downloading `<top>_synth.v`.
+    - Interactive **LUT Inspector** card overlay on canvas:
+      - Cell ID and primitive kind header.
+      - Boolean equation display.
+      - 64-bit Hex `INIT` parameter with 1-click Copy button.
+      - $2^K$-row interactive Truth Table with live row highlighting based on real-time signal values from `liveValuesMap`.
+      - Detailed pin-to-net connection mapping with live signal states.
+  - [x] **Unified Bottom Dock "Synthesis" Tab (`ui/src/components/UnifiedBottomDock.tsx`)**:
+    - 5 KPI summary cards: Total Cells, LUT Primitives with % utilization, Registers (FFs) with % utilization, Carry Chains, and I/O Buffers.
+    - Search bar and category filter pills (`All`, `LUTs`, `Registers`, `Carries`, `I/O Buffers`).
+    - Filterable Technology-Mapped Cells table with pin mappings, delay, equation/INIT parameter, and 1-click jump to RTL line in Monaco editor.
+    - Right panel with selected cell inspector and full structural Verilog netlist preview with copy and download actions.
+  - [x] **Multi-Language Internationalization (`ui/src/i18n/`)**:
+    - Added translation keys (`rtlSchematic`, `synthNetlist`, `exportNetlist`, `lutInspector`, `synthesisTab`) across all 7 supported languages (`en`, `tr`, `de`, `es`, `fr`, `ja`, `zh`) and updated `Translations` interface in `i18n/types.ts`.
+  - [x] **Automated Verification**:
+    - All Rust workspace tests passing (`cargo test --workspace` and `cargo test -p axiom-cli`).
+    - Zero TypeScript / Vite compilation errors (`npm --prefix ui run build`).
+
 - [x] **Phase 22: In-RAM Temporal Logic Assertion Radar (Live SVA / PSL Protocol Verification) - [P2]**
   - [x] **IEEE 1800 SystemVerilog Assertion (SVA) Syntax & Tokenizer (`crates/syntax`)**:
     - Added lexer tokens: `assert`, `property`, `sequence`, `cover`, `assume`, `|->` (overlapping implication), `|=>` (non-overlapping implication), `##` (cycle delay), `[*` (consecutive repetition).
