@@ -21,67 +21,101 @@
 ## Todo
 
 ### Future Enhancement Roadmap
+*(All prioritized core roadmap milestones through Phase 26 are completed!)*
 
-- [ ] **Phase 22: In-RAM Temporal Logic Assertion Radar (Live SVA / PSL Protocol Verification) - [P2]**
-  - **In-Engine Temporal Logic Evaluator (`crates/sim/src/assertion.rs`)**:
-    - Parser and runtime checker for IEEE 1800 SystemVerilog Assertions (`assert property (@(posedge clk) req |-> ##[1:4] ack);`).
-    - Supports overlapping implications (`|->`), non-overlapping (`|=>`), cycle delay ranges (`##[min:max]`), consecutive repetitions (`[*N]`), and `$rose`/`$fell`/`$past`.
-  - **Waveform Timeline Violation Markers & Diagnostics Dock**:
-    - Real-time failure flags dropped onto the waveform timeline at the exact picosecond of protocol breach.
-    - 1-click jump from violation card to Monaco RTL source line with explanatory failure diagnostic.
+---
+
+## Completed
+
+- [x] **Phase 22: In-RAM Temporal Logic Assertion Radar (Live SVA / PSL Protocol Verification) - [P2]**
+  - [x] **IEEE 1800 SystemVerilog Assertion (SVA) Syntax & Tokenizer (`crates/syntax`)**:
+    - Added lexer tokens: `assert`, `property`, `sequence`, `cover`, `assume`, `|->` (overlapping implication), `|=>` (non-overlapping implication), `##` (cycle delay), `[*` (consecutive repetition).
+    - Extended Pratt parser to parse module-level and procedural assertions with optional labels (`parse_assertion_def`), clocking events (`@(posedge clk)`), disable conditions (`disable iff (rst)`), and sequence expressions.
+  - [x] **In-Engine Temporal Logic Evaluator (`crates/sim/src/assertion.rs`)**:
+    - Built multi-threaded attempt evaluator (`AssertionEvaluator`) tracking concurrent multi-cycle evaluation threads.
+    - Full support for delay ranges (`##[min:max]`), consecutive repetitions (`[*N]`), sample functions (`$rose`, `$fell`, `$past`, `$isunknown`), overlapping & non-overlapping implications.
+    - Integrated with Stratified Event Queue clock-edge evaluation and simulation checkpoint/rollback snapshots.
+  - [x] **LSP Linter & Elaboration Integration (`crates/lsp/src/linter.rs`, `crates/ir`)**:
+    - Transparent handling of `ModuleItem::Assertion` during elaboration without errors.
+    - Static analysis traversal in LSP linter recognizing signals referenced in assertion properties to eliminate false-positive "unused signal" warnings.
+  - [x] **Dual-Runtime IPC & WebAssembly Bindings (`crates/wasm/`, `crates/desktop/`)**:
+    - WebAssembly bindings: `add_assertion`, `get_assertion_report`, `get_assertion_violations`, `reset_assertions`, and `wasm_verify_assertions`.
+    - Tauri native IPC commands for desktop simulation.
+    - Updated `StepResponse` to include active assertion violations.
+  - [x] **Unified CLI Verification Subcommand (`crates/cli/src/main.rs`)**:
+    - Built `axiom verify <FILE> -t <TOP> [--ticks <N>] [--assert "<EXPR>"] [--json]`.
+    - Formats ANSI tabular reports with attempts, passes, failures, vacuous passes, and breach logs.
+  - [x] **Waveform Timeline Radar Pins (`ui/src/components/WaveformViewer.tsx`)**:
+    - Crimson canvas violation pins and vertical dashed failure markers rendered at the exact picosecond timestamp of assertion breach.
+    - Floating acrylic hover tooltip card displaying assertion name, fail cycle, error message, and signals snapshot.
+    - 1-click center waveform viewport on violation timestamp and seek waveform event listener (`axiom_seek_waveform`).
+    - Toolbar toggle button with live violation count badge.
+  - [x] **Unified Bottom Dock "Assertions" Tab (`ui/src/components/UnifiedBottomDock.tsx`)**:
+    - 5 KPI summary cards: Total Assertions, Pass Rate %, Violations, Active In-Flight, and Vacuous Passes.
+    - Dynamic In-RAM SVA property injector input bar (`+ INJECT SVA`).
+    - Multi-filter pills (`All`, `Violated`, `Passing`, `In-Flight`, `Vacuous`) and text search filter.
+    - Assertion table with status badges (`PASS`, `FAIL`, `ACTIVE`, `VACUOUS`), clocking domain, execution counters, and source text snippets.
+    - Expandable violation accordion drawer with failure messages, signal snapshots, "Seek Wave", and jump to Monaco editor RTL line (`L{line}`).
+  - [x] **Production Starter Template & Design Integration (`sampleDesigns.ts`, `projectModel.ts`)**:
+    - Embedded SVA assertions into `counter_glitch_demo` and `counter_hazard_project`.
+  - [x] **Internationalization (`ui/src/i18n/`)**:
+    - Added `assertionsTab` across all 7 supported languages (English, German, Spanish, French, Japanese, Turkish, Chinese).
+  - [x] **Automated Verification**:
+    - Verified all 63 Rust workspace unit/integration/CLI tests passing (`cargo test --workspace`).
+    - Verified 0 TypeScript/Vite bundling errors (`npm --prefix ui run build`).
 
 - [x] **Phase 23: Aerospace Custom Window Frame, Application Menu System & Auto-Save Engine - [P1]**
-  - **Universal Acrylic Window Frame (`WindowFrame.tsx`, `axiom-desktop`)**:
+  - [x] **Universal Acrylic Window Frame (`WindowFrame.tsx`, `axiom-desktop`)**:
     - Seamless acrylic window frame operating across both Tauri Desktop (frameless mode with native OS window drag region `data-tauri-drag-region`, window title, minimize `—`, maximize/restore `□`, and close `✕` buttons) and Web Studio (embedded header mode with fullscreen toggle).
     - Visual indicators for active project, target FPGA silicon, compile status, and auto-save state.
-  - **Vivado-Grade Application Menu Bar (`MenuBar.tsx`)**:
+  - [x] **Vivado-Grade Application Menu Bar (`MenuBar.tsx`)**:
     - **File**: New Project... (`Ctrl+Shift+N`), Open Project... (`Ctrl+O`), Save File (`Ctrl+S`), Save All (`Ctrl+Shift+S`), **Auto Save** toggle (default ON, persistent), Add Sources... (`Ctrl+A`), Export Project (.json), Close Project, Exit (`Alt+F4`).
     - **Edit**: Undo (`Ctrl+Z`), Redo (`Ctrl+Y`), Cut (`Ctrl+X`), Copy (`Ctrl+C`), Paste (`Ctrl+V`), Find in File (`Ctrl+F`).
     - **View**: Toggle Sidebar (`Ctrl+B`), Toggle Bottom Dock (`Ctrl+J`), Fullscreen (`F11`), Visualizer Switcher (Schematic, Architecture, Waves, Virtual Lab, Timing Radar, Multi-Die, PPA).
     - **Flow**: Run Simulation (`F5`), Pause (`F6`), Step +1ns, Step +100ps, Step Delta ($\delta$), Reset to $t=0$, Compile Design (`Ctrl+Enter`), Silicon Copilot.
     - **Tools**: Protocol Decoder..., Multi-Die Chiplet..., PPA Pareto & ASIC Costs..., Command Palette (`Ctrl+K`).
     - **Help**: Axiom Documentation, GitHub Repository, Check for Updates..., About Axiom EDA Studio.
-  - **Persistent Multi-Runtime Auto-Save Engine (`autoSaveManager.ts`)**:
+  - [x] **Persistent Multi-Runtime Auto-Save Engine (`autoSaveManager.ts`)**:
     - Non-blocking 800ms debounced auto-save directly writing dirty editor buffers to disk (in Desktop Tauri mode via `fs_write_file`) or IndexedDB/localStorage (in Web mode).
     - Visual save state pill in the menu bar (`Auto-Save: ON [Saved]`). User toggle in `File -> Auto Save` persisted in `localStorage`.
 
 - [x] **Phase 24: Continuous Release Version Manifest & Auto-Update Supervision System - [P2]**
-  - **Automated GitHub Pages Release Manifest (`version.json`)**:
+  - [x] **Automated GitHub Pages Release Manifest (`version.json`)**:
     - Release manifest hosted at `ui/public/version.json` and `docs/public/version.json` for GitHub Pages deployment.
     - Manifest payload: latest commit SHA, LTS release tag, build timestamp, release notes summary, and download URLs.
-  - **Client-Side Update Checker & LTS Watchdog (`updateChecker.ts`)**:
+  - [x] **Client-Side Update Checker & LTS Watchdog (`updateChecker.ts`)**:
     - Compares embedded compile-time commit hash (`CURRENT_CLIENT_COMMIT`) against remote `version.json` commit SHA.
     - Non-intrusive auto-check on startup and manual "Check for Updates..." in Help menu.
-  - **Aerospace Acrylic Update Prompt (`UpdatePromptModal.tsx`)**:
+  - [x] **Aerospace Acrylic Update Prompt (`UpdatePromptModal.tsx`)**:
     - Floating acrylic dialog notifying user when a new LTS release/commit is deployed.
     - Displays commit SHA diff, release highlights, and 1-click update button:
       - Web: Clears service worker / cache storage and refreshes immediately (`[ 🚀 Update to Latest Version ]`).
       - Desktop: Direct download button (`[ ⬇ Download Latest Release ]`).
 
 - [x] **Phase 25: Vivado-Grade Multi-Step Project Wizard & Silicon Catalog Database (Parts & Boards) - [P1]**
-  - **Project Auto-Naming & Subdirectory Conventions**:
+  - [x] **Project Auto-Naming & Subdirectory Conventions**:
     - Default project naming automatically discovering existing projects and incrementing: `project_1`, `project_2`, `project_3`.
     - Project location folder browser with native desktop folder picker (`pick_folder` command with `rfd` on Tauri) guarded by `isDesktop()` detection.
     - Checkbox: `[x] Create project subdirectory`.
-  - **Page 1: Project Name & Location**:
+  - [x] **Page 1: Project Name & Location**:
     - Validates project name against legal SystemVerilog/filesystem identifiers.
-  - **Page 2: Project Type Selection**:
+  - [x] **Page 2: Project Type Selection**:
     - Authentic Vivado project categorization with exact descriptions:
       1. **RTL Project**: Standard design flow with sources, IP, elaboration, synthesis, JIT simulation, STA. Checkbox: `[ ] Do not specify sources at this time`.
       2. **Post-Synthesis Project**: Gate-level netlist flow with resource inspection and placement/routing timing closure. Checkbox: `[ ] Do not specify sources at this time`.
       3. **I/O Planning Project**: Pin assignment, package planning, and I/O banking without HDL design sources.
       4. **Imported Project**: Import from Synplify, XST, or legacy ISE files.
       5. **Example Project**: Launch curated aerospace hardware systems with preconfigured testbenches.
-  - **Page 3: Default Part & Board Catalog Database (`partsCatalog.ts`, `boardsCatalog.ts`)**:
+  - [x] **Page 3: Default Part & Board Catalog Database (`partsCatalog.ts`, `boardsCatalog.ts`)**:
     - **Parts Tab**:
       - Multi-parameter filtering: Family, Speed Grade, and text search.
       - Tabular matrix with authentic Xilinx specs: `Part`, `Family`, `Package`, `Speed`, `LUTs`, `Flip-Flops`, `BRAMs`, `DSPs`, `IOBs` across Artix-7, Kintex-7, Virtex-7, Zynq-7000, UltraScale+, and Axiom Virtual Silicon.
     - **Boards Tab**:
       - Vendor filters (`alpha-data.com`, `digilent.com`, `xilinx.com`, `avnet.com`), text search.
       - Rich cards: ADM-PCIE-7V3, Digilent Nexys A7-100T, Basys 3, Zybo Z7-20, Avnet Ultra96-V2, ZCU102, Alveo U280.
-  - **Automatic "untitled" Source Generation**:
+  - [x] **Automatic "untitled" Source Generation**:
     - For RTL projects, automatically generates initial `untitled.v` module in **Design Sources** (`sources_1`) and sets it as the active open tab in Monaco editor.
-  - **Wizard Navigation**:
+  - [x] **Wizard Navigation**:
     - Step progress indicators (`1. Name & Location`, `2. Project Type`, `3. Default Part`, `4. Summary`).
     - Standard navigation buttons: `< Back`, `Next >`, `Finish`, `Cancel`.
 
