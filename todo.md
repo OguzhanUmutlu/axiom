@@ -85,29 +85,31 @@
     - Step progress indicators (`1. Name & Location`, `2. Project Type`, `3. Default Part`, `4. Summary`).
     - Standard navigation buttons: `< Back`, `Next >`, `Finish`, `Cancel`.
 
-- [ ] **Phase 26: Futuristic Multi-Language Source Creation Wizard & Universal HDL LSP Engine - [P1]**
-  - **Futuristic Source Creation UI (`AddSourceModal.tsx` overhaul)**:
-    - Elegant modal with dual creation tabs: "Create New File" and "Add Existing Files" (native OS file picker on Desktop or drag-and-drop).
+---
+
+## Completed
+
+- [x] **Phase 26: Futuristic Multi-Language Source Creation Wizard & Universal HDL LSP Engine - [P1]**
+  - [x] **Futuristic Source Creation UI (`AddSourceModal.tsx` overhaul)**:
+    - Elegant modal with dual creation tabs: "Create New File" and "Add Existing Files" (native OS file picker on Desktop via `openFilesDialog` / `pick_files` and multi-file drag-and-drop).
     - Ultra-fast file creation: single input for file name (e.g. `alu_control`), target fileset (**Design Sources** `sources_1`, **Simulation Sources** `sim_1`, or **Constraints** `constrs_1`).
-    - Optional module name with intelligent auto-defaulting to the file stem.
-  - **Full Multi-HDL File Type Support**:
+    - Smart module name derivation auto-defaulting to the file stem, with live syntax-highlighted code preview.
+  - [x] **Full Multi-HDL File Type Support**:
     - **Verilog** (`.v`): IEEE 1364 standard module boilerplate.
     - **Verilog Header** (`.vh`): Include file with macro guards (`#ifndef / #define`).
     - **SystemVerilog** (`.sv`): IEEE 1800 standard SystemVerilog module with logic/interface ports.
     - **VHDL** (`.vhd`, `.vhdl`): IEEE 1076 standard entity-architecture declaration.
     - **Memory File** (`.mem`, `.hex`, `.coe`): Memory initialization vectors with radix headers (`memory_initialization_radix=16; memory_initialization_vector=...`).
     - **Constraints** (`.xdc`): Physical package pin and clock timing constraints.
-  - **Monaco Syntax Highlighters & In-RAM LSPs for All 5 Types**:
-    - Dedicated Monarch tokenizers: VHDL (`vhdl.ts`), Memory Files (`mem.ts` / `coe.ts`), Verilog/SV, and XDC.
+  - [x] **Monaco Syntax Highlighters & In-RAM LSPs for All 5 Types**:
+    - Dedicated Monarch tokenizers: VHDL (`monacoVhdl.ts`), Memory Files (`monacoMem.ts`), Verilog/SV (`monacoVerilog.ts`), and XDC (`monacoXdc.ts`).
     - In-RAM LSP validation & error markers for each format:
-      - VHDL: Entity/architecture mismatch checks, port clause syntax validation.
-      - Memory Files: Address format validation, hexadecimal width check, boundary overrun detection.
+      - VHDL: Entity/architecture mismatch checks (`AXIOM_VHDL_E001`), port direction checks (`AXIOM_VHDL_E002`), unclosed delimiter balance (`AXIOM_VHDL_E003`), clocked process sensitivity warning (`AXIOM_VHDL_W001`).
+      - Memory Files: Address format validation (`AXIOM_MEM_E004`), hexadecimal width checks (`AXIOM_MEM_W001`), radix validation (`AXIOM_MEM_E001`), missing vectors (`AXIOM_MEM_E002`), invalid digits (`AXIOM_MEM_E003`).
       - SystemVerilog/Verilog: Full 10-rule static analysis linter.
       - XDC: Vivado physical pin and clock constraint validator.
-
----
-
-## Completed
+    - Dynamic editor language switching, breadcrumbs, and distinct tab/tree icons per language.
+    - Universal CLI linter: `axiom lint <FILE>` automatically routing to Verilog, VHDL, Memory, or XDC linters based on file extension.
 
 - [x] **Phase 21: Live PPA (Power-Performance-Area) Pareto Frontier & Multi-Part Silicon Cost Forecaster - [P2]**
   - [x] **Unified Power-Performance-Area Evaluator (`crates/telemetry/src/ppa.rs`)**:
