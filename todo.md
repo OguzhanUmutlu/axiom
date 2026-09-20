@@ -14,19 +14,284 @@
 ---
 ## In Progress
 
-*(None currently active - Phase 14.1 complete)*
+- (No active items in progress — Phase 19 completed successfully)
 
 ---
 
 ## Todo
 
 ### Future Enhancement Roadmap
-- [ ] **Phase 15: Automated Static Timing Analysis (STA) Engine & SDC / XDC Timing Constraints Propagation**: False paths, multi-cycle paths, and topological graph slack calculation.
-- [ ] **Phase 16: Interactive Micro-Architectural Block Diagram Synthesis**: Automatic macro-clustering for FSMs, ALUs, memory arrays, and register files.
+
+- [ ] **Phase 22: In-RAM Temporal Logic Assertion Radar (Live SVA / PSL Protocol Verification) - [P2]**
+  - **In-Engine Temporal Logic Evaluator (`crates/sim/src/assertion.rs`)**:
+    - Parser and runtime checker for IEEE 1800 SystemVerilog Assertions (`assert property (@(posedge clk) req |-> ##[1:4] ack);`).
+    - Supports overlapping implications (`|->`), non-overlapping (`|=>`), cycle delay ranges (`##[min:max]`), consecutive repetitions (`[*N]`), and `$rose`/`$fell`/`$past`.
+  - **Waveform Timeline Violation Markers & Diagnostics Dock**:
+    - Real-time failure flags dropped onto the waveform timeline at the exact picosecond of protocol breach.
+    - 1-click jump from violation card to Monaco RTL source line with explanatory failure diagnostic.
+
+- [ ] **Phase 23: Aerospace Custom Window Frame, Application Menu System & Auto-Save Engine - [P1]**
+  - **Universal Acrylic Window Frame (`WindowFrame.tsx`, `axiom-desktop`)**:
+    - Seamless acrylic window frame operating across both Tauri Desktop (frameless mode with native OS window drag region `data-tauri-drag-region`, window title, minimize `—`, maximize/restore `□`, and close `✕` buttons) and Web Studio (embedded header mode).
+    - Visual indicators for active project, target FPGA silicon, compile status, and auto-save state.
+  - **Vivado-Grade Application Menu Bar (`MenuBar.tsx`, `menuCommands.ts`)**:
+    - **File**: New Project... (`Ctrl+Shift+N`), Open Project... (`Ctrl+O`), Save File (`Ctrl+S`), Save All (`Ctrl+Shift+S`), **Auto Save** toggle (default ON, persistent), Add Sources... (`Ctrl+A`), Export Project (.json), Close Project, Exit (`Alt+F4`).
+    - **Edit**: Undo (`Ctrl+Z`), Redo (`Ctrl+Y`), Cut, Copy, Paste, Find (`Ctrl+F`), Replace (`Ctrl+H`), Format HDL Document (`Shift+Alt+F`), Comment Selection (`Ctrl+/`).
+    - **View**: Toggle Sidebar (`Ctrl+B`), Toggle Bottom Dock (`Ctrl+J`), Zoom In (`Ctrl+=`), Zoom Out (`Ctrl+-`), Reset Zoom (`Ctrl+0`), Fullscreen (`F11`), Maximize Active Pane (`Ctrl+M`), Visualizer Switcher (Schematic, Microarch, Waves, Virtual Lab, Timing Radar, Multi-Die).
+    - **Flow**: Run Simulation (`F5`), Pause (`F6`), Step +1ns, Step +100ps, Step Delta ($\delta$), Reset to $t=0$, Compile Design (`Ctrl+Enter`), Static Timing Analysis (STA), Silicon Copilot...
+    - **Tools**: Protocol Decoder..., Silicon Time Machine Replay..., RTL Code Coverage Heatmap..., Command Palette (`Ctrl+K`), Settings / Preferences...
+    - **Help**: Axiom Documentation, Keyboard Shortcuts Reference, Check for Updates..., GitHub Repository, About Axiom EDA.
+  - **Persistent Multi-Runtime Auto-Save Engine (`autoSaveManager.ts`)**:
+    - Non-blocking 500ms debounced auto-save directly writing dirty editor buffers to disk (in Desktop Tauri mode via `fs_write_file`) or IndexedDB/localStorage (in Web mode).
+    - Visual save state pill in the menu bar (`Auto-Save: ON [Saved]`). User toggle in `File -> Auto Save` persisted in `localStorage`.
+
+- [ ] **Phase 24: Continuous Release Version Manifest & Auto-Update Supervision System - [P2]**
+  - **Automated GitHub Pages Release Manifest (`version.json`)**:
+    - Automated CI/CD workflow publishing `version.json` and `studio/version.json` on `https://axiom.aerovex.net/version.json`.
+    - Manifest payload: latest commit SHA, LTS release tag, build timestamp, release notes summary, and binary download URLs for Linux/macOS/Windows.
+  - **Client-Side Update Checker & LTS Watchdog (`updateChecker.ts`)**:
+    - Compares embedded compile-time commit hash (`__COMMIT_HASH__` / `AXIOM_COMMIT_HASH`) against remote `version.json` commit SHA.
+    - Triggered non-intrusively on launch, periodic 1-hour interval, and manual "Check for Updates..." in Help menu.
+  - **Aerospace Acrylic Update Prompt (`UpdatePromptModal.tsx`)**:
+    - Floating toast / acrylic dialog notifying user when a new LTS release/commit is deployed.
+    - Displays commit SHA diff, release highlights, and 1-click update button:
+      - Web: Clears service worker / cache storage and refreshes immediately (`[ 🚀 Update to Latest Version ]`).
+      - Desktop: Direct binary updater or download prompt.
+
+- [ ] **Phase 25: Vivado-Grade Multi-Step Project Wizard & Silicon Catalog Database (Parts & Boards) - [P1]**
+  - **Project Auto-Naming & Subdirectory Conventions**:
+    - Default project naming automatically discovering existing projects and incrementing: `project_1`, `project_2`, `project_3`.
+    - Project location folder browser with native desktop folder picker (`dialog.open({ directory: true })` on Tauri) guarded by `isDesktop()` detection.
+    - Checkbox: `[x] Create project subdirectory`.
+  - **Page 1: Project Name & Location**:
+    - Validates project name against legal SystemVerilog/filesystem identifiers.
+  - **Page 2: Project Type Selection**:
+    - Authentic Vivado project categorization replacing old starter template cards:
+      1. **RTL Project**: Standard design flow with sources, IP, elaboration, synthesis, JIT simulation, STA. Checkbox: `[ ] Do not specify sources at this time`.
+      2. **Post-Synthesis Project**: Gate-level netlist flow with resource inspection and placement/routing timing closure. Checkbox: `[ ] Do not specify sources at this time`.
+      3. **I/O Planning Project**: Pin assignment, package planning, and I/O banking without HDL design sources.
+      4. **Imported Project**: Import from Synplify, XST, or legacy ISE files.
+      5. **Example Project**: Launch curated aerospace hardware systems with preconfigured testbenches.
+  - **Page 3: Default Part & Board Catalog Database (`partsCatalog.ts`, `boardsCatalog.ts`)**:
+    - **Parts Tab**:
+      - Multi-parameter filtering: **Category** (All, General Purpose, Kintex, Virtex, Artix, Zynq, Versal), **Family** (Artix-7, Kintex-7, Virtex-7, Zynq-7000, Kintex UltraScale+, Virtex UltraScale+), **Package** (All, ffg1157, ffg1158, ffg1927, csg324, ffvb676, etc.), **Temperature** (All, Commercial, Industrial, Aerospace/Extended), **Speed Grade** (All, -1, -2, -2L, -3), and interactive text search.
+      - Reset All Filters button.
+      - Interactive tabular matrix with realistic Xilinx specs: `Part`, `I/O Pin Count`, `Available IOBs`, `LUT Elements`, `Flip Flops`, `Block RAMs`, `UltraRAMs`, `DSPs` (including `xc7vx415tffg1158-1`, `xc7vx415tffg1927-3`, `xc7vx485tffg1157-2`, `xc7a100tcsg324-1`, `xcku5p-ffvb676-2-e`, etc.).
+    - **Boards Tab** (as shown in user's uploaded image `media_1789893734769.png`):
+      - Filters: **Vendor** (All, alpha-data.com, xilinx.com, digilent.com, avnet.com), **Name** search.
+      - Rich grid/table: `Display Name`, `Preview` (visual hardware board thumbnail/render), `Vendor`, `File/Version`, and target FPGA part.
+      - Supported boards: Alpha-Data ADM-PCIE-7V3, Kintex-Ultrascale Alphadata board, Ultra96 Evaluation Platform, Digilent Nexys A7, Basys 3, ZCU102, Alveo U280.
+  - **Wizard Navigation**:
+    - Step indicators (`1. Project Name`, `2. Project Type`, `3. Default Part`, `4. Summary`).
+    - Standard navigation buttons: `< Back`, `Next >`, `Finish`, `Cancel`.
+
+- [ ] **Phase 26: Futuristic Multi-Language Source Creation Wizard & Universal HDL LSP Engine - [P1]**
+  - **Futuristic Source Creation UI (`AddSourceModal.tsx` overhaul)**:
+    - Elegant modal with dual creation tabs: "Create New File" and "Add Existing Files" (native OS file picker on Desktop or drag-and-drop).
+    - Ultra-fast file creation: single input for file name (e.g. `alu_control`), target fileset (**Design Sources** `sources_1`, **Simulation Sources** `sim_1`, or **Constraints** `constrs_1`).
+    - Optional module name with intelligent auto-defaulting to the file stem.
+  - **Full Multi-HDL File Type Support**:
+    - **Verilog** (`.v`): IEEE 1364 standard module boilerplate.
+    - **Verilog Header** (`.vh`): Include file with macro guards (`#ifndef / #define`).
+    - **SystemVerilog** (`.sv`): IEEE 1800 standard SystemVerilog module with logic/interface ports.
+    - **VHDL** (`.vhd`, `.vhdl`): IEEE 1076 standard entity-architecture declaration.
+    - **Memory File** (`.mem`, `.hex`, `.coe`): Memory initialization vectors with radix headers (`memory_initialization_radix=16; memory_initialization_vector=...`).
+    - **Constraints** (`.xdc`): Physical package pin and clock timing constraints.
+  - **Monaco Syntax Highlighters & In-RAM LSPs for All 5 Types**:
+    - Dedicated Monarch tokenizers: VHDL (`vhdl.ts`), Memory Files (`mem.ts` / `coe.ts`), Verilog/SV, and XDC.
+    - In-RAM LSP validation & error markers for each format:
+      - VHDL: Entity/architecture mismatch checks, port clause syntax validation.
+      - Memory Files: Address format validation, hexadecimal width check, boundary overrun detection.
+      - SystemVerilog/Verilog: Full 10-rule static analysis linter.
+      - XDC: Vivado physical pin and clock constraint validator.
 
 ---
 
 ## Completed
+
+- [x] **Phase 21: Live PPA (Power-Performance-Area) Pareto Frontier & Multi-Part Silicon Cost Forecaster - [P2]**
+  - [x] **Unified Power-Performance-Area Evaluator (`crates/telemetry/src/ppa.rs`)**:
+    - Concurrent calculation of Area (LUTs, Flip-Flops, BRAMs, DSP48s), Performance ($F_{\text{max}}$, latency cycles, slack, logic depth), and Power ($P_{\text{dynamic}} + P_{\text{leakage}}$ with exponential thermal scaling).
+    - Multi-target FPGA fitting advisor across 6 standard parts (Artix-7, Zynq-7000, Kintex-7, Virtex-7, Kintex UltraScale+, Virtex UltraScale+), evaluating capacity margins and BOM cost savings.
+  - [x] **Open-Source ASIC Silicon Area & GDSII Cost Forecaster**:
+    - Standard cell area mapping for open-source PDKs (SkyWater 130nm, IHP SG13G2) calculating silicon die footprint in $\text{mm}^2$, dimensions ($W \times H$), pad ring IO count, and MPW shuttle tapeout costs.
+    - 11-point Pareto frontier curve across frequency operating points.
+  - [x] **Dual-Runtime IPC, WebAssembly & CLI (`crates/wasm/`, `crates/desktop/`, `crates/cli/`)**:
+    - WebAssembly bindings: `wasm_evaluate_ppa` and `AxiomEngine.evaluate_ppa(...)`.
+    - Tauri native IPC: `evaluate_ppa` command.
+    - CLI subcommand: `axiom ppa <FILE> [-t <TOP>] [--device <DEV>] [--freq <MHZ>] [--temp <C>] [--voltage <V>] [--pdk <PDK>] [--json]` with colorized box tables.
+  - [x] **Studio Visualizer & Sensitivity Tuning (`ui/src/components/PpaParetoViewer.tsx`)**:
+    - 3 Executive KPI cards: Timing & Performance ($F_{\text{max}}$, Slack), Power & Thermal ($P_{\text{total}}$, $T_j$), Area & Resources (LUT/FF/BRAM/DSP, ASIC kGE, FOM Score).
+    - 2D Canvas interactive Pareto Frontier chart with metric toggles (Power / Energy / Slack) and dynamic cursor hover tooltip.
+    - Multi-target FPGA capacity table with 1-click device switching and optimal device star recommendations.
+    - ASIC GDSII forecaster card with die diagram and MPW prototype / full mask set cost breakdowns.
+    - "What-If" sensitivity sliders for Clock Frequency, Junction Temp, Core Voltage, and Switching Activity factor ($\alpha$).
+
+- [x] **Phase 20: Silicon Copilot — Real-Time Timing Slack Auto-Pipelining & Logic Cone Slicing - [P1]**
+  - [x] **Analytical Cut-Point Optimization in Rust STA (`crates/sta/src/autopipeline.rs`)**:
+    - Evaluates all candidate cut points along critical timing paths, calculating stage delays ($T_{\text{stage1}}$, $T_{\text{stage2}}$), predicted WNS, and achievable $F_{\text{max}}$.
+    - Formulates optimal stage partitioning: $\arg\max_k \min(\text{Slack}_{\text{stage1}}(k), \text{Slack}_{\text{stage2}}(k))$.
+  - [x] **IEEE 1800 SystemVerilog Refactoring Engine (`crates/sta/src/autopipeline.rs`)**:
+    - Driver-shadow pipelining: renames the driver to `<net>_stage1` and inserts synchronous register stage (`always @(posedge clk or negedge rst_n)`), keeping downstream consumers unchanged.
+    - Robust dynamic-programming LCS diff engine generating colored unified diff previews without infinite loops.
+  - [x] **Dual-Runtime IPC & WebAssembly Bindings (`crates/wasm/`, `crates/desktop/`)**:
+    - WebAssembly bindings: `wasm_recommend_pipeline`, `wasm_apply_pipeline`.
+    - Tauri IPC commands: `recommend_pipeline`, `apply_pipeline`.
+    - Web Worker message protocols: `RECOMMEND_PIPELINE`, `APPLY_PIPELINE` with zero main-thread freezing.
+  - [x] **CLI Subcommand (`axiom copilot <FILE> [-t <TOP>] [--xdc <XDC>] [--apply] [--out <OUT>]`)**:
+    - Colorized terminal report with formatted box-drawing tables, optimal cut highlighting, before/after WNS and $F_{\text{max}}$ gains, and unified diff preview.
+  - [x] **Interactive Schematic Visualizer Illumination (`SchematicViewer.tsx`)**:
+    - Glowing red wire channels (`#f43f5e`, `shadowBlur: 14`) on timing violation paths.
+    - Per-gate delay badges (`+0.18 ns LUT`) and per-net delay badges (`+0.09 ns net`).
+    - Dedicated `Fan-Out [O]` toolbar button and HUD auto-pipeline trigger button (`Auto-Pipeline Path`).
+  - [x] **Silicon Copilot Studio UI & Monaco Integration (`AutoPipelineModal.tsx`, `HdlEditor.tsx`, `TimingRadarViewer.tsx`)**:
+    - `AutoPipelineModal.tsx`: Before/After KPI cards, interactive cut-point selector, syntax-highlighted diff viewer, and 1-click `[ 🚀 Apply Pipelining & Re-elaborate ]`.
+    - Monaco editor action strip: glowing lightning pill button (`⚡ Auto-Pipeline Available: +XX MHz`) when timing slack is violated.
+    - Timing Radar critical path card: 1-click `Auto-Pipeline Path` button.
+
+- [x] **Phase 19: Live RTL Statement & Branch Code Coverage Engine ("In-Editor Heatmap") & FSM State Coverage - [P1]**
+  - [x] **In-RAM Static AST Coverage Instrumentation (`crates/syntax/src/coverage.rs`)**:
+    - Zero-overhead static AST visitor traversing statements, branch conditions (`if/else`, `case/default`), ternary expressions (`? :`), and net declarations.
+    - Captures 1-indexed source line numbers, columns, and code snippets into `AstCoveragePoints`, `StatementPoint`, and `BranchPoint`.
+  - [x] **Real-Time Simulation Coverage Tracker (`crates/sim/src/coverage.rs`, `simulator.rs`)**:
+    - Stratified event and discrete delta cycle execution hit accumulation with zero simulation overhead (< 3%).
+    - Bit-level toggle activity tracking: records distinct $0 \to 1$ and $1 \to 0$ transitions per bit across all nets.
+    - Branch True/False outcome tracking with condition evaluation during event scheduling and continuous assignment evaluation.
+    - Integrated directly into `AxiomSimulator` with automatic AST instrumentation during circuit elaboration.
+  - [x] **Standard Industry Exporters (`generate_lcov`, `generate_html`)**:
+    - Compliant LCOV (`.info`) exporter with standard `SF:`, `DA:`, `BRDA:`, `LF:`, `LH:`, `end_of_record` syntax.
+    - Self-contained interactive dark-mode HTML coverage dashboard with styled tables, progress meters, and source code previews.
+  - [x] **Universal Multi-Runtime & CLI Subcommand**:
+    - CLI subcommand `axiom coverage <FILE> -t <TOP> [--ticks <N>] [--lcov <PATH>] [--html <PATH>] [--json]`.
+    - WebAssembly bindings (`get_coverage`, `reset_coverage`, `export_lcov`, `export_html_report`, `wasm_get_coverage`).
+    - Web Worker message protocols (`GET_COVERAGE`, `RESET_COVERAGE`, `EXPORT_LCOV`, `EXPORT_HTML_REPORT`).
+    - Tauri IPC commands (`get_coverage`, `reset_coverage`, `export_lcov`, `export_html_report`).
+    - Universal frontend bridge methods in `engineBridge.ts` with transparent runtime tiering.
+  - [x] **Monaco In-Editor Heatmap & Glyph Margin (`HdlEditor.tsx`)**:
+    - 1-click toggle button `[ 📊 Coverage: ON/OFF ]` with live overall percentage display.
+    - Green (`Covered`), Amber (`Partial branch`), and Red (`Uncovered`) glyph margin dots and line background tints.
+    - Interactive hover cards detailing statement execution hit counts, branch True/False ratios, and source line metadata.
+  - [x] **Coverage Dock Tab & Filterable Line Inspector (`UnifiedBottomDock.tsx`)**:
+    - 4 KPI metric cards: Statement %, Branch %, Toggle %, and FSM State %.
+    - Sub-toolbar with filter pills (All, Covered, Partial, Uncovered) and instant search.
+    - Interactive line table with 1-click jump to line in Monaco editor.
+    - Action buttons for 1-click LCOV export, HTML dashboard export, and simulation reset.
+  - [x] **FSM State & Transition Coverage Deep-Dive (`FsmBubbleModal.tsx`)**:
+    - State coverage halos and execution hit counts (`✓ N hits`).
+    - Traversed transition arcs illuminated in emerald green with hit count labels.
+    - Modal header FSM coverage badge displaying covered state count and percentage.
+  - [x] **100% Verification**:
+    - 81 / 81 Rust workspace unit and integration tests passing cleanly (`cargo test --workspace`).
+    - 6 / 6 CLI unit and integration tests passing (`cargo test -p axiom-cli`).
+    - TypeScript compilation passing with 0 errors (`npx tsc --noEmit`).
+    - Vite production UI build passing (`npm --prefix ui run build`).
+    - VitePress documentation portal build passing (`npm --prefix docs run docs:build`).
+
+- [x] **Phase 18: Time-Travel Bidirectional State Replay ("Silicon Time Machine") & Live Protocol Decoders (UART, SPI, I2C, AXI) - [P0]**
+  - [x] **In-RAM Delta Snapshot Manager (`crates/sim/src/snapshot.rs`)**:
+    - Ultra-lightweight copy-on-write snapshotting capturing full circuit state (`SimStateArena`), register values, scheduled stratified event queue, and simulation time $(t, \delta)$.
+    - Ring-buffer memory bounding (< 64 MB) with automatic eviction of stale states.
+    - Bidirectional time navigation in `AxiomSimulator`: reverse delta stepping (`step_back_delta`), reverse time leaps (`step_back_time`), and random-access time scrubbing (`scrub_to_time`).
+  - [x] **Waveform Timeline Scrub-to-State Synchronization (`WaveformViewer.tsx`)**:
+    - Scrubbing the waveform timeline cursor immediately rewinds hardware state across the entire engine.
+    - Time-Machine state sync toggle (`[Time-Machine: SYNC ON/OFF]`) coordinating reverse picosecond restoration across gate probes, register files, and tactile LEDs.
+  - [x] **In-Engine Hardware Protocol Decoders (`crates/sim/src/protocol/`)**:
+    - **UART Decoder (`uart.rs`)**: Autobaud bit-center sampling, start/stop bit validation, parity checking, and ASCII/Hex byte packet assembly.
+    - **SPI Decoder (`spi.rs`)**: CPOL/CPHA modes 0..3 matching, Chip Select framing, full-duplex MOSI/MISO byte decoding.
+    - **I2C Decoder (`i2c.rs`)**: Start/Stop condition detector, 7-bit device address, ACK/NACK validation, and multi-byte read/write transaction grouping.
+    - **AXI4 & AXI-Stream Decoder (`axi.rs`)**: Burst addressing, channel handshake tracking (TVALID/TREADY, AW/W/B/AR/R), wait-state cycle count, and transaction latency telemetry.
+    - Unified decode runner (`decode_protocol_request()`) with CLI, WASM, and Tauri bindings.
+  - [x] **Studio Protocol Decoder Modal & Waveform Overlays**:
+    - `ProtocolDecoderModal.tsx`: Dedicated configuration modal with automatic signal mapping (`guessPinMap`), baud rate/polarity/mode selectors, live transaction packet inspector table with timestamps, latencies, hex/ascii payloads, and errors.
+    - High-DPI canvas overlay in `WaveformViewer.tsx` rendering color-coded transaction ribbons with pill labels directly aligned with signal transitions.
+  - [x] **Dual-Runtime & CLI Subcommands**:
+    - CLI subcommands `axiom replay <FILE> -t <TOP> [--until <TIME>] [--rewind <TIME>]` and `axiom decode <FILE> --protocol <uart|spi|i2c|axi>`.
+    - WebAssembly bindings `step_back_delta`, `step_back_time`, `scrub_to_time`, `decode_protocol`, `wasm_decode_protocol`.
+    - Web Worker message protocols `STEP_BACK_DELTA`, `STEP_BACK_TIME`, `SCRUB_TO_TIME`, `DECODE_PROTOCOL`.
+    - Tauri IPC commands `step_back_delta`, `step_back_time`, `scrub_to_time`, `decode_protocol`.
+  - [x] **100% Verification**:
+    - 78 / 78 Rust workspace unit & integration tests passing (`cargo test --workspace`).
+    - Clean Vite & TypeScript production build with 0 warnings or errors (`npm --prefix ui run build`).
+
+- [x] **Phase 17: Multi-FPGA Partitioning & Inter-Die Interconnect Simulation - [P0]**
+  - [x] **Multi-Die Hardware Catalog & Physical Topology (`crates/ir/src/multidie/`)**:
+    - Calibrated physical models for 2.5D Stacked Silicon Interconnect (SSIT): Virtex UltraScale+ VU9P (`xcvu9p-flgb2104-2-e`, 3 SLRs, 1,440 SLL tracks/boundary), VU13P (`xcvu13p-fhgb2104-2-e`, 4 SLRs, 3 boundaries), Dual-VU9P Prototyping Board (2 FPGAs via 256 FMC differential tracks), and Quad-VU19P 2D Mesh.
+    - Physical interconnect types: `Sll` (passive micro-bump Super Long Lines), `Laguna` (pipelined interposer registers), `PcbTrace` (board-level traces), and `TdmSerDes` (Time-Division Multiplexed serialization).
+  - [x] **Fiduccia-Mattheyses Min-Cut Hypergraph Partitioner**:
+    - Hardware resource estimation calculating Logic Cells, 36Kb BRAMs, and DSP48E2 slices per module.
+    - Min-cut partitioning balancing logic cell budgets across dies while minimizing crossing cut-nets: $\sum \text{width}(net)$.
+    - SLL track capacity checking and overflow detection (`AXIOM_SLR_E001_SLL_OVERFLOW`).
+    - Strict enforcement of user XDC constraints (`USER_SLR_ASSIGNMENT`).
+    - Dynamic interposer capacitive power calculation: $P_{\text{sll}} = \frac{1}{2} C_{\text{sll}} V^2 f \alpha$.
+  - [x] **Interconnect Delay Injection into STA & Simulation**:
+    - Added $T_{\text{sll}} \approx 1,500\text{ ps}$, $T_{\text{laguna}} \approx 350\text{ ps}$ ($+1$ cycle), and $T_{\text{pcb}} \approx 4,500\text{ ps}$ propagation delays in `crates/sta/src/delay_model.rs`.
+    - Flagged inter-die edges in `crates/sta/src/graph.rs` and labeled `[SLR CROSSING]` / `[INTERPOSER]` in timing waterfall.
+  - [x] **Universal Dual-Runtime & CLI Subcommand**:
+    - CLI subcommand `axiom partition <FILE> [-t <TOP>] [--device <PART>] [--laguna] [--tdm <N>] [--json]` outputting colored SLR resource utilization tables, interposer boundary saturation, and cut-net breakdowns.
+    - WebAssembly binding `wasm_partition_multidie(...)` and Web Worker protocol `PARTITION_MULTIDIE` with non-blocking execution.
+    - Tauri IPC command `partition_multidie` for native desktop operation.
+    - Tiered bridge coordinator in `engineBridge.ts` (Tauri -> Worker -> WASM -> client model fallback).
+  - [x] **Interactive Multi-Die Studio Visualizer (`MultiDieViewer.tsx`)**:
+    - High-DPI HTML5 canvas rendering 2.5D physical floorplan: silicon interposer base plate, SLR0/SLR1/SLR2 die containers, live resource utilization gauges (Logic Cells, BRAM, DSP), micro-bump arrays, and boundary saturation channels.
+    - Cut-net flyline splines with glowing highlights, bit-width badges, and Laguna flip-flop indicators.
+    - Interactive controls: target device selector, Laguna pipeline register switch (`+1c, 350ps`), TDM ratio selector (1:1, 4:1, 8:1, 16:1), camera zoom/pan/fit, and dynamic module re-assignment popover.
+    - Searchable bottom cut-nets inspector table with bit-widths, driver/load dies, required SLL tracks, delay/latency, and 1-click cross-probing to Schematic DAG and Monaco HDL editor.
+  - [x] **Seamless Studio & Mobile Navigation**:
+    - Integrated `[ 🔲 Multi-Die / SLR ]` tab into split visualizer ribbon, single visualizer view (`centerView === "multidie"`), maximized view (`maximizedPanel === "multidie"`), and mobile off-canvas drawer (`MobileDrawer.tsx`).
+    - Added multi-die target devices to `FPGA_TARGET_DEVICES` in `projectModel.ts`.
+  - [x] **100% Verification**:
+    - 80 / 80 Rust workspace unit & integration tests passing (`cargo test --workspace`).
+    - Clean Vite & TypeScript production build with 0 warnings or errors (`npm --prefix ui run build`).
+
+- [x] **Phase 16: Interactive Micro-Architectural Block Diagram Synthesis - [P0]**
+  - [x] **Macro-Clustering & Hardware Macro Detectors (`crates/ir/src/microarch/`)**:
+    - Built comprehensive AST and BIR detectors identifying FSMs (`FsmDetector`), multi-op ALUs (`AluDetector`), 2D register arrays and BRAMs (`MemDetector`), RV32 instruction decoders, PC/counters/accumulators and DSP48E2 MAC slices (`DatapathDetector`).
+    - Topo-grid layout algorithm partitioning macro blocks into Control Row ($Y=50$) and Datapath Row ($Y=220$), routing thick datapath buses and control wires.
+    - Elaborator parameter resolution: resolved `localparam` constants directly during procedural block elaboration without `SignalNotFound` errors.
+  - [x] **Dual-Runtime Execution & CLI Subcommand**:
+    - CLI subcommand `axiom microarch <FILE> [-t <TOP>]` outputting JSON block diagrams and macro clustering info.
+    - WebAssembly binding `wasm_synthesize_microarch(...)` and Web Worker protocol `SYNTHESIZE_MICROARCH` for non-blocking in-browser execution.
+    - Tauri IPC command `synthesize_microarch` for native desktop operation.
+    - Tiered bridge coordinator in `engineBridge.ts` (Tauri -> Worker -> WASM -> deterministic client model fallback).
+  - [x] **Deep-Dive Semantic LOD Inspector Modals (`ui/src/components/microarch/`)**:
+    - `FsmBubbleModal.tsx`: Canvas-rendered state transition bubble diagram with radial circular layout, Bezier curved transition arcs, illuminated active state neon glow, and self-loop arcs.
+    - `AluInspectorModal.tsx`: Live datapath monitor, Hex/Dec/Bin radix selector, active operation truth table row highlighting, and status flags indicator (Zero, Carry, Negative, Overflow).
+    - `RegFileModal.tsx`: 8-word/N-word register matrix with RISC-V ABI aliases, live stored values in selected radix, and simultaneous dual read ports ($rs_1, rs_2$) and write port ($rd$) activity tracking.
+  - [x] **Interactive Microarch Studio Visualizer (`MicroarchViewer.tsx`)**:
+    - High-DPI HTML5 canvas viewer with smooth drag panning, cursor-anchored wheel zooming, Zoom Fit (`Maximize2`), and camera persistence (`axiom_microarch_cam_${activeDesignId}`).
+    - Thick datapath buses (3px-4px) with bit-width slashes (`/32`), live value badges, and control wire styling (dashed clock/reset in `#f43f5e`/`#ef4444`).
+    - Search filter, radix toggle (`HEX`/`DEC`/`BIN`), visibility toggles (`Buses`, `Control`, `Values`), and selection HUD with quick Jump-to-Code.
+    - Double-click and button triggers opening deep-dive inspector modals.
+  - [x] **Seamless Studio & Mobile Integration**:
+    - Added `[ 🏛️ Architecture ]` view tab in `App.tsx` visualizer ribbon and `MobileDrawer.tsx`.
+    - Integrated with dual-pane split studio, single visualizer view, and mobile off-canvas drawer.
+  - [x] **100% Verification**:
+    - 76 / 76 Rust workspace unit & integration tests passing (`cargo test --workspace`).
+    - Clean Vite & TypeScript build with 0 warnings or errors (`npm --prefix ui run build`).
+
+- [x] **Phase 15: Automated Static Timing Analysis (STA) Engine & SDC / XDC Timing Constraints Propagation - [P0]**
+  - [x] **Dedicated STA Crate Architecture (`crates/sta/`)**:
+    - Created `axiom-sta` crate in Cargo workspace with timing DAG data structures, pin delay models, and topological traversal algorithms.
+    - Implemented calibrated 7-Series & UltraScale+ delay models: $T_{\text{co}}$, $T_{\text{lut}}$, $T_{\text{dsp}}$, $T_{\text{bram}}$, $T_{\text{carry}}$, $T_{\text{setup}}$, $T_{\text{hold}}$, and fanout-aware wire load model ($d_{\text{wire}} = 25\text{ ps} + 12\text{ ps} \times \log_2(\text{fanout})$).
+  - [x] **SDC / XDC Timing Constraints Parser & Propagation**:
+    - Built comprehensive Tcl/SDC tokenizer and parser handling `create_clock`, `create_generated_clock`, `set_input_delay`, `set_output_delay`.
+    - Implemented timing exception propagation: `set_false_path` (severing false paths from timing consideration), `set_multicycle_path` (exact multicycle setup/hold window scaling, e.g. $+2000\text{ ps}$ slack expansion), `set_clock_groups` (asynchronous clock domain grouping), and `set_max_delay`/`set_min_delay`.
+  - [x] **Topological Graph Traversal & Slack Calculation**:
+    - Forward topological pass computing early/late arrival times ($T_{\text{arr\_early}}$, $T_{\text{arr\_late}}$) at every netlist vertex.
+    - Backward topological pass computing required times ($T_{\text{req\_early}}$, $T_{\text{req\_late}}$) from capture endpoints.
+    - Slack aggregation: Worst Negative Slack (WNS), Total Negative Slack (TNS), Worst Hold Slack (WHS), Total Hold Slack (THS), and achievable maximum operating frequency ($F_{\text{max}} = \frac{1}{T_{\text{clk}} - \text{WNS}}$).
+  - [x] **Automated Clock Domain Crossing (CDC) Structural Analysis**:
+    - Mapped inter-clock domain transfers from source flip-flop to destination flip-flop per assigned target.
+    - Recognized 2-FF / 3-FF synchronizers (Safe), asynchronous clock groups / false paths (Constrained), and flagged unsynchronized cross-domain transfers as Critical Metastability Hazards.
+  - [x] **Universal Dual-Runtime & Studio Visualizer Overhaul**:
+    - CLI subcommand `axiom sta <FILE> [-t <TOP>] [--xdc <XDC>] [--device <DEVICE>]` outputting colored Vivado-grade `report_timing_summary` and critical path segment breakdowns.
+    - Standalone WebAssembly export `wasm_run_sta(...)` and Web Worker `RUN_STA` protocol for 100% in-browser WebAssembly timing calculation without UI thread blocking.
+    - Tauri IPC command `run_sta` for native desktop execution.
+    - Overhauled `TimingRadarViewer.tsx` and `timingModel.ts` with live STA status indicators, interactive clock constraint tuning, live WNS/TNS/WHS/$F_{\text{max}}$ updates, multi-stage waterfall with clickable stages, detailed netlist segments table, and 1-click cross-probing to Schematic DAG and Monaco HDL editor.
+  - [x] **100% Verification**:
+    - 70 / 70 tests passing across all workspace crates in `cargo test --workspace` (7 dedicated STA unit tests).
+    - Strict TypeScript & Vite production bundle compilation cleanly verified (`npm --prefix ui run build`).
+    - Documentation portal built cleanly (`npm --prefix docs run docs:build`).
 
 - [x] **Phase 14.1: Explorer Ergonomics, Right-Click Menus, Netlist Cross-Selection & Language Redesign - [P0]**
   - [x] **Right-Click Context Menu Support (`ProjectManager.tsx`, `Sidebar.tsx`)**:
