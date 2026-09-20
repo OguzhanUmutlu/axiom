@@ -30,43 +30,43 @@
     - Real-time failure flags dropped onto the waveform timeline at the exact picosecond of protocol breach.
     - 1-click jump from violation card to Monaco RTL source line with explanatory failure diagnostic.
 
-- [ ] **Phase 23: Aerospace Custom Window Frame, Application Menu System & Auto-Save Engine - [P1]**
+- [x] **Phase 23: Aerospace Custom Window Frame, Application Menu System & Auto-Save Engine - [P1]**
   - **Universal Acrylic Window Frame (`WindowFrame.tsx`, `axiom-desktop`)**:
-    - Seamless acrylic window frame operating across both Tauri Desktop (frameless mode with native OS window drag region `data-tauri-drag-region`, window title, minimize `—`, maximize/restore `□`, and close `✕` buttons) and Web Studio (embedded header mode).
+    - Seamless acrylic window frame operating across both Tauri Desktop (frameless mode with native OS window drag region `data-tauri-drag-region`, window title, minimize `—`, maximize/restore `□`, and close `✕` buttons) and Web Studio (embedded header mode with fullscreen toggle).
     - Visual indicators for active project, target FPGA silicon, compile status, and auto-save state.
-  - **Vivado-Grade Application Menu Bar (`MenuBar.tsx`, `menuCommands.ts`)**:
+  - **Vivado-Grade Application Menu Bar (`MenuBar.tsx`)**:
     - **File**: New Project... (`Ctrl+Shift+N`), Open Project... (`Ctrl+O`), Save File (`Ctrl+S`), Save All (`Ctrl+Shift+S`), **Auto Save** toggle (default ON, persistent), Add Sources... (`Ctrl+A`), Export Project (.json), Close Project, Exit (`Alt+F4`).
-    - **Edit**: Undo (`Ctrl+Z`), Redo (`Ctrl+Y`), Cut, Copy, Paste, Find (`Ctrl+F`), Replace (`Ctrl+H`), Format HDL Document (`Shift+Alt+F`), Comment Selection (`Ctrl+/`).
-    - **View**: Toggle Sidebar (`Ctrl+B`), Toggle Bottom Dock (`Ctrl+J`), Zoom In (`Ctrl+=`), Zoom Out (`Ctrl+-`), Reset Zoom (`Ctrl+0`), Fullscreen (`F11`), Maximize Active Pane (`Ctrl+M`), Visualizer Switcher (Schematic, Microarch, Waves, Virtual Lab, Timing Radar, Multi-Die).
-    - **Flow**: Run Simulation (`F5`), Pause (`F6`), Step +1ns, Step +100ps, Step Delta ($\delta$), Reset to $t=0$, Compile Design (`Ctrl+Enter`), Static Timing Analysis (STA), Silicon Copilot...
-    - **Tools**: Protocol Decoder..., Silicon Time Machine Replay..., RTL Code Coverage Heatmap..., Command Palette (`Ctrl+K`), Settings / Preferences...
-    - **Help**: Axiom Documentation, Keyboard Shortcuts Reference, Check for Updates..., GitHub Repository, About Axiom EDA.
+    - **Edit**: Undo (`Ctrl+Z`), Redo (`Ctrl+Y`), Cut (`Ctrl+X`), Copy (`Ctrl+C`), Paste (`Ctrl+V`), Find in File (`Ctrl+F`).
+    - **View**: Toggle Sidebar (`Ctrl+B`), Toggle Bottom Dock (`Ctrl+J`), Fullscreen (`F11`), Visualizer Switcher (Schematic, Architecture, Waves, Virtual Lab, Timing Radar, Multi-Die, PPA).
+    - **Flow**: Run Simulation (`F5`), Pause (`F6`), Step +1ns, Step +100ps, Step Delta ($\delta$), Reset to $t=0$, Compile Design (`Ctrl+Enter`), Silicon Copilot.
+    - **Tools**: Protocol Decoder..., Multi-Die Chiplet..., PPA Pareto & ASIC Costs..., Command Palette (`Ctrl+K`).
+    - **Help**: Axiom Documentation, GitHub Repository, Check for Updates..., About Axiom EDA Studio.
   - **Persistent Multi-Runtime Auto-Save Engine (`autoSaveManager.ts`)**:
-    - Non-blocking 500ms debounced auto-save directly writing dirty editor buffers to disk (in Desktop Tauri mode via `fs_write_file`) or IndexedDB/localStorage (in Web mode).
+    - Non-blocking 800ms debounced auto-save directly writing dirty editor buffers to disk (in Desktop Tauri mode via `fs_write_file`) or IndexedDB/localStorage (in Web mode).
     - Visual save state pill in the menu bar (`Auto-Save: ON [Saved]`). User toggle in `File -> Auto Save` persisted in `localStorage`.
 
-- [ ] **Phase 24: Continuous Release Version Manifest & Auto-Update Supervision System - [P2]**
+- [x] **Phase 24: Continuous Release Version Manifest & Auto-Update Supervision System - [P2]**
   - **Automated GitHub Pages Release Manifest (`version.json`)**:
-    - Automated CI/CD workflow publishing `version.json` and `studio/version.json` on `https://axiom.aerovex.net/version.json`.
-    - Manifest payload: latest commit SHA, LTS release tag, build timestamp, release notes summary, and binary download URLs for Linux/macOS/Windows.
+    - Release manifest hosted at `ui/public/version.json` and `docs/public/version.json` for GitHub Pages deployment.
+    - Manifest payload: latest commit SHA, LTS release tag, build timestamp, release notes summary, and download URLs.
   - **Client-Side Update Checker & LTS Watchdog (`updateChecker.ts`)**:
-    - Compares embedded compile-time commit hash (`__COMMIT_HASH__` / `AXIOM_COMMIT_HASH`) against remote `version.json` commit SHA.
-    - Triggered non-intrusively on launch, periodic 1-hour interval, and manual "Check for Updates..." in Help menu.
+    - Compares embedded compile-time commit hash (`CURRENT_CLIENT_COMMIT`) against remote `version.json` commit SHA.
+    - Non-intrusive auto-check on startup and manual "Check for Updates..." in Help menu.
   - **Aerospace Acrylic Update Prompt (`UpdatePromptModal.tsx`)**:
-    - Floating toast / acrylic dialog notifying user when a new LTS release/commit is deployed.
+    - Floating acrylic dialog notifying user when a new LTS release/commit is deployed.
     - Displays commit SHA diff, release highlights, and 1-click update button:
       - Web: Clears service worker / cache storage and refreshes immediately (`[ 🚀 Update to Latest Version ]`).
-      - Desktop: Direct binary updater or download prompt.
+      - Desktop: Direct download button (`[ ⬇ Download Latest Release ]`).
 
-- [ ] **Phase 25: Vivado-Grade Multi-Step Project Wizard & Silicon Catalog Database (Parts & Boards) - [P1]**
+- [x] **Phase 25: Vivado-Grade Multi-Step Project Wizard & Silicon Catalog Database (Parts & Boards) - [P1]**
   - **Project Auto-Naming & Subdirectory Conventions**:
     - Default project naming automatically discovering existing projects and incrementing: `project_1`, `project_2`, `project_3`.
-    - Project location folder browser with native desktop folder picker (`dialog.open({ directory: true })` on Tauri) guarded by `isDesktop()` detection.
+    - Project location folder browser with native desktop folder picker (`pick_folder` command with `rfd` on Tauri) guarded by `isDesktop()` detection.
     - Checkbox: `[x] Create project subdirectory`.
   - **Page 1: Project Name & Location**:
     - Validates project name against legal SystemVerilog/filesystem identifiers.
   - **Page 2: Project Type Selection**:
-    - Authentic Vivado project categorization replacing old starter template cards:
+    - Authentic Vivado project categorization with exact descriptions:
       1. **RTL Project**: Standard design flow with sources, IP, elaboration, synthesis, JIT simulation, STA. Checkbox: `[ ] Do not specify sources at this time`.
       2. **Post-Synthesis Project**: Gate-level netlist flow with resource inspection and placement/routing timing closure. Checkbox: `[ ] Do not specify sources at this time`.
       3. **I/O Planning Project**: Pin assignment, package planning, and I/O banking without HDL design sources.
@@ -74,15 +74,15 @@
       5. **Example Project**: Launch curated aerospace hardware systems with preconfigured testbenches.
   - **Page 3: Default Part & Board Catalog Database (`partsCatalog.ts`, `boardsCatalog.ts`)**:
     - **Parts Tab**:
-      - Multi-parameter filtering: **Category** (All, General Purpose, Kintex, Virtex, Artix, Zynq, Versal), **Family** (Artix-7, Kintex-7, Virtex-7, Zynq-7000, Kintex UltraScale+, Virtex UltraScale+), **Package** (All, ffg1157, ffg1158, ffg1927, csg324, ffvb676, etc.), **Temperature** (All, Commercial, Industrial, Aerospace/Extended), **Speed Grade** (All, -1, -2, -2L, -3), and interactive text search.
-      - Reset All Filters button.
-      - Interactive tabular matrix with realistic Xilinx specs: `Part`, `I/O Pin Count`, `Available IOBs`, `LUT Elements`, `Flip Flops`, `Block RAMs`, `UltraRAMs`, `DSPs` (including `xc7vx415tffg1158-1`, `xc7vx415tffg1927-3`, `xc7vx485tffg1157-2`, `xc7a100tcsg324-1`, `xcku5p-ffvb676-2-e`, etc.).
-    - **Boards Tab** (as shown in user's uploaded image `media_1789893734769.png`):
-      - Filters: **Vendor** (All, alpha-data.com, xilinx.com, digilent.com, avnet.com), **Name** search.
-      - Rich grid/table: `Display Name`, `Preview` (visual hardware board thumbnail/render), `Vendor`, `File/Version`, and target FPGA part.
-      - Supported boards: Alpha-Data ADM-PCIE-7V3, Kintex-Ultrascale Alphadata board, Ultra96 Evaluation Platform, Digilent Nexys A7, Basys 3, ZCU102, Alveo U280.
+      - Multi-parameter filtering: Family, Speed Grade, and text search.
+      - Tabular matrix with authentic Xilinx specs: `Part`, `Family`, `Package`, `Speed`, `LUTs`, `Flip-Flops`, `BRAMs`, `DSPs`, `IOBs` across Artix-7, Kintex-7, Virtex-7, Zynq-7000, UltraScale+, and Axiom Virtual Silicon.
+    - **Boards Tab**:
+      - Vendor filters (`alpha-data.com`, `digilent.com`, `xilinx.com`, `avnet.com`), text search.
+      - Rich cards: ADM-PCIE-7V3, Digilent Nexys A7-100T, Basys 3, Zybo Z7-20, Avnet Ultra96-V2, ZCU102, Alveo U280.
+  - **Automatic "untitled" Source Generation**:
+    - For RTL projects, automatically generates initial `untitled.v` module in **Design Sources** (`sources_1`) and sets it as the active open tab in Monaco editor.
   - **Wizard Navigation**:
-    - Step indicators (`1. Project Name`, `2. Project Type`, `3. Default Part`, `4. Summary`).
+    - Step progress indicators (`1. Name & Location`, `2. Project Type`, `3. Default Part`, `4. Summary`).
     - Standard navigation buttons: `< Back`, `Next >`, `Finish`, `Cancel`.
 
 - [ ] **Phase 26: Futuristic Multi-Language Source Creation Wizard & Universal HDL LSP Engine - [P1]**
