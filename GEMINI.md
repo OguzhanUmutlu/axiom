@@ -138,6 +138,7 @@ axiom/
 │   │   │   │   └── simSharedBuffer.ts  # 128-byte SharedArrayBuffer ring buffer with Atomics synchronization
 │   │   │   ├── engineBridge.ts         # Dual-runtime bridge (auto-detects Tauri IPC vs Web Worker vs WASM)
 │   │   │   ├── projectModel.ts         # Vivado project model (sources_1, sim_1, constrs_1, templates)
+│   │   │   ├── packageModel.ts         # Vivado FPGA package definition, BGA pins, die floorplan & XDC
 │   │   │   ├── monacoVerilog.ts        # Monarch Verilog tokenizer, axiom-dark theme & LSP providers
 │   │   │   ├── schematicModel.ts       # Synthesizes hardware netlist DAG for schematic viewer
 │   │   │   ├── timingModel.ts          # Static timing analysis, slack radar, CDC matrix, energy treemap
@@ -152,6 +153,7 @@ axiom/
 │   │   │   ├── UnifiedBottomDock.tsx   # Collapsible dock: Console & REPL, Problems & Linter, Power, Glitches
 │   │   │   ├── WaveformViewer.tsx      # Multi-radix traces, dual cursors, delta-cycle accordion
 │   │   │   ├── SchematicViewer.tsx     # GPU-accelerated netlist DAG, semantic LOD, logic cone slicer
+│   │   │   ├── PackageVisualizer.tsx   # FPGA Package BGA ball grid map, silicon die & I/O Ports dock
 │   │   │   ├── VirtualLabRack.tsx      # DIP switches, buttons, 7-seg LEDs, UART/SPI/PWM/RISC-V bays
 │   │   │   ├── TimingRadarViewer.tsx   # Slack waterfall, CDC matrix, hierarchical energy treemap
 │   │   │   ├── OmnibarModal.tsx        # Ctrl+K Spotlight-style command palette & fuzzy finder
