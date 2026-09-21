@@ -22,15 +22,6 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 36: Interactive Finite State Machine (FSM) Bubble Diagram Visualizer & Live State Tracker - [P2]**
-  - [ ] **In-Engine FSM State & Transition Extraction (`crates/ir/src/fsm.rs`, `crates/syntax`)**:
-    - Static analysis identifying state registers (`reg [1:0] state, next_state;`) and decoding state enumeration/localparam mappings.
-    - Extracts transition condition arcs from `case (state)` and `if/else` branching logic.
-  - [ ] **Interactive FSM Canvas Visualizer (`ui/src/components/FsmViewer.tsx`)**:
-    - Force-directed and circular bubble graph rendering with curved transition arrows and transition condition labels.
-    - Live active state glowing cyan as clock ticks during simulation.
-    - LSP linter integration highlighting unreachable trap states or unhandled transitions directly on the visual diagram.
-
 - [ ] **Phase 37: Advanced Waveform Bus Slicing, Analog Waveform Mode & Precision Frequency Measurement - [P2]**
   - [ ] **Multi-Bit Bus Trace Explosion (`ui/src/components/WaveformViewer.tsx`)**:
     - Expand/collapse chevron on vector bus traces (`[7:0]`) exploding the bus into individual bit lines on demand.
@@ -51,6 +42,17 @@
 ---
 
 ## Completed
+
+- [x] **Phase 36: Interactive Finite State Machine (FSM) Bubble Diagram Visualizer & Live State Tracker - [P2]**
+  - [x] **In-Engine FSM State & Transition Extraction (`crates/ir/src/microarch/fsm_detector.rs`, `crates/syntax/src/parser.rs`)**:
+    - Static analysis identifying 1-always, 2-always, and 3-always state registers (`reg [1:0] state, next_state;`) and bidirectional state enumeration/localparam mappings (`name_to_val`, `val_to_name`).
+    - Fixed comma-separated AST parameter parsing in `crates/syntax/src/parser.rs` (`parse_param_decls_into`) to preserve all parameter definitions.
+    - Extracts transition condition arcs from `case (state)` and `if/else` branching logic, capturing Mealy transition outputs (`detected = 1'b1`).
+  - [x] **Interactive FSM Canvas Visualizer (`ui/src/components/FsmViewer.tsx`, `App.tsx`, `MobileDrawer.tsx`)**:
+    - Mathematical circular/radial bubble graph rendering with cubic Bezier curved transition arrows, self-loops, and condition knockout tags.
+    - Live active state glowing cyan as clock ticks during simulation, with animated transition flashes and state hit counters.
+    - FSM static audit report (`auditFsm`) highlighting unreachable states, terminal trap states, and transition coverage directly in a collapsible audit drawer.
+    - Full mobile drawer, desktop split/maximized layouts, and i18n support across 7 languages.
 
 - [x] **Phase 35: Authentic Digilent Basys 3 & Nexys A7 FPGA Development Board Hardware Emulator in Virtual Lab - [P2]**
   - [x] **Tactile Basys 3 Board Front-Panel (`ui/src/components/Basys3BoardBay.tsx`)**:
