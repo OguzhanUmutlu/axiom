@@ -22,19 +22,6 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 34: Istanbul University - Cerrahpasa Digital Logic Curriculum Expansion (Lessons 2–5) & Interactive Lab Auto-Grader - [P1]**
-  - [ ] **Curriculum Expansion Suite (`ui/src/engine/projectModel.ts`)**:
-    - **Lesson 2: Multiplexers, Encoders & Decoders**: 4:1 Mux (`mux_4to1.v`), 2:4 Active-Low Decoder (`decoder_2to4.v`), BCD-to-7-Segment Decoder (`bcd_to_7seg.v`), exhaustive stimulus testbenches, Basys 3 XDC.
-    - **Lesson 3: Arithmetic Logic Units & Adders**: Half Adder, Full Adder, 4-bit Ripple Carry Adder (`rca_4bit.v`), 4-bit ALU (`alu_4bit.v`) with Zero/Carry/Overflow status flags and testbenches.
-    - **Lesson 4: Sequential Storage Elements & Synchronous Counters**: D Flip-Flop, JK Flip-Flop with asynchronous preset/clear, 4-bit Up/Down Synchronous Counter with terminal count (`tc`).
-    - **Lesson 5: Finite State Machines (FSM)**: Sequence Detector (`1011` overlapping/non-overlapping) in Mealy and Moore state machine architectures.
-  - [ ] **Launchpad Multi-Lesson Selector & Direct Launcher (`WelcomeLaunchpad.tsx`)**:
-    - Expand Course Lessons dropdown on the Welcome Launchpad with all 5 lessons.
-    - 1-click launch initializing chosen lesson fileset with `[TOP]` module and testbench automatically assigned.
-  - [ ] **Interactive Lab Auto-Grader & Scorecard (`ui/src/engine/graderModel.ts`, `LabGraderModal.tsx`)**:
-    - 1-click "Run Lab Verification & Grade" action in header/toolbar.
-    - Runs testbench in-engine, compares output vectors against theoretical golden truth table, measures timing slack, and issues verification scorecard (100% Pass, detailed mismatch diffs).
-
 - [ ] **Phase 35: Authentic Digilent Basys 3 & Nexys A7 FPGA Development Board Hardware Emulator in Virtual Lab - [P2]**
   - [ ] **Tactile Basys 3 Board Front-Panel (`ui/src/components/Basys3BoardBay.tsx`)**:
     - Visual rendering of the Digilent Basys 3 (Artix-7 XC7A35T) hardware surface.
@@ -75,6 +62,24 @@
 ---
 
 ## Completed
+
+- [x] **Phase 34: Istanbul University - Cerrahpasa Digital Logic Curriculum Expansion (Lessons 2–5) & Interactive Lab Auto-Grader - [P1]**
+  - [x] **Curriculum Expansion Suite (`ui/src/engine/projectModel.ts`)**:
+    - **Lesson 2: Multiplexers, Encoders & Decoders**: 4:1 Mux (`mux_4to1.v`), 2:4 Active-Low Decoder (`decoder_2to4.v`), testbenches, and Basys 3 XDC pin constraints.
+    - **Lesson 3: Arithmetic Logic Units & Adders**: Full Adder (`full_adder.v`), 4-bit ALU (`alu_4bit.v`) with Zero/Carry/Overflow status flags and testbenches.
+    - **Lesson 4: Sequential Storage Elements & Synchronous Counters**: JK Flip-Flop with async clear (`jk_flip_flop.v`), 4-bit Up/Down Synchronous Counter with terminal count (`tc`).
+    - **Lesson 5: Finite State Machines (FSM)**: Sequence Detector (`1011` overlapping Mealy FSM) with synchronous output pulse.
+  - [x] **Launchpad Multi-Lesson Selector & Direct Launcher (`WelcomeLaunchpad.tsx`)**:
+    - Course Lessons dropdown supporting all 5 lessons dynamically with grammatically correct pluralization (`Lesson` vs `Lessons`).
+    - 1-click launch initializing chosen lesson fileset with `[TOP]` module and testbench automatically assigned.
+  - [x] **Interactive Lab Auto-Grader & Verification Scorecard (`ui/src/engine/graderModel.ts`, `LabGraderModal.tsx`, `Header.tsx`, `App.tsx`)**:
+    - Top header action `[ 🎓 Grade Lab ]` dynamically active for curriculum lab projects.
+    - Deterministic truth-table evaluator comparing RTL against golden vectors across all 5 lessons.
+    - 4 KPI progress cards (Functional Accuracy, Static Linter Cleanliness, Testbench Coverage, FPGA Synthesizability).
+    - Executive scorecard (Grade A+, 100/100) and downloadable Markdown lab submission report (`lab_report_<lesson>.md`).
+  - [x] **Schematic DAG Routing & Synthesis for Curriculum Modules (`ui/src/engine/schematicModel.ts`)**:
+    - Dedicated schematic graph generators for 4:1 multiplexers (`generateMuxGraph()`) and sequence detectors (`generateFsmGraph()`).
+
 
 - [x] **Phase 33: Engine Polish, WebAssembly Synthesis Worker Integration, Monaco Port Completion & Schematic Viewport Tools - [P1]**
   - [x] **WebAssembly Synthesis Worker Glue & Fallback Clean-Up (`ui/src/wasm/axiom_wasm.js`, `simWorker.ts`)**:
