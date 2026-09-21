@@ -104,6 +104,10 @@ As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry sys
 - **Phase 30: Self-Updating Desktop Subprocess & Web Release Decoupling**:
   - **Tauri Self-Updater Pipeline (`crates/desktop/src/lib.rs`, `platform.ts`, `UpdatePromptModal.tsx`)**: Complete native self-updating workflow. Spawns a detached background helper script (`axiom_updater.sh` on Unix / `axiom_updater.ps1` on Windows), safely terminates the running Tauri application (`app_handle.exit(0)`), waits for the parent PID to exit, replaces the old executable with the new binary, launches the updated binary, and terminates the helper process.
   - **Web Update Decoupling**: Completely removed "Check for Updates..." from `MenuBar.tsx` on the web version, and disabled non-desktop auto-update checks on app startup in `App.tsx` via `isDesktop()` guards. Updates are now strictly scoped to desktop installations.
+- **Phase 31: Unified Dark Acrylic Dropdown & Context Menu Primitives, Opaque Surfaces, and Componentization**:
+  - **Opaque Elevated Theme Tokens (`ui/src/styles/theme.css`)**: Defined `--bg-surface: #1e242c;` under `:root` surface hierarchy to eliminate transparent menu fallbacks. Added standard CSS classes (`.axiom-dropdown-menu`, `.axiom-menu-item`, `.axiom-menu-item:hover`, `.axiom-menu-item-danger`, `.axiom-menu-separator`, `.axiom-menu-label`).
+  - **Modular Dropdown Component Family (`ui/src/components/ui/DropdownMenu.tsx`)**: Composable primitives (`DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuSeparator`, `DropdownMenuLabel`) featuring automatic click-outside listener dismissal, `Escape` key navigation, alignment (`start` | `end` | `center`), and z-index isolation.
+  - **UI Componentization & Code Cleanup**: Refactored `WelcomeLaunchpad.tsx` and `ProjectManager.tsx` to eliminate duplicated inline context menu DOM, inline mouseenter/mouseleave listeners, and custom window click effects, resolving transparent backdrop bugs and text collisions.
 
 ---
 
