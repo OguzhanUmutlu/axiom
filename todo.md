@@ -22,17 +22,6 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 35: Authentic Digilent Basys 3 & Nexys A7 FPGA Development Board Hardware Emulator in Virtual Lab - [P2]**
-  - [ ] **Tactile Basys 3 Board Front-Panel (`ui/src/components/Basys3BoardBay.tsx`)**:
-    - Visual rendering of the Digilent Basys 3 (Artix-7 XC7A35T) hardware surface.
-    - 16 Sliding DIP Switches (`SW0..SW15`) with mechanical click physics and toggle states.
-    - 16 High-Brightness Green LEDs (`LD0..LD15`) with glow shaders and live net driving.
-    - 5-Button Directional Pad (`BTNC`, `BTNU`, `BTNL`, `BTNR`, `BTND`) with active press states.
-    - 4-Digit Multiplexed 7-Segment Display (`CA..CG`, `DP`, `AN0..AN3`) with persistence of vision phosphor decay simulation.
-  - [ ] **XDC Pin Constraint Dynamic Auto-Binding**:
-    - Automatically parses active project's `constraints.xdc` (`PACKAGE_PIN V17`, etc.).
-    - Direct live bidirectional signal routing between simulated nets and tactile board peripherals.
-
 - [ ] **Phase 36: Interactive Finite State Machine (FSM) Bubble Diagram Visualizer & Live State Tracker - [P2]**
   - [ ] **In-Engine FSM State & Transition Extraction (`crates/ir/src/fsm.rs`, `crates/syntax`)**:
     - Static analysis identifying state registers (`reg [1:0] state, next_state;`) and decoding state enumeration/localparam mappings.
@@ -62,6 +51,22 @@
 ---
 
 ## Completed
+
+- [x] **Phase 35: Authentic Digilent Basys 3 & Nexys A7 FPGA Development Board Hardware Emulator in Virtual Lab - [P2]**
+  - [x] **Tactile Basys 3 Board Front-Panel (`ui/src/components/Basys3BoardBay.tsx`)**:
+    - Authentic matte PCB hardware rendering with gold mounting holes, silkscreen labels, and Artix-7 chip package outline.
+    - 16 Sliding DIP Switches (`SW0..SW15`) with mechanical rocker click physics, up/down animation, and green LED indicator dots.
+    - 16 High-Brightness Green LEDs (`LD0..LD15`) with radial phosphor glow shaders driven dynamically by live simulated nets.
+    - 5-Button Directional Pad (`BTNC`, `BTNU`, `BTNL`, `BTNR`, `BTND`) with tactile press states for momentary pulses and reset assertion.
+    - 4-Digit Multiplexed 7-Segment Display (`CA..CG`, `DP`, `AN0..AN3`) with glowing ruby red phosphor segments and ghosting effects.
+    - Collapsible XDC Physical Pin Constraint Binding Matrix HUD.
+  - [x] **XDC Pin Constraint Dynamic Auto-Binding (`ui/src/engine/boardModel.ts`)**:
+    - Automatically parses active project's `constraints.xdc` (`PACKAGE_PIN V17`, `PACKAGE_PIN U16`, etc.).
+    - Direct live bidirectional signal routing between simulated nets and tactile board peripherals.
+    - Resolves single-bit and bus sliced vectors (`in[0]`, `out[3:0]`) with instant in-RAM stimulus injection.
+  - [x] **Virtual Lab Rack Integration (`ui/src/components/VirtualLabRack.tsx`, `App.tsx`)**:
+    - Dedicated segmented switcher between "Basys 3 Board" and "Logic Bays".
+    - Auto-selects board emulator for projects targeting Basys 3 / Artix-7 or containing physical pin constraints.
 
 - [x] **Phase 34: Istanbul University - Cerrahpasa Digital Logic Curriculum Expansion (Lessons 2–5) & Interactive Lab Auto-Grader - [P1]**
   - [x] **Curriculum Expansion Suite (`ui/src/engine/projectModel.ts`)**:
