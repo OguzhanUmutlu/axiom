@@ -679,8 +679,8 @@
     - Maintained accessible tooltip (`title="Omnibar (Ctrl+K / ⌘K)"`) and keyboard shortcut handlers.
   - [x] **Open Source GitHub Integration**:
     - Created reusable `GithubIcon` SVG component in `ui/src/components/ui/GithubIcon.tsx` and exported via `ui/src/components/ui/index.ts`.
-    - Added GitHub repository icon button in `Header.tsx` (desktop and mobile) linked to `https://github.com/OguzhanUmutlu/axiom`.
-    - Added Open Source GitHub collaboration badge, repository link card (`OguzhanUmutlu/axiom`), "Star & Collaborate" action, and documentation link in the Welcome Launchpad hero section.
+    - Added GitHub repository icon button in `Header.tsx` (desktop and mobile) linked to `https://github.com/aerovexsim/axiom`.
+    - Added Open Source GitHub collaboration badge, repository link card (`aerovexsim/axiom`), "Star & Collaborate" action, and documentation link in the Welcome Launchpad hero section.
     - Added an open-source collaboration note and PR invitation in the Welcome Launchpad footer.
   - [x] **Verification**: Built UI with 0 errors (`npm run build`) and verified all 55 Rust workspace tests passing (`cargo test --workspace`).
 

@@ -18,7 +18,7 @@ hero:
       link: /guide/quickstart
     - theme: alt
       text: View on GitHub
-      link: https://github.com/OguzhanUmutlu/axiom
+      link: https://github.com/aerovexsim/axiom
 
 features:
   - title: In-RAM Cranelift JIT
