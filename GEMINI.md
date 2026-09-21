@@ -26,7 +26,7 @@ As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry sys
   - Gate-level boolean logic system: `w1 = ~A; w2 = w1 & B; w3 = w2 & C; w4 = ~B; F = w3 | w4;` ($F = ((\neg A \land B) \land C) \lor \neg B$).
   - Configured as the #1 featured template on the Welcome Launchpad with full gate-level schematic DAG (9 cells, 9 nets: `inv1`, `inv2`, `and1`, `and2`, `or1`) and dedicated Virtual Lab bay with tactile switches, gate probes, output LED, and 8-row Truth Table HUD.
 - **Spacious Dual-Pane Studio & Scaled Typography**:
-  - Redesigned Split Studio to eliminate quad-split cramping: Left = Monaco HDL Editor; Right = Full-height, full-width Visualizer Pane (`⚡ Schematic DAG`, `🎛 Virtual Lab`, `📈 Waveforms`, `⏱ Timing & Energy`) with optional `+ Waveforms` stack toggle and 1-click Maximize.
+  - Redesigned Split Studio to eliminate quad-split cramping: Left = Monaco HDL Editor; Right = Full-height, full-width Visualizer Pane (`Schematic DAG`, `Virtual Lab`, `Waveforms`, `Timing & Energy`) with optional `+ Waveforms` stack toggle and 1-click Maximize.
   - Comfortable, readable typography and touch targets across the entire interface (14px base font, 14px Monaco editor, 52px header, 280px sidebar, 32px collapsed status bar).
 - **Problems & Linter Dock**: Dedicated collapsible dock tab with active diagnostic cards and 1-click jump-to-line navigation.
 - **Production Web Deployment**: Live at **`https://axiom.aerovex.net/studio/`** (and docs at `https://axiom.aerovex.net/`) served via GitHub Pages with CNAME.
@@ -198,11 +198,16 @@ axiom/
 - **Ergonomic De-Cramping**:
   - **Unified Bottom Dock**: Collapsible to a 28px status bar, liberating ~250px of vertical space.
   - **Collapsible Sidebar**: Shrinks to a 38px vertical icon strip, liberating 222px of horizontal space.
-  - **1-Click Panel Maximization (`⛶`)**: Expands Editor, Waveforms, Schematic DAG, or Virtual Lab to 100% full screen.
+  - **1-Click Panel Maximization (Full Screen)**: Expands Editor, Waveforms, Schematic DAG, or Virtual Lab to 100% full screen.
 
 ---
 
 ## 5. Strict Operating Guidelines & Git Workflow Policy
+
+> [!IMPORTANT]
+> **Strict No-Emoji Policy:**
+> **Do NOT use emojis anywhere in the codebase, UI/UX, or agent markdown files.**
+> Always use clean SVG icons (such as Lucide React icons in the frontend) or concise text labels instead of emojis. Never include emojis in menu titles, buttons, tabs, tooltips, dialogs, console messages, or documentation.
 
 > [!NOTE]
 > **Git Workflow Policy:**
