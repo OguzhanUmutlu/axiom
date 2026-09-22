@@ -22,9 +22,43 @@
 
 ### Future Enhancement Roadmap
 
+- [ ] **Phase 41: Gate-Level Technology Mapping & FPGA Primitive Inference - [P2]**
+  - [ ] **Boolean Network Decomposition & K-LUT Mapping (`crates/ir/src/synth/`)**:
+    - Technology mapping of synthesized boolean equations and multiplexers into FPGA look-up tables (LUT4 / LUT6).
+    - Automated primitive inference for arithmetic carry chains (`CARRY4`/`CARRY8`), block RAM (`RAMB18E2`/`RAMB36E2`), and DSP slices (`DSP48E2`).
+    - Bit-level truth table generation and hex equation programming for `INIT` parameters.
+  - [ ] **Physical Architecture Mapping Visualizer (`ui/src/components/TechMappingViewer.tsx`)**:
+    - Interactive FPGA slice resource breakdown (LUT utilization, Flip-Flop registers, DSP blocks, BRAM tiles).
+    - Post-mapping netlist view with primitive connectivity graph and pin mapping table.
+
+- [ ] **Phase 42: Visual Testbench Stimulus Generators & Constrained Random Verification - [P2]**
+  - [ ] **Interactive Waveform Stimulus Editor (`ui/src/components/StimulusGeneratorModal.tsx`)**:
+    - Visual timing diagram editor for drafting input drive signals before simulation run.
+    - Parametric clock generator wizard (frequency, duty cycle, phase jitter, startup delay).
+    - Repeating pulse train, glitch injection, and synchronous strobe patterns.
+  - [ ] **Constrained Random Stimulus & SystemVerilog Generator (`crates/syntax/src/stimulus.rs`, `ui/src/engine/stimulusModel.ts`)**:
+    - Range constraints, distribution weights, and seed-repeatable randomized vector generation.
+    - Automated testbench HDL export generating clean IEEE 1364/1800 testbench harness files (`tb_<top>.v`).
+
 ---
 
 ## Completed
+
+- [x] **Phase 40: Extended Protocol Decoders & Serial Packet Inspectors (CAN, USB 1.1/2.0, Ethernet MII/RMII) - [P2]**
+  - [x] **In-Engine Telemetry Protocol Expansion (`crates/sim/src/protocol/`)**:
+    - CAN Bus 2.0A/2.0B decoder (`can.rs`) with bit-stuffing recovery, 11-bit standard and 29-bit extended ID, DLC, CRC-15 calculation, and ACK phase validation.
+    - USB 1.1/2.0 Low-Speed/Full-Speed packet decoder (`usb.rs`) with NRZI line state tracking, bit-unstuffing, SYNC, PID verification, token/data/handshake decomposition, and CRC-5 / CRC-16 checks.
+    - Ethernet MII/RMII/Parallel-Byte frame dissector (`ethernet.rs`) with preamble, SFD, MAC header, EtherType, IPv4/ARP dissection, payload, and FCS CRC-32 verification.
+  - [x] **Wireshark-Compatible PCAP & CSV Exporters (`ui/src/engine/pcapExport.ts`, `csvExport.ts`)**:
+    - Binary Libpcap export supporting Ethernet (`LINKTYPE_ETHERNET = 1`), CAN (`LINKTYPE_CAN_SOCKETCAN = 227`), and USB (`LINKTYPE_USB_2_0 = 288`) with microsecond timestamps and packet length fields.
+    - Formatted tabular CSV exporter with standard timestamp, protocol, summary, data size, and integrity status columns.
+  - [x] **Protocol Packet Visualizer & Inspector Dock (`ui/src/components/ProtocolAnalyzer.tsx`)**:
+    - Interactive protocol selector pills (CAN, USB, Ethernet, UART, SPI, I2C, AXI), channel auto-mapping heuristic (`guessPinMap`), and live decode runner.
+    - Tabular packet stream view with timestamp alignment, color-coded protocol fields, byte counts, and integrity badges.
+    - Deep packet inspection card displaying protocol field tree, side-by-side 16-byte hex dump and ASCII decode, and checksum verification status.
+    - Slide-out configuration drawer with parameter inputs for all 7 protocols (baud rate, sample point, speed, interface mode, CPOL/CPHA, word size, 10-bit addressing, AXI data width).
+    - Integrated into dual-pane visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer, and modal launcher (`ProtocolDecoderModal.tsx`).
+    - Protocol waveform track in `WaveformViewer.tsx` rendered with dedicated color palette per protocol and error states.
 
 - [x] **Phase 39: Schematic Empty State Placeholders, Unbound Module DAG Decoupling & In-Editor Coverage Hygiene - [P1]**
   - [x] **Unbound Schematic DAG Decoupling (`ui/src/engine/schematicModel.ts`, `App.tsx`)**:

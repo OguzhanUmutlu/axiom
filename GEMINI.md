@@ -13,7 +13,7 @@ Vivado is the industry standard for FPGA development, yet it suffers from severe
 ## 2. Current Implementation Status & Production Deliverables
 
 As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry system, language server (LSP), linter, primitive library emulation, and modern studio are **fully implemented, tested, and active**:
-- **63 / 63 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, primitive emulation, and linter tests across all crates.
+- **137 / 137 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, primitive emulation, protocol decoding, and linter tests across all crates.
 - **Dual-Runtime Execution & WebAssembly LSP**:
   - **Desktop Native**: Native Cranelift JIT compiling Verilog/SystemVerilog directly to x86_64 / AArch64 machine code in RAM with zero disk turnaround.
   - **In-Browser WebAssembly**: Pure client-side `wasm32-unknown-unknown` simulation kernel and in-RAM LSP static analysis linter running 100% in-browser with zero backend dependencies.
@@ -160,6 +160,23 @@ As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry sys
   - **In-Editor RTL Coverage Decoration Hygiene (`ui/src/components/HdlEditor.tsx`)**: Changed `coverageEnabled` to default to `false` (opt-in analysis tool). In `updateCoverage`, added explicit filtering skipping `LineCoverageStatus::NonExecutable`, eliminating phantom red dots (`axiom-cov-glyph-dead`) and red background tints from comments, port headers, module declarations, and blank lines.
   - **Curriculum & Default Codebase Syntax Validation (`crates/lsp/src/lib.rs`)**: Added Rust unit tests verifying that default RTL project files (`untitled.v`, `dsp_bram_mac.v`, `tb_dsp_bram_mac.sv`) parse and lint with 0 diagnostics across all crates.
 
+- **Phase 40: Extended Protocol Decoders & Serial Packet Inspectors (CAN, USB 1.1/2.0, Ethernet MII/RMII)**:
+  - **In-Engine Telemetry Protocol Expansion (`crates/sim/src/protocol/`)**:
+    - CAN Bus 2.0A/2.0B decoder (`can.rs`) with bit-stuffing recovery, 11-bit standard and 29-bit extended ID, DLC, CRC-15 calculation, and ACK phase validation.
+    - USB 1.1/2.0 Low-Speed/Full-Speed packet decoder (`usb.rs`) with NRZI line state tracking, bit-unstuffing, SYNC, PID verification, token/data/handshake decomposition, and CRC-5 / CRC-16 checks.
+    - Ethernet MII/RMII/Parallel-Byte frame dissector (`ethernet.rs`) with preamble, SFD, MAC header, EtherType, IPv4/ARP dissection, payload, and FCS CRC-32 verification.
+    - Full test suite in `crates/sim/src/protocol/tests.rs` verifying frame extraction across all new protocols (137 / 137 workspace tests passing).
+  - **Wireshark-Compatible PCAP & CSV Exporters (`ui/src/engine/pcapExport.ts`, `csvExport.ts`)**:
+    - Binary Libpcap export supporting Ethernet (`LINKTYPE_ETHERNET = 1`), CAN (`LINKTYPE_CAN_SOCKETCAN = 227`), and USB (`LINKTYPE_USB_2_0 = 288`) with microsecond timestamps and packet length fields.
+    - Formatted tabular CSV exporter with standard timestamp, protocol, summary, data size, and integrity status columns.
+  - **Protocol Packet Visualizer & Inspector Dock (`ui/src/components/ProtocolAnalyzer.tsx`)**:
+    - Interactive protocol selector pills (CAN, USB, Ethernet, UART, SPI, I2C, AXI), channel auto-mapping heuristic (`guessPinMap`), and live decode runner.
+    - Tabular packet stream view with timestamp alignment, color-coded protocol fields, byte counts, and integrity badges.
+    - Deep packet inspection card displaying protocol field tree, side-by-side 16-byte hex dump and ASCII decode, and checksum verification status.
+    - Slide-out configuration drawer with parameter inputs for all 7 protocols (baud rate, sample point, speed, interface mode, CPOL/CPHA, word size, 10-bit addressing, AXI data width).
+    - Integrated into dual-pane visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer, and modal launcher (`ProtocolDecoderModal.tsx`).
+    - Protocol waveform track in `WaveformViewer.tsx` rendered with dedicated color palette per protocol and error states.
+
 ---
 
 ## 3. Repository & Workspace Architecture
@@ -282,7 +299,7 @@ When working in the repository, verify changes using these standard commands:
   ```bash
   cargo test --workspace
   ```
-  *(Ensures all 48 unit, integration, benchmark, and conformance tests pass)*
+  *(Ensures all 137 unit, integration, benchmark, conformance, and protocol decoding tests pass)*
 
 - **Build TypeScript / React UI**:
   ```bash
