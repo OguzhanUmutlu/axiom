@@ -22,15 +22,6 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 41: Gate-Level Technology Mapping & FPGA Primitive Inference - [P2]**
-  - [ ] **Boolean Network Decomposition & K-LUT Mapping (`crates/ir/src/synth/`)**:
-    - Technology mapping of synthesized boolean equations and multiplexers into FPGA look-up tables (LUT4 / LUT6).
-    - Automated primitive inference for arithmetic carry chains (`CARRY4`/`CARRY8`), block RAM (`RAMB18E2`/`RAMB36E2`), and DSP slices (`DSP48E2`).
-    - Bit-level truth table generation and hex equation programming for `INIT` parameters.
-  - [ ] **Physical Architecture Mapping Visualizer (`ui/src/components/TechMappingViewer.tsx`)**:
-    - Interactive FPGA slice resource breakdown (LUT utilization, Flip-Flop registers, DSP blocks, BRAM tiles).
-    - Post-mapping netlist view with primitive connectivity graph and pin mapping table.
-
 - [ ] **Phase 42: Visual Testbench Stimulus Generators & Constrained Random Verification - [P2]**
   - [ ] **Interactive Waveform Stimulus Editor (`ui/src/components/StimulusGeneratorModal.tsx`)**:
     - Visual timing diagram editor for drafting input drive signals before simulation run.
@@ -43,6 +34,20 @@
 ---
 
 ## Completed
+
+- [x] **Phase 41: Gate-Level Technology Mapping & FPGA Primitive Inference - [P2]**
+  - [x] **Boolean Network Decomposition & K-LUT Mapping (`crates/ir/src/synth/`)**:
+    - Elaborator lowering for `Expr::Ternary` (`cond ? a : b`) into boolean multiplexer logic `(cond & a) | (~cond & b)` in `elaborator.rs`.
+    - Multi-bit bus bit-blasting in `LutMapper` (`lut_mapper.rs`): slices multi-bit assignments into individual slice LUTs with exact pin mapping and bit-level truth table `INIT` parameter computation.
+    - Automated DSP slice inference (`dsp_mapper.rs`): detects multi-bit multiplications and multiply-accumulate (MAC) patterns in continuous assignments and clocked processes, mapping to `DSP48E2` (UltraScale+) and `DSP48E1` (7-Series).
+    - Automated Block RAM inference (`bram_mapper.rs`): detects unpacked memory arrays with synchronous read/write patterns, inferring `RAMB18E2` (< 18Kb) and `RAMB36E2` (up to 36Kb).
+    - Exact 16-bit, 32-bit, and 64-bit hex `INIT` equations with 140 / 140 Rust workspace unit and integration tests passing (`cargo test --workspace`).
+  - [x] **Physical Architecture Mapping Visualizer (`ui/src/components/TechMappingViewer.tsx`)**:
+    - Interactive target silicon device selector (Artix-7, Kintex-7, Virtex-7, Zynq-7000, Kintex UltraScale+, Axiom Virtual Silicon) with live re-synthesis runner.
+    - FPGA slice resource utilization banner with progress bars (Slice LUTs, Registers/FFs, Carry chains, DSP slices, Block RAMs, I/O pins, Logic Depth, and delay in ps).
+    - Dual-pane mapped netlist view with filterable cells table, pin connectivity map, parameters table, and interactive $K$-input Truth Table HUD for LUTs.
+    - Structural Verilog Netlist Modal with copy-to-clipboard and 1-click `.v` file downloader.
+    - Integrated into visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer (`MobileDrawer.tsx`), and center split views.
 
 - [x] **Phase 40: Extended Protocol Decoders & Serial Packet Inspectors (CAN, USB 1.1/2.0, Ethernet MII/RMII) - [P2]**
   - [x] **In-Engine Telemetry Protocol Expansion (`crates/sim/src/protocol/`)**:

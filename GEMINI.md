@@ -13,7 +13,7 @@ Vivado is the industry standard for FPGA development, yet it suffers from severe
 ## 2. Current Implementation Status & Production Deliverables
 
 As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry system, language server (LSP), linter, primitive library emulation, and modern studio are **fully implemented, tested, and active**:
-- **137 / 137 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, primitive emulation, protocol decoding, and linter tests across all crates.
+- **140 / 140 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, primitive emulation, protocol decoding, technology mapping, and linter tests across all crates.
 - **Dual-Runtime Execution & WebAssembly LSP**:
   - **Desktop Native**: Native Cranelift JIT compiling Verilog/SystemVerilog directly to x86_64 / AArch64 machine code in RAM with zero disk turnaround.
   - **In-Browser WebAssembly**: Pure client-side `wasm32-unknown-unknown` simulation kernel and in-RAM LSP static analysis linter running 100% in-browser with zero backend dependencies.
@@ -177,6 +177,20 @@ As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry sys
     - Integrated into dual-pane visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer, and modal launcher (`ProtocolDecoderModal.tsx`).
     - Protocol waveform track in `WaveformViewer.tsx` rendered with dedicated color palette per protocol and error states.
 
+- **Phase 41: Gate-Level Technology Mapping & FPGA Primitive Inference**:
+  - **Boolean Network Decomposition & K-LUT Mapping (`crates/ir/src/synth/`)**:
+    - Elaborator lowering for `Expr::Ternary` (`cond ? a : b`) into boolean multiplexer logic `(cond & a) | (~cond & b)` in `elaborator.rs`, enabling automated 2:1 multiplexer synthesis directly into `LUT3` cells with `INIT = 0xAC`.
+    - Multi-bit bus bit-blasting in `LutMapper` (`lut_mapper.rs`): decomposes multi-bit combinational assignments into individual slice LUTs with exact pin mapping and bit-level truth table `INIT` parameter computation.
+    - Automated DSP slice inference (`dsp_mapper.rs`): detects multi-bit multiplications ($width \ge 4$) and multiply-accumulate (MAC) patterns in continuous assignments and clocked processes, mapping to `DSP48E2` (UltraScale+) and `DSP48E1` (7-Series).
+    - Automated Block RAM inference (`bram_mapper.rs`): detects unpacked memory arrays with synchronous read/write patterns, inferring `RAMB18E2` (< 18Kb) and `RAMB36E2` (up to 36Kb).
+    - Exact 16-bit, 32-bit, and 64-bit hex `INIT` equations with 140 / 140 Rust workspace unit and integration tests passing (`cargo test --workspace`).
+  - **Physical Architecture Mapping Visualizer (`ui/src/components/TechMappingViewer.tsx`)**:
+    - Interactive target silicon device selector (Artix-7, Kintex-7, Virtex-7, Zynq-7000, Kintex UltraScale+, Axiom Virtual Silicon) with live re-synthesis runner.
+    - FPGA slice resource utilization banner with progress bars (Slice LUTs, Registers/FFs, Carry chains, DSP slices, Block RAMs, I/O pins, Logic Depth, and delay in ps).
+    - Dual-pane mapped netlist view with filterable cells table, pin connectivity map, parameters table, and interactive $K$-input Truth Table HUD for LUTs.
+    - Structural Verilog Netlist Modal with copy-to-clipboard and 1-click `.v` file downloader.
+    - Integrated into visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer (`MobileDrawer.tsx`), and center split views.
+
 ---
 
 ## 3. Repository & Workspace Architecture
@@ -299,7 +313,7 @@ When working in the repository, verify changes using these standard commands:
   ```bash
   cargo test --workspace
   ```
-  *(Ensures all 137 unit, integration, benchmark, conformance, and protocol decoding tests pass)*
+  *(Ensures all 140 unit, integration, benchmark, conformance, protocol decoding, and synthesis tests pass)*
 
 - **Build TypeScript / React UI**:
   ```bash
