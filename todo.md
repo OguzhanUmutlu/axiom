@@ -19,13 +19,58 @@
 
 ## Todo
 
-### Future Enhancement Roadmap
+- [ ] **Phase 50: VitePress Documentation Multi-Language Localization (7 Languages) - [P1]**
+  - [ ] **VitePress Multi-Locale Configuration (`docs/.vitepress/config.mts`)**:
+    - [ ] Configure `locales` for all 7 platform languages: English (`root`), Turkish (`tr`), German (`de`), Japanese (`ja`), Chinese (`zh`), Spanish (`es`), French (`fr`).
+    - [ ] Fully localize top navigation bars, route-scoped sidebars, search placeholders, prev/next pagination buttons, and outline headers per language.
+  - [ ] **Documentation Translation & Route Parity (`docs/`)**:
+    - [ ] Localize all 59 documentation pages for Turkish (`docs/tr/`): Landing hero, Studio UI manual (15 guides), HDL references (32 guides), Architecture (4 guides), Getting Started (3 guides), Vivado Parity (3 guides), and CLI Reference.
+    - [ ] Localize the full documentation suites for German (`docs/de/`), Japanese (`docs/ja/`), Chinese (`docs/zh/`), Spanish (`docs/es/`), and French (`docs/fr/`).
+    - [ ] Automatically route internal cross-links with localized path prefixes (e.g., `/tr/ui/overview`, `/ja/languages/verilog/overview`).
+    - [ ] Preserve 100% of code blocks, syntax definitions, KaTeX formulas, and technical nomenclature.
+  - [ ] **Verification & Quality Gate**:
+    - [ ] Build complete VitePress documentation portal (`npm --prefix docs run docs:build`) with 0 dead links and 0 errors.
+    - [ ] Strict zero-emoji audit across all generated localized documentation pages.
 
-*(All 49 core, advanced, security hardening, documentation, and ergonomics phases fully completed, verified, and released under v1.0.0)*
 
 ---
 
 ## Completed
+
+- [x] **Phase 51: Unified Dark Acrylic DropdownSelect Component & Comprehensive UI Adoption - [P1]**
+  - [x] **Reusable DropdownSelect Component (`ui/src/components/ui/DropdownSelect.tsx`, `ui/src/components/ui/DropdownMenu.tsx`)**:
+    - [x] Create and export `DropdownSelect` component based on `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, and `DropdownMenuItem`.
+    - [x] Implement support for options with label, value, icon, description, active checkmark indicator, size variants (`xs`, `sm`, `md`), and keyboard navigation.
+    - [x] Add clean Lucide SVG icons (ChevronDown, Check) with smooth hover states, dark acrylic styling, and boundary clamping.
+  - [x] **Comprehensive Adoption Across UI Components**:
+    - [x] `WelcomeLaunchpad.tsx`: Replace native `<select>` in Course Lessons dropdown with `DropdownSelect`.
+    - [x] `TechMappingViewer.tsx`: Replace native `<select>` in Target FPGA Device selector with `DropdownSelect`.
+    - [x] `FloorplanStudioViewer.tsx`: Replace native `<select>` in Target Device selector with `DropdownSelect`.
+    - [x] `FsmViewer.tsx`: Replace native `<select>` in FSM Instance selector with `DropdownSelect`.
+    - [x] `NewProjectModal.tsx`: Replace native `<select>` in Family, Speed, and Vendor filters with `DropdownSelect`.
+    - [x] `PpaParetoViewer.tsx`: Replace native `<select>` in target chip and optimization selectors with `DropdownSelect`.
+    - [x] `AddSourceModal.tsx`: Replace native `<select>` in target file set selector with `DropdownSelect`.
+    - [x] `ImportVcdModal.tsx`: Replace native `<select>` in golden VCD signal mapper with `DropdownSelect`.
+    - [x] `MultiDieViewer.tsx`: Replace native `<select>` in target preset, TDM ratio, and SLR reassign with `DropdownSelect`.
+    - [x] `PackageVisualizer.tsx`: Replace native `<select>` in IO standard, drive strength, slew, and pull with `DropdownSelect`.
+    - [x] `ProjectSecurityModal.tsx`: Replace native `<select>` in storage quota options with `DropdownSelect`.
+    - [x] `ProtocolAnalyzer.tsx`: Replace native `<select>` in pin mapping and protocol configuration selectors with `DropdownSelect`.
+    - [x] `ProtocolDecoderModal.tsx`: Replace native `<select>` in protocol kind, signal mapping, and baud rate selectors with `DropdownSelect`.
+    - [x] `StimulusGeneratorModal.tsx`: Replace native `<select>` in duration, generator type, frequency, sequence, and target signal with `DropdownSelect`.
+
+- [x] **Phase 52: Multi-Window Desktop & Web Concurrency with Project Mutual Exclusion - [P1]**
+  - [x] **Desktop Native Multi-Window Command (`crates/desktop/src/lib.rs`)**:
+    - [x] Implement `create_new_window` Tauri command using `WebviewWindowBuilder` with atomic window ID generation and isolated sessions.
+    - [x] Support optional `?project={slug}` routing or empty main menu initialization.
+  - [x] **Concurrency & Mutual Exclusion Engine (`ui/src/engine/windowManager.ts`)**:
+    - [x] Track active project leases in `localStorage` with heartbeats and stale lease auto-pruning.
+    - [x] Enforce mutual exclusion: prevent multiple windows from opening or editing the same project simultaneously.
+    - [x] Provide cross-window reactive subscription via storage events and session sync.
+  - [x] **UI Integration & Innovative Window Management**:
+    - [x] `WindowFrame.tsx` / `MenuBar.tsx`: Add "New Window" action (`Ctrl+Shift+W`) in the File menu.
+    - [x] `App.tsx`: Enforce project lease checks on mount and project switch, run heartbeat, and handle `Ctrl+Shift+W` shortcut.
+    - [x] `WelcomeLaunchpad.tsx`: Add "Open in New Window" in project cards kebab menu, display "Active in Window" badge on locked projects, and provide launchpad window trigger.
+    - [x] Add i18n localization keys across all 7 supported languages (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
 
 - [x] **Phase 49: Window Frame UI Ergonomics & Desktop-Grade Context Menu Suppression - [P1]**
   - [x] **Language Selector Padding & Layout Overflow Resolution (`ui/src/components/WindowFrame.tsx`, `ui/src/components/LanguageDropdown.tsx`)**:
