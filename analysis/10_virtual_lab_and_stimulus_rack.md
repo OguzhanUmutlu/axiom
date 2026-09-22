@@ -92,5 +92,5 @@ Axiom EDA implements this architecture natively in TypeScript, SVG, and React 19
   - `pulseSignal(signalId)`: Generates cycle pulses advancing simulation time.
   - `generateSystemVerilogTestbench(topModule)`: Emits clean, synthesizable SystemVerilog testbench.
 - **Integrated Studio Workspace (`ui/src/App.tsx`)**:
-  - Studio view tabs: `[ 📈 Waveforms ]` | `[ 🔀 Schematic DAG ]` | `[ 🎛️ Virtual Lab ]` | `[ ◫ Split Studio ]`.
+  - Studio view tabs: `[  Waveforms ]` | `[  Schematic DAG ]` | `[ ️ Virtual Lab ]` | `[ ◫ Split Studio ]`.
 

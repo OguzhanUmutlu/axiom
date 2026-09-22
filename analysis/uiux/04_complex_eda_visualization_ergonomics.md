@@ -91,7 +91,7 @@ When debugging timing slack violations or logic errors, engineers must isolate t
 - **Background Attenuation**: Unrelated nodes and nets are dimmed to 12% opacity, immediately highlighting the critical path with a glowing cyan halo.
 
 ### 3.3. Ergonomic Camera Framing & Clean Default State
-- **Live Values Off by Default**: Live signal value callouts along wire paths are disabled by default, ensuring that initial schematics present clean, high-contrast, uncluttered gate topologies without distracting badges. When deep logic probing is desired, engineers toggle `⚡ Live Values` with a single click.
+- **Live Values Off by Default**: Live signal value callouts along wire paths are disabled by default, ensuring that initial schematics present clean, high-contrast, uncluttered gate topologies without distracting badges. When deep logic probing is desired, engineers toggle ` Live Values` with a single click.
 - **High-Precision Auto-Fit Geometry**: The camera framing engine computes the exact tight geometric bounding box across all cells and routed nets, dynamically scaling up to 1.35x and symmetrically centering the circuit horizontally and vertically with comfortable 36px–40px margins.
 - **Calibrated Layer Spacing**: Layer horizontal pitch is calibrated to 64px (eliminating excessive empty wire stretches), allowing full combinational systems to occupy the viewport at 100%+ scale.
 

@@ -140,7 +140,7 @@ The `Escape` key must never cause unpredictable layout shifts. Axiom implements 
 1. **Priority 1**: Dismiss active Autocomplete dropdown or Monaco hover tooltip.
 2. **Priority 2**: Dismiss Omnibar / New Project / Add Source Modal.
 3. **Priority 3**: Clear active Cross-Probing selection and Logic Cone Slicing halos.
-4. **Priority 4**: Restore Maximized Panel (`⛶`) back to split view.
+4. **Priority 4**: Restore Maximized Panel (``) back to split view.
 5. **Priority 5**: Collapse expanded Bottom Dock down to status bar.
 
 ---
@@ -223,5 +223,5 @@ To maintain visual hierarchy across different IDE contexts, all UI form primitiv
 
 ### 7.4. Micro-Tactile Button Scaling & Clearable Actions
 - **Button Haptics**: Button primitives implement `:active: scale(0.97)` physical micro-scaling with `transition: transform 60ms cubic-bezier(0.2, 0.8, 0.2, 1)`, providing immediate visual confirmation of physical depression.
-- **Clearable Inputs (`Input.tsx`)**: Text inputs with `clearable={true}` render an inline `✕` button when non-empty, clearing search filters with a single tap/click and restoring input focus.
+- **Clearable Inputs (`Input.tsx`)**: Text inputs with `clearable={true}` render an inline `` button when non-empty, clearing search filters with a single tap/click and restoring input focus.
 

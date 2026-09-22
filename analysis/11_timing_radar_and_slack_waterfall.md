@@ -66,7 +66,7 @@ Unsynchronized clock domain crossings cause metastability and intermittent silic
 | `clk_100m` | `clk_100m` | Synchronous | None (Single Domain) | Direct Net |
 | `clk_100m` | `clk_fast_200m`| Related (2:1) | Multi-cycle constraint | Phase-Aligned BUFG |
 | `clk_100m` | `clk_uart_115k`| **Asynchronous** | **2-FF Synchronizer** | **2-Stage DFF Detected (PASS)** |
-| `clk_uart_115k` | `clk_100m` | **Asynchronous** | **2-FF Synchronizer** | ⚠️ **UNSYNCHRONIZED (CRITICAL)** |
+| `clk_uart_115k` | `clk_100m` | **Asynchronous** | **2-FF Synchronizer** | ️ **UNSYNCHRONIZED (CRITICAL)** |
 
 Violations are flagged with high-visibility amber warning badges directly on the schematic and waveform timeline.
 

@@ -24,12 +24,12 @@ The critique evaluates the application across all visual and interactive dimensi
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ Hero Banner: Axiom HDL Studio v0.1.0-jit [High-Performance In-RAM Engine]   │
 ├──────────────────────────────────────┬──────────────────────────────────────┤
-│ [📁 Create New Project]              │ [⚡ Open Project from File]           │
+│ [ Create New Project]              │ [ Open Project from File]           │
 │ Step-by-step Vivado Project Wizard   │ Drag & Drop / JSON File Importer     │
 ├──────────────────────────────────────┴──────────────────────────────────────┤
 │ Quick Start Hardware Templates Grid:                                        │
-│ [⚡ Logic Circuit]   [🖥 RV32I Mini-Core]   [📡 Full-Duplex UART]            │
-│ [🔄 SPI Controller]  [⚡ Dead-Time PWM]     [🔢 8-Bit ALU]  [⏱ BCD Counter] │
+│ [ Logic Circuit]   [ RV32I Mini-Core]   [ Full-Duplex UART]            │
+│ [ SPI Controller]  [ Dead-Time PWM]     [ 8-Bit ALU]  [⏱ BCD Counter] │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,7 +51,7 @@ The critique evaluates the application across all visual and interactive dimensi
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ [Logo] Axiom EDA v0.1.0 | [Project: logic_circuit (Artix-7)] [Compile JIT]  │
 │ [▶ Run] [⏸ Pause] [+1ns] [+100ps] [Step δ] [↺ Reset] | [10.000 ns (δ=0)]    │
-│ [Layout: Balanced ⏷] [⛶ Maximize] [Ctrl+K Omnibar]                          │
+│ [Layout: Balanced ⏷] [ Maximize] [Ctrl+K Omnibar]                          │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -75,7 +75,7 @@ The critique evaluates the application across all visual and interactive dimensi
 - **Elaborated Netlist Tree**: Allows filtering through hierarchical module instances (`u_alu`, `u_regs`) with live checkboxes to add nets directly to waveform tracing.
 
 #### Identified Friction Points & Critique
-1. **Missing Clear Button in Hierarchy Search** *(Severity: P3)*: The netlist signal filter input lacks an inline `✕` clear button when text is entered, requiring manual backspacing to reset the filter.
+1. **Missing Clear Button in Hierarchy Search** *(Severity: P3)*: The netlist signal filter input lacks an inline `` clear button when text is entered, requiring manual backspacing to reset the filter.
 
 ---
 
@@ -85,7 +85,7 @@ The critique evaluates the application across all visual and interactive dimensi
 - **Custom Monarch Verilog Grammar**: Rich syntax highlighting for IEEE 1800 keywords, directives, and sized literals with dark-engineering palette tokens.
 - **In-RAM Linter Squiggles**: Rust AST linter runs debounced in 200ms, mapping syntax errors (`AXIOM_E001`) and coding warnings (`AXIOM_W001`, `AXIOM_W002`, `AXIOM_W006`) directly onto editor lines.
 - **Bidirectional Cross-Probing**: Clicking a gate in the Schematic DAG or a timing path in the Slack Waterfall automatically scrolls and centers the editor on the originating RTL line (`revealLineInCenter`).
-- **Multi-Tab File Strip**: Open files are displayed in a clean tab bar with active tab blue top borders and close buttons (`✕`).
+- **Multi-Tab File Strip**: Open files are displayed in a clean tab bar with active tab blue top borders and close buttons (``).
 
 #### Identified Friction Points & Critique
 1. **No "Dirty" File Indicator** *(Severity: P2)*: While file modifications are automatically debounced and saved to local state, the tab bar lacks a visual "dirty" dot or modified indicator to give the engineer explicit psychological confirmation of file save status.
@@ -187,7 +187,7 @@ The critique evaluates the application across all visual and interactive dimensi
 - **Tactile Popover Transitions**: Popovers use `.axiom-popover` keyframe animations (`scale(0.98) -> scale(1)` with `opacity: 0 -> 1` in 120ms) and sleek `.custom-scrollbar` styling.
 - **Full Keyboard Accessibility**: Supports `ArrowUp`/`ArrowDown` cycling with live focus states, `Enter`/`Space` selection, and `Escape` dismissal.
 - **Boundary-Safe Alignment**: `align="left" | "right"` prevents dropdown popovers from overflowing viewport edges when docked near window boundaries.
-- **Clearable Inputs**: Search bars and text fields feature inline `✕` clear buttons to instantly reset filters.
+- **Clearable Inputs**: Search bars and text fields feature inline `` clear buttons to instantly reset filters.
 
 ---
 

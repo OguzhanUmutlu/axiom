@@ -273,6 +273,6 @@ To eliminate inconsistent, un-themed, and visually dated browser-native `<select
   - **Rich Option Items**: Left-aligned icons, country flags, right-aligned status badges, and active `<Check>` markers.
   - **Keyboard Accessibility**: `Space`/`Enter` to toggle, `Up`/`Down` arrows to navigate with live focus highlight, `Escape` to dismiss.
   - **Alignment Physics**: `align="left" | "right"` prevents viewport clipping when anchored near screen edges.
-- **`Input.tsx`**: Unified text/number input supporting density sizing (`xs`, `sm`, `md`), left icons, error validation messages, and inline `clearable` buttons (`✕`).
+- **`Input.tsx`**: Unified text/number input supporting density sizing (`xs`, `sm`, `md`), left icons, error validation messages, and inline `clearable` buttons (``).
 - **`Button.tsx`**: Semantic variants (`primary`, `secondary`, `ghost`, `danger`, `success`, `cyan`, `icon`) with standardized `:active: scale(0.97)` haptic feedback.
 - **`Modal.tsx`**, **`Card.tsx`**, **`Badge.tsx`**, **`Breadcrumbs.tsx`**, **`Tabs.tsx`**: High-density engineering components adhering to the 4px spatial grid and dark surface elevation hierarchy.

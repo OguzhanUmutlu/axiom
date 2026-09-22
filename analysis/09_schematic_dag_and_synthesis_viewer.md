@@ -104,13 +104,13 @@ Axiom EDA implements this architecture natively in TypeScript, Canvas 2D, and Re
   - 60+ FPS Canvas 2D engine with smooth mouse-wheel centered zooming (0.2x to 3.5x) and drag panning.
   - **Solid Background Text Knockout Plates**: Renders solid `#0c1017` protective plates behind instance labels (`inv1`, `inv2`, `and1`, `or1`) using `ctx.fillRect(textX - w/2 - 4, textY - 10, w + 8, 14)`, completely eliminating text/wire collisions and matching Vivado's clean visual hierarchy.
   - Semantic LOD: Macro blocks with heatmaps $\to$ Structural datapath MUXes/adders/registers $\to$ Primitive gates with Cranelift JIT machine instructions (`iadd`, `isub`, `band`, `icmp eq`).
-  - Wire callout badges displaying real-time logic values from `SimulationState.signals` (toggled via `⚡ Live Values`, configured **off by default** for clean, clutter-free gate readability).
+  - Wire callout badges displaying real-time logic values from `SimulationState.signals` (toggled via ` Live Values`, configured **off by default** for clean, clutter-free gate readability).
   - High-Precision Auto-Fit Framing: Exact geometric bounding box calculation across all cells and routed nets, dynamically auto-scaling and symmetrically centering the circuit to fill the visualizer pane cleanly with comfortable margins.
   - **Dynamic Midpoint Camera Anchoring & Continuous Canvas Resizing**: Continuous `ResizeObserver` on the container dynamically updates the canvas pixel buffer resolution (`canvas.width = Math.round(newW * dpr)`) on every frame of dragging the middle splitter handle. To prevent horizontal stretching or squishing, the world-space camera midpoint is mathematically shifted by half the dimension delta ($\Delta \text{offsetX} = \Delta W / 2$, $\Delta \text{offsetY} = \Delta H / 2$) while preserving constant zoom scale, keeping the circuit locked to the center of the visualizer pane.
   - Interactive Minimap camera viewport navigator.
   - 1-Click Cone Slicing with `[F]` (Fan-In), `[O]` (Fan-Out), and `[Esc]` (Clear) shortcuts, dimming unrelated logic to 12% opacity.
 - **Split Studio Workspace (`ui/src/App.tsx`)**:
-  - Studio view switcher: `[ 📈 Waveforms ]` | `[ 🔀 Schematic DAG ]` | `[ ◫ Split Studio ]`.
+  - Studio view switcher: `[  Waveforms ]` | `[  Schematic DAG ]` | `[ ◫ Split Studio ]`.
   - 3-way bidirectional cross-probing: selecting a gate/net highlights its trace in `WaveformViewer.tsx` and scrolls to/highlights its exact source lines in `HdlEditor.tsx`.
 
 

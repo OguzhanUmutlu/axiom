@@ -139,7 +139,7 @@ To enhance the kinetic responsiveness and tactile feel of the Monaco HDL Editor 
 
 To eliminate un-themed, visually dated browser-native `<select>` dropdowns across different client operating systems, all UI interaction primitives are centralized and componentized in `ui/src/components/ui/`:
 - **`Select.tsx`**: Custom dark-acrylic popover dropdown supporting 3 density sizing tiers (`xs`: 24px, `sm`: 28px, `md`: 34px), categorized option groups (`groups`) with uppercase headers, country flags/icons, status badges, alignment controls (`align="left" | "right"`), active `<Check>` markers, rotating chevron, and full keyboard navigation (`ArrowUp`/`ArrowDown`/`Enter`/`Escape`).
-- **`Input.tsx`**: Unified text and numeric input supporting density sizing (`xs`, `sm`, `md`), left icons, validation error text, and inline clearable buttons (`✕`).
+- **`Input.tsx`**: Unified text and numeric input supporting density sizing (`xs`, `sm`, `md`), left icons, validation error text, and inline clearable buttons (``).
 - **Unified Adoption**: Native `<select>` elements in `Header.tsx` (desktop & mobile language selectors), `VirtualLabRack.tsx` (DIP switch & 7-segment display port selectors), and `StimulusPainterModal.tsx` (clock frequency selector) are replaced with the custom `Select` component.
 
 ---

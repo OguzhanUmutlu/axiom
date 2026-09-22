@@ -75,7 +75,7 @@ When conducting a comprehensive design critique or auditing an interface, evalua
 * **Elevation & Border Geometry**: 1px subtle borders (`var(--border-subtle)`) over heavy drop-shadows in high-density engineering environments.
 
 ### Pillar 2: Information Architecture & Layout Density
-* **Viewport Division & De-Cramping**: Eradicate quad-split claustrophobia. Favor spacious Dual-Pane layouts (Code Editor $\leftrightarrow$ Visualizer Container) with user-controlled splitters and 1-click panel maximization (`⛶`).
+* **Viewport Division & De-Cramping**: Eradicate quad-split claustrophobia. Favor spacious Dual-Pane layouts (Code Editor $\leftrightarrow$ Visualizer Container) with user-controlled splitters and 1-click panel maximization (``).
 * **Header & Ribbon Efficiency**: Keep global headers dense ($\le 42\text{px}$) with clearly segmented button groupings (Identity $\mid$ Simulation Control $\mid$ Timing $\mid$ Windowing).
 * **Docking Systems**: Auxiliary views (Console, Problems, Telemetry, Glitches) must reside in collapsible dock drawers that collapse to a compact status bar ($\le 32\text{px}$), liberating vertical canvas space.
 * **Wayfinding & Context**: Multi-level breadcrumbs (`project > sources_1 > top.v > module`), active file tabs with close actions and dirty state indicators, and top-module badges (`[TOP]`).

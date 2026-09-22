@@ -93,7 +93,7 @@ Category 2: Information Architecture & Layout Density (Items 9–16)
 [ ] 09. Does the layout avoid static quad-split crowding, favoring a flexible dual-pane studio?
 [ ] 10. Can the editor and visualizer widths be resized smoothly via a draggable splitter?
 [ ] 11. Does the splitter enforce safe percentage boundaries (18% minimum, 75% maximum)?
-[ ] 12. Can individual panes be maximized to 100% full screen with a single click (⛶)?
+[ ] 12. Can individual panes be maximized to 100% full screen with a single click ()?
 [ ] 13. Does the left sidebar collapse into an ultra-compact icon rail (<= 38px)?
 [ ] 14. Does the bottom dock collapse into a functional status bar (<= 32px height)?
 [ ] 15. Are project sources partitioned according to standard file sets (sources_1, sim_1, constrs_1)?
@@ -149,7 +149,7 @@ Category 7: Primitive Componentization & Zero Native Bleed (Items 51–60)
 [ ] 55. Do select options support rich metadata (custom left icons, country flags, right-hand bit-width badges)?
 [ ] 56. Do custom popovers support viewport-safe boundary alignment (align="left" | "right")?
 [ ] 57. Is full keyboard parity implemented for custom dropdowns (ArrowUp/ArrowDown, Enter, Space, Escape)?
-[ ] 58. Do text input fields provide inline clearable action buttons (✕) and left icon slots?
+[ ] 58. Do text input fields provide inline clearable action buttons () and left icon slots?
 [ ] 59. Are custom scrollbars (.custom-scrollbar) applied to all popovers and overflow containers?
 [ ] 60. Do button primitives provide tactile haptic micro-scaling (:active: scale(0.97)) and semantic color tokens?
 ```
@@ -170,7 +170,7 @@ Category 7: Primitive Componentization & Zero Native Bleed (Items 51–60)
 │ 2. Quad-Split Claustrophobia         │ Forcing code, waveforms, netlists, and consoles into    │
 │                                      │ four tiny static boxes simultaneously.                  │
 │                                      │ Fix: Spacious Dual-Pane Studio with 1-click Maximize    │
-│                                      │ (⛶) and collapsible drawer docks.                       │
+│                                      │ () and collapsible drawer docks.                       │
 ├──────────────────────────────────────┼─────────────────────────────────────────────────────────┤
 │ 3. Contrast Starvation               │ Using dark-gray-on-black text (#475569 on #0d0f12) for  │
 │                                      │ fine technical metadata, causing severe eye strain.     │

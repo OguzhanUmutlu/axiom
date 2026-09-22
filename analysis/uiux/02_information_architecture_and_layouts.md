@@ -48,17 +48,17 @@ Legacy tools like Vivado, ModelSim, and older IDEs divide the screen into four s
 Axiom replaces static quadrants with a **Spacious Dual-Pane Studio**:
 - **Left Pane**: Monaco HDL Editor dedicated to full-height source code editing (adjustable from 18% to 75% width).
 - **Right Pane**: Full-height, full-width Visualizer Container equipped with an ergonomic tab switcher:
-  - `⚡ Schematic DAG`
-  - `🎛 Virtual Lab Rack`
-  - `📈 Waveform Viewer`
+  - ` Schematic DAG`
+  - ` Virtual Lab Rack`
+  - ` Waveform Viewer`
   - `⏱ Timing & Energy Radar`
 - **Optional Stacked Waveform Toggle (`[+ Waveforms]`)**: When simultaneous code and waveform inspection is required, the right pane can cleanly split vertically (Visualizer on top, Waveforms on bottom), controlled by a dedicated vertical splitter.
-- **1-Click Fullscreen Maximization (`⛶`)**: Any pane can instantly expand to 100% full screen, hiding all splitters and chrome for concentrated debugging.
+- **1-Click Fullscreen Maximization (``)**: Any pane can instantly expand to 100% full screen, hiding all splitters and chrome for concentrated debugging.
 
 ```
 ┌──────────────────────────────┬─────────────────────────────────────────────────────────┐
 │ Left Pane: Code Focus        │ Right Pane: Visualizer Focus (100% Height & Width)      │
-│                              │ [⚡ Schematic DAG]  [🎛 Virtual Lab]  [📈 Waveforms]     │
+│                              │ [ Schematic DAG]  [ Virtual Lab]  [ Waveforms]     │
 │                              ├─────────────────────────────────────────────────────────┤
 │                              │                                                         │
 │                              │                                                         │
@@ -105,12 +105,12 @@ State A: Expanded (228px)                  State B: Collapsed (38px)
 ┌──────────────────────────────────────┐   ┌──────┐
 │ [Sources]  [Netlist Hierarchy]   [<] │   │ [>]  │
 ├──────────────────────────────────────┤   ├──────┤
-│ ▾ Design Sources (sources_1)         │   │ [📁] │
-│   📄 logic_circuit.v           [TOP] │   │      │
-│ ▾ Simulation Sources (sim_1)         │   │ [🌳] │
-│   📄 tb_logic_circuit.sv             │   │      │
-│ ▾ Constraints (constrs_1)            │   │ [⚙]  │
-│   📄 timing.xdc                      │   │      │
+│ ▾ Design Sources (sources_1)         │   │ [] │
+│    logic_circuit.v           [TOP] │   │      │
+│ ▾ Simulation Sources (sim_1)         │   │ [] │
+│    tb_logic_circuit.sv             │   │      │
+│ ▾ Constraints (constrs_1)            │   │ []  │
+│    timing.xdc                      │   │      │
 └──────────────────────────────────────┘   └──────┘
 ```
 
@@ -121,7 +121,7 @@ Files are partitioned strictly according to authentic Vivado conventions:
 - `constrs_1`: Timing constraints and pin maps (`.xdc`).
 
 ### 4.2. Breadcrumb Navigation & File Tabs
-In `HdlEditor.tsx`, the tab strip displays open file tabs with close buttons (`✕`) and dirty indicators. Below the tabs, an active breadcrumb trail confirms the hierarchical location:
+In `HdlEditor.tsx`, the tab strip displays open file tabs with close buttons (``) and dirty indicators. Below the tabs, an active breadcrumb trail confirms the hierarchical location:
 $$\text{project} \;\;>\;\; \text{sources\_1} \;\;>\;\; \text{logic\_circuit.v} \;\;>\;\; \text{module logic\_circuit}$$
 
 ---
@@ -135,14 +135,14 @@ Axiom replaces bulky stacked panels with a **Collapsible Bottom Dock** (`Unified
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │ Status Bar (Collapsed: 28px Height)                                                    │
-│ [>_ Console]  [⚠ Problems (0)]  [⚡ Power: 14.2 mW]  [Rail: 0.982 V]  [Glitches: 0]   │
+│ [>_ Console]  [ Problems (0)]  [ Power: 14.2 mW]  [Rail: 0.982 V]  [Glitches: 0]   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Dock Interactions
 - **1-Click Expansion**: Clicking any status pill or the dock tab expands the drawer to its last resized height (default 240px).
 - **Smooth Drag Resizing**: An integrated top handle allows dragging height from 120px to 80% of viewport.
-- **1-Click Maximize (`⛶`)**: Expands the dock to 100% of the screen for comprehensive telemetry graph analysis or extensive REPL scripting sessions.
+- **1-Click Maximize (``)**: Expands the dock to 100% of the screen for comprehensive telemetry graph analysis or extensive REPL scripting sessions.
 - **Intelligent Error Pulsing**: When a compilation error or zero-time glitch occurs while the dock is collapsed, the corresponding status badge pulses in rose/amber, alerting the engineer without jarringly ripping the current view open.
 
 ---
@@ -156,7 +156,7 @@ Axiom incorporates a **Dedicated Responsive Mobile Engine**:
 ```
 Desktop Mode (Width > 768px)          Mobile Mode (Width <= 768px)
 ┌─────────────────────────────────┐   ┌─────────────────────────────────┐
-│ Sidebar │ Editor │ Visualizer   │   │ Mobile Header (42px) [☰] [12ns] │
+│ Sidebar │ Editor │ Visualizer   │   │ Mobile Header (42px) [] [12ns] │
 │         │        │              │   ├─────────────────────────────────┤
 │         │        │              │   │ Single Panel at a Time (100%)   │
 │         │        │              │   │ - Monaco Code Editor            │
@@ -173,7 +173,7 @@ Desktop Mode (Width > 768px)          Mobile Mode (Width <= 768px)
 On mobile viewports, multi-pane splitters, resizable handles, and desktop sidebars are **completely removed from the DOM**. The application locks into a single, focused viewport where `document.body.scrollWidth === window.innerWidth` (0px horizontal overflow).
 
 ### 6.2. Off-Canvas Left Drawer (`MobileDrawer.tsx`)
-Clicking the header hamburger icon (`☰`) smoothly slides in an off-canvas drawer from the left (`translateX(-100%)` to `translateX(0)`) backed by a 6px blurred dark backdrop:
+Clicking the header hamburger icon (``) smoothly slides in an off-canvas drawer from the left (`translateX(-100%)` to `translateX(0)`) backed by a 6px blurred dark backdrop:
 - Switch active studio tool with 1 tap.
 - Browse authentic Vivado project file sets (`sources_1`, `sim_1`, `constrs_1`).
 - Trigger instant JIT compilation or inspect simulation clock status.
