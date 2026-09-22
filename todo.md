@@ -14,7 +14,7 @@
 ---
 ## In Progress
 
-- (No active items in progress — Phase 43 completed successfully)
+- (No active items in progress — Phase 44 completed successfully)
 
 ---
 
@@ -22,17 +22,38 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 44: Formal Property Verification (FPV) & Bounded Model Checking (BMC) Studio - [P2]**
-  - [ ] **In-Engine Bounded Model Checker (`crates/sim/src/formal/`)**:
-    - Unroll transition relations over $k$-bounded steps to verify SystemVerilog Assertions (`assert property`).
-    - Counterexample trace generation and waveform dumping for assertion failures.
-  - [ ] **Formal Verification Dashboard (`ui/src/components/FormalVerificationViewer.tsx`)**:
-    - Verification goal table with status badges (Proven, Falsified, Vacuous, Inconclusive).
-    - 1-click counterexample trace loader seeking directly into Waveform Viewer.
+- [ ] **Phase 45: Advanced Synthesis & Floorplanning Studio - [P2]**
+  - [ ] **RTL-to-Gate Synthesis Visualizer**:
+    - Interactive logic gate netlist viewer post-technology mapping.
+    - Critical path visualization on physical layout canvas.
 
 ---
 
 ## Completed
+
+- [x] **Phase 44: Formal Property Verification (FPV) & Bounded Model Checking (BMC) Studio - [P2]**
+  - [x] **In-Engine Bounded Model Checker (`crates/sim/src/formal/`)**:
+    - Unrolls transition relations over $k$-bounded steps to verify SystemVerilog Assertions (`assert property`).
+    - Environmental assumption pruning (`assume property`), cover property witnessing (`cover property`), vacuity detection, and $k$-induction verification.
+    - Counterexample trace generation and witness trace extraction recording per-cycle signal valuations and step metrics.
+    - Default structural verification goals auto-inferred from design AST (unknown outputs `p_no_unknown_out`, FSM legal state bounds `p_fsm_state_valid`, FSM activity cover `c_fsm_active`, reset stability `p_reset_stability`).
+    - Decimal sized literal parsing support (`4'd10`, `'d10`) in SVA expressions and AST number formatting.
+  - [x] **Dual-Runtime Verification Integration (`crates/wasm/`, `crates/desktop/`)**:
+    - WebAssembly binding (`wasm_run_formal`) running bounded model checking 100% in-browser.
+    - Tauri native desktop IPC command (`run_formal_verification`) running multi-threaded BMC.
+  - [x] **Interactive Formal Verification Studio Dashboard (`ui/src/components/FormalVerificationViewer.tsx`)**:
+    - Verification goal KPI scorecards (Total, Proven, Falsified, Witnessed, Inconclusive).
+    - Engine configuration controls (Engine mode: BMC / $k$-induction, bound depth $K = 5..100$, timeout, auto structural goals toggle).
+    - Goals data table with filter ribbons, search bar, status badges, bound depth, elapsed time, and counterexample trigger.
+    - Step-by-step counterexample/witness cycle scrubber with signal valuation diff table.
+    - 1-click counterexample trace loader seeking directly into Waveform Viewer (`injectFormalTrace` & `injectTraceToWaveform`).
+    - SVA Property Assistant Modal with search and categorized templates (Immediate assert, Concurrent FIFO ordering, Request-Grant handshake, Onehot state vector, Stability under stall).
+  - [x] **Navigation & Universal Internationalization (i18n)**:
+    - Integrated formal studio into `App.tsx`, `MenuBar.tsx` (Tools menu), and `MobileDrawer.tsx` (Tools tab).
+    - Synchronized full `formal` namespace and menu keys across all 7 locales (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`) with 100% key parity.
+  - [x] **Automated Verification**:
+    - Clean TypeScript compilation and Vite bundling (`npm --prefix ui run build`) with zero errors.
+    - All 155 Rust workspace unit and integration tests passing (`cargo test --workspace`) including 5 new formal verification integration tests (`crates/sim/tests/formal_tests.rs`).
 
 - [x] **Phase 43: Comprehensive UI/UX String Audit, Translation Synchronization & Internationalization (i18n) - [P2]**
   - [x] **Component String Audit & Internationalization Wiring (`ui/src/components/`)**:
