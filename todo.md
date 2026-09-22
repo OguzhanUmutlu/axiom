@@ -22,15 +22,6 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 42: Visual Testbench Stimulus Generators & Constrained Random Verification - [P2]**
-  - [ ] **Interactive Waveform Stimulus Editor (`ui/src/components/StimulusGeneratorModal.tsx`)**:
-    - Visual timing diagram editor for drafting input drive signals before simulation run.
-    - Parametric clock generator wizard (frequency, duty cycle, phase jitter, startup delay).
-    - Repeating pulse train, glitch injection, and synchronous strobe patterns.
-  - [ ] **Constrained Random Stimulus & SystemVerilog Generator (`crates/syntax/src/stimulus.rs`, `ui/src/engine/stimulusModel.ts`)**:
-    - Range constraints, distribution weights, and seed-repeatable randomized vector generation.
-    - Automated testbench HDL export generating clean IEEE 1364/1800 testbench harness files (`tb_<top>.v`).
-
 - [ ] **Phase 43: Comprehensive UI/UX String Audit, Translation Synchronization & Internationalization (i18n) - [P2]**
   - [ ] **Component String Audit & Internationalization (`ui/src/`)**:
     - Audit all newly added and updated UI visualizer components (e.g. `TechMappingViewer.tsx`, `ProtocolAnalyzer.tsx`, `ProtocolDecoderModal.tsx`, `ImportVcdModal.tsx`, `MultiDieViewer.tsx`, `PpaParetoViewer.tsx`, etc.) for hardcoded or raw user-facing strings.
@@ -48,6 +39,18 @@
 ---
 
 ## Completed
+
+- [x] **Phase 42: Visual Testbench Stimulus Generators & Constrained Random Verification - [P2]**
+  - [x] **Interactive Waveform Stimulus Editor (`ui/src/components/StimulusGeneratorModal.tsx`)**:
+    - Visual timing diagram editor for drafting input drive signals before simulation run.
+    - Parametric clock generator wizard (frequency, duty cycle, phase jitter, startup delay).
+    - Repeating pulse train, glitch injection, and synchronous strobe patterns.
+  - [x] **Constrained Random Stimulus & SystemVerilog Generator (`crates/syntax/src/stimulus.rs`, `ui/src/engine/stimulusModel.ts`)**:
+    - Range constraints, distribution weights, and seed-repeatable randomized vector generation.
+    - Automated testbench HDL export generating clean IEEE 1364/1800 testbench harness files (`tb_<top>.v`).
+  - [x] **Multi-Language Internationalization & Full Suite Verification**:
+    - All stimulus generator strings added to `ui/src/i18n/types.ts` and `en.ts`, and translated across all 6 foreign locales (`tr.ts`, `de.ts`, `ja.ts`, `zh.ts`, `es.ts`, `fr.ts`).
+    - 148 / 148 Rust workspace tests passing, and clean TypeScript bundling with zero errors.
 
 - [x] **Phase 41: Gate-Level Technology Mapping & FPGA Primitive Inference - [P2]**
   - [x] **Boolean Network Decomposition & K-LUT Mapping (`crates/ir/src/synth/`)**:
