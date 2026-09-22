@@ -50,7 +50,7 @@ Unlike external compilers that run in batch scripts, Axiom runs an AST linter di
   - **Red Squiggle (Error)**: Syntax errors (`AXIOM_E001`), multi-driver net contention (`AXIOM_E002`).
   - **Amber Squiggle (Warning)**: Blocking assignments in sequential blocks (`AXIOM_W001`), transparent latch inference (`AXIOM_W006`), bit-width mismatch (`AXIOM_W008`).
   - **Blue Squiggle (Info)**: Unused nets (`AXIOM_W004`), undriven signals (`AXIOM_W003`).
-- **Interactive Marker Pill**: The tab bar displays an active status pill (`✓ Clean` in green, or `2 Warnings` in amber). Clicking it jumps directly to the Problems & Linter dock tab.
+- **Interactive Marker Pill**: The tab bar displays an active status pill (`Clean` in green, or `2 Warnings` in amber). Clicking it jumps directly to the Problems & Linter dock tab.
 
 ---
 

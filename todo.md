@@ -11,10 +11,9 @@
 > 5. **VitePress Documentation Portal**: Hosted on GitHub Pages with custom domain redirect to `axiom.aerovex.net`.
 
 ---
----
 ## In Progress
 
-*(No active tasks — Version 1.0.0 General Availability released)*
+*(No active tasks — Phase 48 Production Documentation Complete)*
 
 ---
 
@@ -22,11 +21,110 @@
 
 ### Future Enhancement Roadmap
 
-*(All 46 core and advanced phases fully completed, verified, and released under v1.0.0)*
+*(All 48 core, advanced, security hardening, and documentation architecture phases fully completed, verified, and released under v1.0.0)*
 
 ---
 
 ## Completed
+
+- [x] **Phase 48: Comprehensive Production Documentation Architecture (Studio UI & HDL References) - [P1]**
+  - [x] **VitePress Configuration & Multi-Sidebar Navigation (`docs/.vitepress/config.mts`)**:
+    - [x] Add top-level navigation links: Guide, Studio UI, Verilog HDL, Languages dropdown (SystemVerilog, VHDL, XDC, Primitives), Architecture, Vivado Migration, Web Studio.
+    - [x] Configure scoped sidebars for `/ui/`, `/languages/verilog/`, `/languages/systemverilog/`, `/languages/vhdl/`, `/languages/xdc/`, `/languages/primitives/`.
+  - [x] **Studio UI Manual (`docs/ui/`, 15 Guides)**:
+    - [x] `overview.md`: Layout architecture, dual-pane split, mobile drawer, keyboard shortcuts.
+    - [x] `projects-lifecycle.md`: Launchpad, Vivado file sets, [TOP] module, JSON import/export, project trashing.
+    - [x] `security-sandbox.md`: Trust permission modal, sandbox guard, storage quotas, data directory isolation, 1-click purge.
+    - [x] `monaco-editor.md`: Monaco editor, monarch tokenizer, dark theme, in-RAM linter rules, AST hover, autocompletions.
+    - [x] `schematic-viewer.md`: IEEE gate DAG, collision-free orthogonal routing, zero-turn pin alignment, knockout plates, net probes.
+    - [x] `virtual-lab.md`: Virtual Lab Rack, Basys 3 board bay, combinational logic bay, truth table HUD, IUC lab grader.
+    - [x] `waveform-viewer.md`: High-density timeline, drag-to-measure window, delta-cycle expansion, glitch markers, VCD import diffing.
+    - [x] `timing-radar.md`: STA critical path waterfall, setup/hold slack distribution, WNS/TNS, CDC synchronizers.
+    - [x] `telemetry-energy.md`: Physics power modeling, PDN voltage sag/droop, SAIF 2.0 export, live gauges.
+    - [x] `tech-mapping.md`: FPGA primitive inference, slice LUT mapping, INIT hex equations, DSP/BRAM inference.
+    - [x] `floorplanning.md`: 2D silicon die grid, analytical placer (HPWL), thermal/density heatmaps, Manhattan flightlines.
+    - [x] `formal-verification.md`: Bounded model checking (BMC), k-induction, counterexample scrubber, SVA assistant.
+    - [x] `protocol-analyzer.md`: UART, SPI, I2C, CAN, USB, Ethernet packet dissectors and payload tables.
+    - [x] `microarchitecture.md`: ALU inspector, RegFile inspector, FSM bubble diagrams, Multi-Die MCM, PPA Pareto.
+    - [x] `simulation-dock.md`: Simulation command ribbon, unified bottom dock, problems tab, REPL console.
+  - [x] **Verilog HDL Reference Manual (`docs/languages/verilog/`, 10 Guides)**:
+    - [x] `overview.md`: IEEE 1364-2001/2005 support, In-RAM Cranelift JIT / WASM execution pipeline.
+    - [x] `data-types-nets.md`: Nets (`wire`), variables (`reg`, `integer`), vectors, arrays, numbers.
+    - [x] `operators-expressions.md`: Complete precedence table, bitwise, reduction, shift, concatenation, ternary.
+    - [x] `continuous-assigns.md`: `assign` semantics, net initializers, gate primitives, multi-driver contention.
+    - [x] `procedural-blocks.md`: `always` and `initial`, sensitivity lists, blocking (`=`) vs non-blocking (`<=`), stratified scheduler.
+    - [x] `control-flow.md`: `if-else`, `case`, `casez`, `casex`, full/parallel case, procedural loops.
+    - [x] `modules-hierarchy.md`: ANSI vs Non-ANSI headers, named vs positional bindings, parameter overrides.
+    - [x] `tasks-functions.md`: User-defined tasks and functions, automatic reentrancy.
+    - [x] `system-tasks.md`: `$display`, `$monitor`, `$time`, `$finish`, `$random`, `$clog2`, `$dumpfile`, `$readmemb`.
+    - [x] `linter-diagnostics.md`: In-RAM design rules (`AXIOM_W001` through `AXIOM_E002`).
+  - [x] **SystemVerilog Reference Manual (`docs/languages/systemverilog/`, 6 Guides)**:
+    - [x] `overview.md`: IEEE 1800-2017 support in Axiom.
+    - [x] `types-declarations.md`: Universal `logic`, 2-state types, `typedef`, `struct`, `enum`.
+    - [x] `specialized-processes.md`: `always_comb`, `always_ff`, `always_latch`, transparent latch prevention.
+    - [x] `interfaces-packages.md`: `interface`, `modport`, `package`, `import`.
+    - [x] `assertions-sva.md`: Immediate vs concurrent assertions (`assert property`), sequences, temporal operators, formal BMC.
+    - [x] `constrained-random.md`: `rand`, `constraint`, `dist`, automated testbench harness generation.
+  - [x] **VHDL Reference Manual (`docs/languages/vhdl/`, 5 Guides)**:
+    - [x] `overview.md`: IEEE 1076 standard support, dual-language co-simulation.
+    - [x] `entities-architectures.md`: `entity`, `port`, `generic`, `architecture`, components.
+    - [x] `packages-types.md`: `std_logic_1164`, `numeric_std`, types and conversions.
+    - [x] `concurrent-sequential.md`: Concurrent signal assignments, sequential `process`, variables, clock edges.
+    - [x] `linter-rules.md`: VHDL LSP diagnostics, sensitivity completeness, undriven signals.
+  - [x] **Xilinx Design Constraints (XDC / SDC) (`docs/languages/xdc/`, 6 Guides)**:
+    - [x] `overview.md`: Physical and timing constraint architecture.
+    - [x] `physical-constraints.md`: `PACKAGE_PIN`, `IOSTANDARD`, `DRIVE`, `SLEW`, `PULLUP`/`PULLDOWN`.
+    - [x] `clock-constraints.md`: `create_clock`, `create_generated_clock`, clock uncertainty.
+    - [x] `io-timing.md`: `set_input_delay`, `set_output_delay`, timing budgets.
+    - [x] `timing-exceptions.md`: `set_false_path`, `set_multicycle_path`, `set_clock_groups`.
+    - [x] `lsp-and-validation.md`: Monaco XDC LSP, comments, completions, error diagnostics.
+  - [x] **Xilinx 7-Series & UltraScale+ Primitives (`docs/languages/primitives/`, 5 Guides)**:
+    - [x] `overview.md`: In-Engine Primitive Lowering architecture without external libraries.
+    - [x] `clb-and-logic.md`: `LUT1`..`LUT6`, `LUT6_2`, `CARRY4`/`CARRY8`, `FDRE`/`FDSE`/`FDCE`/`FDPE`.
+    - [x] `clocking-and-io.md`: `BUFG`, `BUFGCE`, `IBUF`, `OBUF`.
+    - [x] `dsp-slices.md`: `DSP48E1` and `DSP48E2` multipliers, accumulators, SIMD modes.
+    - [x] `block-ram.md`: `RAMB18E2` and `RAMB36E2` dual-port memories, FIFO modes.
+  - [x] **Verification & Build Gate**:
+    - [x] Clean VitePress production build (`npm --prefix docs run docs:build`).
+    - [x] Python zero-emoji audit passing with 0 emojis.
+
+---
+
+## Completed
+
+- [x] **Phase 47: Project Trust Permission System, Workspace Sandbox Isolation, Storage Quotas & Security Protections - [P1]**
+  - [x] **Core Project Model & Registry Security Schema (`projectModel.ts`, `projectRegistry.ts`)**:
+    - [x] Add `ProjectSecuritySettings` interface (`isTrusted`, `storageQuotaMb`, `isolateDataDir`, `maxDeltaCycles`, `maxMemoryAllocWords`, `allowExternalFsExport`).
+    - [x] Extend `AxiomProject` and `ProjectMetadata` with security settings and trust flags.
+    - [x] Configure local projects and starter templates to default to `isTrusted: true`.
+    - [x] Configure imported projects and external folder openings to default to `isTrusted: false` (Restricted Mode).
+  - [x] **Native Host FileSystem Sandbox Guard (`crates/desktop/src/lib.rs`)**:
+    - [x] Implement `validate_sandboxed_path` canonicalizing paths and blocking path traversal escaping workspace roots.
+    - [x] Block access to sensitive system directories (`/etc`, `/usr`, `/var`, `~/.ssh`, `C:\Windows`, `C:\Program Files`).
+    - [x] Protect Tauri filesystem commands: `fs_read_file`, `fs_write_file`, `fs_remove_file`, `fs_list_dir`, `fs_create_dir`, `fs_exists`.
+    - [x] Implement `get_directory_size` and `purge_data_directory` Tauri IPC commands.
+    - [x] Add automated unit tests verifying path traversal rejection and workspace boundary containment.
+  - [x] **Storage Quota Accounting & Dedicated Data Directory (`.axiom/data/`) (`ui/src/engine/fs/`)**:
+    - [x] Implement project storage usage calculator across Browser IndexedDB and Tauri IPC filesystems.
+    - [x] Enforce quota checks in `writeFile` throwing `StorageQuotaExceededError` if project exceeds storage cap.
+    - [x] Route all generated simulation/synthesis artifacts (`.vcd`, `.saif`, reports, netlists, PCAPs) to `.axiom/data/`.
+    - [x] Implement 1-click `purgeProjectData` wiping `.axiom/data/` and immediately reclaiming space.
+  - [x] **Project Trust & Security UI Modals (`ui/src/components/`)**:
+    - [x] Create `ProjectTrustModal.tsx` dark acrylic dialog prompting user on imported/untrusted projects ("Trust Project" vs "Open in Restricted Mode").
+    - [x] Create `ProjectSecurityModal.tsx` managing Trust status, Storage Quota selector (10MB, 25MB, 50MB, 100MB, 250MB, 500MB, Unlimited), live storage progress meter, data isolation toggle, and delta limit.
+  - [x] **Header & Navigation Integration (`Header.tsx`, `ProjectDropdown.tsx`, `App.tsx`)**:
+    - [x] Add `[ Restricted Mode ]` shield badge in header when active project is untrusted.
+    - [x] Add "Project Settings & Security..." action in `ProjectDropdown.tsx` with Shield icon.
+    - [x] Wire trust verification into project opening, importing, and simulation execution flows.
+  - [x] **Universal i18n & Zero-Emoji Compliance**:
+    - [x] Add `security` translation namespace to `Translations` interface in `ui/src/i18n/types.ts`.
+    - [x] Synchronize 100% key parity across all 7 locales (`en.ts`, `tr.ts`, `de.ts`, `ja.ts`, `zh.ts`, `es.ts`, `fr.ts`).
+    - [x] Verify 0 emojis across all code, comments, dialogs, and messages.
+  - [x] **Automated Verification & End-to-End Testing**:
+    - [x] Pass `cargo test --workspace` (all 160+ unit and integration tests).
+    - [x] Pass `cargo clippy --workspace --all-targets -- -D warnings` with zero warnings.
+    - [x] Pass `npm --prefix ui run build` with zero TypeScript errors.
+    - [x] Run Python zero-emoji audit.
 
 - [x] **Phase 46: 1.0.0 Production Hardening, Quality Assurance & Release Readiness - [P1]**
   - [x] **Zero-Warning Linter & Compiler Cleanliness**:
@@ -523,7 +621,7 @@
     - Interactive line table with 1-click jump to line in Monaco editor.
     - Action buttons for 1-click LCOV export, HTML dashboard export, and simulation reset.
   - [x] **FSM State & Transition Coverage Deep-Dive (`FsmBubbleModal.tsx`)**:
-    - State coverage halos and execution hit counts (`✓ N hits`).
+    - State coverage halos and execution hit counts (`N hits`).
     - Traversed transition arcs illuminated in emerald green with hit count labels.
     - Modal header FSM coverage badge displaying covered state count and percentage.
   - [x] **100% Verification**:
@@ -839,7 +937,7 @@
   - [x] **Flag-Only Language Selector**:
     - Removed `Globe` icon (``) and text ("English") from the language selector trigger button in `Header.tsx`.
     - Enhanced `Select.tsx` with `hideChevron`, `buttonClassName`, and `renderTrigger` properties.
-    - Rendered the active language's flag emoji (e.g., `🇺🇸`, `🇹🇷`, `🇩🇪`) in a clean, standardized 28x28 square button matching all other header icon buttons.
+    - Rendered the active language's flag icon (e.g., US, TR, DE) in a clean, standardized 28x28 square button matching all other header icon buttons.
     - Clicking the flag opens the full language dropdown with flags, native names, localized names, and language codes (`EN`, `TR`, etc.).
   - [x] **Single-Icon Omnibar / Search Button**:
     - Replaced the wide `[  Omnibar ⌘K ]` button with a minimalist single-icon button `<Search size={14} />`.
