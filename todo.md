@@ -14,7 +14,7 @@
 ---
 ## In Progress
 
-- (No active items in progress — Phase 19 completed successfully)
+- (No active items in progress — Phase 43 completed successfully)
 
 ---
 
@@ -22,23 +22,39 @@
 
 ### Future Enhancement Roadmap
 
-- [ ] **Phase 43: Comprehensive UI/UX String Audit, Translation Synchronization & Internationalization (i18n) - [P2]**
-  - [ ] **Component String Audit & Internationalization (`ui/src/`)**:
-    - Audit all newly added and updated UI visualizer components (e.g. `TechMappingViewer.tsx`, `ProtocolAnalyzer.tsx`, `ProtocolDecoderModal.tsx`, `ImportVcdModal.tsx`, `MultiDieViewer.tsx`, `PpaParetoViewer.tsx`, etc.) for hardcoded or raw user-facing strings.
-    - Consolidate and extract all new user-facing labels, table headers, descriptions, tooltip texts, and modal messages into structured keys in `ui/src/i18n/en.ts`.
-  - [ ] **Universal Multi-Language Dictionary Synchronization (`ui/src/i18n/`)**:
-    - Translate all new strings at once, file by file, to every other supported language:
-      - Turkish (`ui/src/i18n/tr.ts`)
-      - German (`ui/src/i18n/de.ts`)
-      - Japanese (`ui/src/i18n/ja.ts`)
-      - Simplified Chinese (`ui/src/i18n/zh.ts`)
-      - Spanish (`ui/src/i18n/es.ts`)
-      - French (`ui/src/i18n/fr.ts`)
-    - Ensure zero missing translation keys across all language dictionaries and 100% build pass.
+- [ ] **Phase 44: Formal Property Verification (FPV) & Bounded Model Checking (BMC) Studio - [P2]**
+  - [ ] **In-Engine Bounded Model Checker (`crates/sim/src/formal/`)**:
+    - Unroll transition relations over $k$-bounded steps to verify SystemVerilog Assertions (`assert property`).
+    - Counterexample trace generation and waveform dumping for assertion failures.
+  - [ ] **Formal Verification Dashboard (`ui/src/components/FormalVerificationViewer.tsx`)**:
+    - Verification goal table with status badges (Proven, Falsified, Vacuous, Inconclusive).
+    - 1-click counterexample trace loader seeking directly into Waveform Viewer.
 
 ---
 
 ## Completed
+
+- [x] **Phase 43: Comprehensive UI/UX String Audit, Translation Synchronization & Internationalization (i18n) - [P2]**
+  - [x] **Component String Audit & Internationalization Wiring (`ui/src/components/`)**:
+    - Audited all visualizer and modal components for hardcoded user-facing strings.
+    - Fully wired `useTranslation()` and structured `t(...)` keys into:
+      - `MenuBar.tsx` (File, Project, Simulation, Synthesis, Tools, Help menus and tooltips)
+      - `TechMappingViewer.tsx` (Technology mapping headers, device selector, LUT/FF/DSP/BRAM resource cards, pin connectivity table, truth table HUD, netlist export modal)
+      - `ProtocolAnalyzer.tsx` (Protocol tabs, decode controls, channel mapper, packet table, hex/ASCII payload inspector, export buttons)
+      - `ProtocolDecoderModal.tsx` (Launcher modal header, protocol cards, channel pin assignment matrix)
+      - `ImportVcdModal.tsx` (VCD drag/drop upload zone, timescale inspector, signal mapping table, diff trigger)
+      - `FsmViewer.tsx` (FSM state bubble visualizer header, state count, transitions badge, audit drawer, unreachability/trap checks)
+      - `VirtualLabRack.tsx` and `Basys3BoardBay.tsx` (Virtual lab bay selector, tactile Basys 3 board headers, switches, LEDs, buttons, 7-segment display annotations)
+      - `LabGraderModal.tsx` (Istanbul University - Cerrahpasa Digital Logic Lab scorecard title, executive grade badges, KPI categories, test vector matrix, markdown export)
+      - `AboutModal.tsx` (Axiom EDA title, description, version, commit, Cranelift JIT / WASM architecture tags, documentation & GitHub links)
+  - [x] **Universal Translation Schema & Dictionary Synchronization (`ui/src/i18n/`)**:
+    - Defined 11 structured namespaces in `ui/src/i18n/types.ts`: `menu`, `techMapping`, `protocol`, `vcdImport`, `fsm`, `board`, `labGrader`, `multiDie`, `ppa`, `autoPipeline`, `about`.
+    - Populated canonical English definitions in `ui/src/i18n/locales/en.ts`.
+    - Synchronized 100% key parity across all 6 foreign locales (`tr.ts`, `de.ts`, `ja.ts`, `zh.ts`, `es.ts`, `fr.ts`) with zero undefined or missing keys.
+  - [x] **Automated Verification**:
+    - Clean TypeScript compilation and Vite bundling (`npm --prefix ui run build`) with zero errors.
+    - All 148 Rust workspace unit and integration tests passing (`cargo test --workspace`).
+
 
 - [x] **Phase 42: Visual Testbench Stimulus Generators & Constrained Random Verification - [P2]**
   - [x] **Interactive Waveform Stimulus Editor (`ui/src/components/StimulusGeneratorModal.tsx`)**:
