@@ -21,11 +21,20 @@
 
 ### Future Enhancement Roadmap
 
-*(All 48 core, advanced, security hardening, and documentation architecture phases fully completed, verified, and released under v1.0.0)*
+*(All 49 core, advanced, security hardening, documentation, and ergonomics phases fully completed, verified, and released under v1.0.0)*
 
 ---
 
 ## Completed
+
+- [x] **Phase 49: Window Frame UI Ergonomics & Desktop-Grade Context Menu Suppression - [P1]**
+  - [x] **Language Selector Padding & Layout Overflow Resolution (`ui/src/components/WindowFrame.tsx`, `ui/src/components/LanguageDropdown.tsx`)**:
+    - [x] Eliminate fixed `width: 22` constraint in `WindowFrame.tsx` that crushes `LanguageDropdown` content and causes the `Globe` icon and `EN` text to overflow button borders.
+    - [x] Set balanced internal padding (`padding: "0 8px"`), flex alignment, and compact height (`height: 22`) harmonizing with adjacent titlebar controls.
+    - [x] Add ample external breathing room (`margin: "0 4px"`, refined divider margins) between Search Ctrl+K, LanguageDropdown, and Window/Fullscreen controls.
+  - [x] **Global Native Context Menu Suppression (`ui/src/App.tsx`)**:
+    - [x] Intercept and prevent redundant native browser `contextmenu` popups across the entire application (headers, toolbars, canvases, cards, docks, background).
+    - [x] Safely exempt Monaco Editor, text inputs/textareas, and elements with custom context menus or `data-allow-contextmenu`.
 
 - [x] **Phase 48: Comprehensive Production Documentation Architecture (Studio UI & HDL References) - [P1]**
   - [x] **VitePress Configuration & Multi-Sidebar Navigation (`docs/.vitepress/config.mts`)**:
