@@ -154,6 +154,12 @@ As of **Phase 14.0**, the entire core engine, compiler, scheduler, telemetry sys
   - **Golden Model Waveform Diffing Engine (`WaveformViewer.tsx`)**: Shaded crimson mismatch intervals (`rgba(239, 68, 68, 0.22)`) with border accents along divergent signal tracks, timeline ruler mismatch tick markers, amber dashed reference ghost traces (`[GOLDEN]`) overlaid directly alongside simulated signals, and an interactive Golden Diff HUD banner with match percentage, mismatch count, seek-to-mismatch navigation, ghost trace toggle, and clear action.
   - **Web Workspace Sanitation (`NewProjectModal.tsx`)**: Strictly guarded storage location inputs, "Create project subdirectory" checkbox, and directory preview behind `isDesktop()` checks, completely eliminating redundant virtual filesystem path prompts on web.
 
+- **Phase 39: Schematic Empty State Placeholders, Unbound Module DAG Decoupling & In-Editor Coverage Hygiene**:
+  - **Unbound Schematic DAG Decoupling (`ui/src/engine/schematicModel.ts`, `App.tsx`)**: Removed hardcoded fallback to `logic_circuit` in `generateSchematicGraph`. Unknown, unelaborated, or newly created modules without netlists return clean empty graphs (`{ id: "empty", topModule: "", nodes: [], edges: [], bounds: ... }`). Updated `App.tsx` visualizer bindings to dynamically resolve `activeDesignId={project?.templateId ?? project?.topModule ?? ""}` instead of falling back to `"logic_circuit_project"`.
+  - **Centered Empty-State Schematic Placeholder (`ui/src/components/SchematicViewer.tsx`)**: When `!graph || graph.nodes.length === 0`, completely suppresses the canvas, minimap, and toolbar controls, displaying a centered dark acrylic placeholder card ("No Schematic to Display" with `Cpu` badge and user guidance to elaborate or select synthesizable hardware).
+  - **In-Editor RTL Coverage Decoration Hygiene (`ui/src/components/HdlEditor.tsx`)**: Changed `coverageEnabled` to default to `false` (opt-in analysis tool). In `updateCoverage`, added explicit filtering skipping `LineCoverageStatus::NonExecutable`, eliminating phantom red dots (`axiom-cov-glyph-dead`) and red background tints from comments, port headers, module declarations, and blank lines.
+  - **Curriculum & Default Codebase Syntax Validation (`crates/lsp/src/lib.rs`)**: Added Rust unit tests verifying that default RTL project files (`untitled.v`, `dsp_bram_mac.v`, `tb_dsp_bram_mac.sv`) parse and lint with 0 diagnostics across all crates.
+
 ---
 
 ## 3. Repository & Workspace Architecture
