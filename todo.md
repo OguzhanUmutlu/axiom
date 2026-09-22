@@ -31,6 +31,20 @@
     - Range constraints, distribution weights, and seed-repeatable randomized vector generation.
     - Automated testbench HDL export generating clean IEEE 1364/1800 testbench harness files (`tb_<top>.v`).
 
+- [ ] **Phase 43: Comprehensive UI/UX String Audit, Translation Synchronization & Internationalization (i18n) - [P2]**
+  - [ ] **Component String Audit & Internationalization (`ui/src/`)**:
+    - Audit all newly added and updated UI visualizer components (e.g. `TechMappingViewer.tsx`, `ProtocolAnalyzer.tsx`, `ProtocolDecoderModal.tsx`, `ImportVcdModal.tsx`, `MultiDieViewer.tsx`, `PpaParetoViewer.tsx`, etc.) for hardcoded or raw user-facing strings.
+    - Consolidate and extract all new user-facing labels, table headers, descriptions, tooltip texts, and modal messages into structured keys in `ui/src/i18n/en.ts`.
+  - [ ] **Universal Multi-Language Dictionary Synchronization (`ui/src/i18n/`)**:
+    - Translate all new strings at once, file by file, to every other supported language:
+      - Turkish (`ui/src/i18n/tr.ts`)
+      - German (`ui/src/i18n/de.ts`)
+      - Japanese (`ui/src/i18n/ja.ts`)
+      - Simplified Chinese (`ui/src/i18n/zh.ts`)
+      - Spanish (`ui/src/i18n/es.ts`)
+      - French (`ui/src/i18n/fr.ts`)
+    - Ensure zero missing translation keys across all language dictionaries and 100% build pass.
+
 ---
 
 ## Completed
