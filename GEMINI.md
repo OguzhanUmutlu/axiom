@@ -4,382 +4,204 @@
 
 **Axiom** is an aerospace-grade, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust** and deployed live at **`https://axiom.aerovex.net`**.
 
-Vivado is the industry standard for FPGA development, yet it suffers from severe legacy bloat: 100+ GB installations, sluggish Java Swing interfaces, multi-stage file-based elaboration pipelines, zero-time delta cycle black-boxing, and zero support for modern platforms like macOS (Apple Silicon) or standard web browsers.
+Vivado is the industry standard for FPGA development, yet it suffers from legacy bloat: 100+ GB installations, sluggish Java Swing interfaces, multi-stage file-based elaboration pipelines, zero-time delta cycle black-boxing, and zero support for modern platforms like macOS (Apple Silicon) or standard web browsers.
 
 **Axiom eliminates these limitations.** It provides a lightweight (<50 MB), lightning-fast, and deeply introspectable HDL engine paired with an elegant, modern dark-themed desktop (Tauri v2) and web application (WebAssembly).
 
+### Core Technological Pillars:
+1. **In-RAM Cranelift JIT Compilation**: Direct compilation of Verilog/SystemVerilog into native machine code in RAM in milliseconds with zero disk turnaround.
+2. **Stratified Event Queue & Delta-Cycle Introspection**: Full visibility into zero-time delta cycles (Active -> Inactive -> NBA -> Observed -> Reactive), exposing combinational race conditions and glitches concealed by legacy tools.
+3. **Physics-Informed Silicon Power & Voltage Telemetry**: Live dynamic power ($P = \frac{1}{2} C V^2 f \alpha$) and PDN inductive voltage droop modeling ($V_{sag} = IR + L\frac{di}{dt}$) with standard VCD and SAIF 2.0 exporters.
+4. **Dual-Runtime Desktop & In-Browser Execution**: Native Cranelift JIT on x86_64 / AArch64 desktops via Tauri v2, and pure client-side `wasm32-unknown-unknown` simulation kernel with Web Worker sandbox in browsers.
+5. **Modern Engineering Studio**: Split dual-pane workspace with Monaco Verilog/SystemVerilog/XDC editor, IEEE gate-level schematic DAG, virtual FPGA hardware bay (Digilent Basys 3 / Nexys A7), high-density digital/analog waveform viewer with drag-to-measure window, static timing analysis radar, FSM bubble diagrams, and protocol decoders.
+
 ---
 
-## 2. Current Implementation Status & Production Deliverables
+## 2. Agent Standard Operating Procedure & Phase Workflow
 
-The entire core engine, compiler, scheduler, telemetry system, language server (LSP), linter, primitive library emulation, and modern studio are **fully implemented, tested, and active**:
-- **140 / 140 Rust Workspace Tests Passing**: Comprehensive unit, integration, benchmark, conformance, primitive emulation, protocol decoding, technology mapping, and linter tests across all crates.
-- **Dual-Runtime Execution & WebAssembly LSP**:
-  - **Desktop Native**: Native Cranelift JIT compiling Verilog/SystemVerilog directly to x86_64 / AArch64 machine code in RAM with zero disk turnaround.
-  - **In-Browser WebAssembly**: Pure client-side `wasm32-unknown-unknown` simulation kernel and in-RAM LSP static analysis linter running 100% in-browser with zero backend dependencies.
-- **In-RAM Verilog/SystemVerilog LSP & Static Analysis Linter (`crates/lsp`)**:
-  - 10 static design rules: syntax error mapping, blocking assignment in sequential blocks (`AXIOM_W001`), non-blocking in combinational blocks (`AXIOM_W002`), undriven nets (`AXIOM_W003`), unused signals (`AXIOM_W004`), multi-driver net contention (`AXIOM_E002`), transparent latch inference (`AXIOM_W006`), missing case default (`AXIOM_W007`), bit width mismatch (`AXIOM_W008`).
-  - Standard JSON-RPC stdio daemon (`axiom lsp`) and colorized CLI reporter (`axiom lint <FILE>`).
-- **Monaco Editor Integration with Custom Monarch Verilog Tokenizer**:
-  - Dark engineering palette (`axiom-dark`), live debounced squiggly marker underlines (`monaco.editor.setModelMarkers`), hover tooltips with IEEE 1800 AST metadata, and autocompletion snippets/signals.
-- **Primary Default Combinational Hardware System (`logic_circuit`)**:
-  - Gate-level boolean logic system: `w1 = ~A; w2 = w1 & B; w3 = w2 & C; w4 = ~B; F = w3 | w4;` ($F = ((\neg A \land B) \land C) \lor \neg B$).
-  - Configured as the #1 featured template on the Welcome Launchpad with full gate-level schematic DAG (9 cells, 9 nets: `inv1`, `inv2`, `and1`, `and2`, `or1`) and dedicated Virtual Lab bay with tactile switches, gate probes, output LED, and 8-row Truth Table HUD.
-- **Spacious Dual-Pane Studio & Scaled Typography**:
-  - Redesigned Split Studio to eliminate quad-split cramping: Left = Monaco HDL Editor; Right = Full-height, full-width Visualizer Pane (`Schematic DAG`, `Virtual Lab`, `Waveforms`, `Timing & Energy`) with optional `+ Waveforms` stack toggle and 1-click Maximize.
-  - Comfortable, readable typography and touch targets across the entire interface (14px base font, 14px Monaco editor, 52px header, 280px sidebar, 32px collapsed status bar).
-- **Problems & Linter Dock**: Dedicated collapsible dock tab with active diagnostic cards and 1-click jump-to-line navigation.
-- **Production Web Deployment**: Live at **`https://axiom.aerovex.net/studio/`** (and docs at `https://axiom.aerovex.net/`) served via GitHub Pages with CNAME.
-- **Vivado Project Management System & Welcome Launchpad**:
-  - Starts cleanly from a "No Project Open" standpoint with zero pre-loaded clutter.
-  - Aerospace-grade Welcome Launchpad with hero banner, "Create New Project" wizard card, "Open Project from File" (.json) importer, and 7-item interactive starter templates grid.
-  - Authentic Vivado file sets (`sources_1`, `sim_1`, `constrs_1`), multi-file bundling, target FPGA parts (Artix-7, Zynq-7000, Kintex-7, Kintex UltraScale+, Axiom Virtual Silicon), active `[TOP]` module designation, and clean "Close Project" lifecycle.
-- **Full Mobile Studio Support & Off-Canvas Drawer Architecture**:
-  - Responsive viewport detection (`<= 768px`) completely disabling multi-pane cramping and resizable splitters.
-  - Off-canvas left drawer (`MobileDrawer.tsx`) with smooth slide-out (`translateX(-100%)` to `translateX(0)`), dark blur backdrop, full Vivado project file set explorer, 1-panel-at-a-time switcher, and simulation controls.
-  - 1-Panel-at-a-Time Viewing: full 100% width and 100% height single-panel rendering for Monaco HDL Code Editor, IEEE Gate Schematic DAG, Virtual Lab Rack, Waveforms, Timing Radar, or Console & REPL.
-  - Tactile Mobile Bottom Bar (`MobileBottomBar.tsx`): 5 thumb-friendly tabs (`Code`, `Schematic`, `Lab`, `Waves`, `Console`) with live diagnostic and glitch badges.
-- **Vivado-Grade Collision-Free Wire Routing, Zero-Turn Pin Alignment & Text Knockout Plates**:
-  - Grid datapath row alignment and precision pin alignment (`fixedY` on `SchematicNode`), mathematically matching connected pin heights ($Y_{\text{out}} = Y_{\text{in}}$) to render major connections ($A \to \text{inv1}$, $B \to \text{and1}$, $\text{and1} \to \text{and2}$, $\text{and2} \to \text{or1}$, $\text{or1} \to F$) as 100% straight horizontal lines with **zero turning movements**.
-  - Multi-layer channel destination stepping: wires spanning multiple layers ($dx \ge 150\text{px}$) run cleanly along their source horizontal track and execute their vertical jog in the dedicated open channel immediately before the destination ($dstX - 28$).
-  - Spacious inter-layer padding (`layerSpacingX = 92px`) providing wide routing channels and eliminating visual cramping.
-  - Obstacle-aware orthogonal channel routing (`routeOrthogonalEdge`) dynamically avoiding `KeepOutBox` clearance bounding boxes ($y - 18$ top margin) to detour around intermediate gates and labels.
-  - Solid `#0c1017` protective background knockout plates behind all gate instance labels (`inv1`, `inv2`, `and1`, `or1`) in `SchematicViewer.tsx` guaranteeing 100% collision-free text rendering without wire overlap.
-- **Professional Project Lifecycle, Dual-Runtime FileSystem & Dynamic Canvas Centering**:
-  - **Header State Partitioning**: Distraction-free header when no project is open (`!project`) displaying only brand, version tag (`v0.1.0-jit`), subtle "No Project Open" badge, and language selector. Full simulation control ribbon (`Run`, `Pause`, `+1 ns`, `+100 ps`, `Step δ`, `Reset`), sim time, and PDN telemetry HUD dynamically appear only when an active project is open.
-  - **Vivado-Grade Project Header Menu (`ProjectDropdown.tsx`)**: Prominent top-left project badge menu displaying target FPGA device, top module `[TOP]`, file count, manual save (`Ctrl+S`) with instant save indicator, JSON bundle export (`.json`), Add Source modal trigger, New Project wizard, and clean Close Project lifecycle.
-  - **Template Lifecycle Sanitization**: Completely removed the confusing mid-project "Load Template" section from `ProjectManager.tsx`. Templates are strictly project initialization blueprints residing on the Welcome Launchpad and inside `NewProjectModal.tsx`.
-  - **Dynamic Midpoint Camera Anchoring & Continuous Canvas Resizing**: Overhauled `ResizeObserver` in `SchematicViewer.tsx` to continuously update canvas resolution (`canvas.width = Math.round(newW * dpr)`) and mathematically lock the world-space camera midpoint to the visualizer pane center ($\Delta \text{offsetX} = \Delta W / 2$, $\Delta \text{offsetY} = \Delta H / 2$) during middle splitter dragging, eliminating all horizontal squishing while keeping zoom scale 100% constant.
-  - **Dual-Runtime FileSystem Abstraction (`ui/src/engine/fs/`)**: Abstract `FileSystem` class implemented with `BrowserIndexedDbFileSystem` (`idb` virtual VFS + `localStorage` caching) for web browsers and `TauriIpcFileSystem` delegating to native Rust host OS filesystem commands (`fs_read_file`, `fs_write_file`, `fs_remove_file`, `fs_list_dir`, `fs_create_dir`, `fs_exists`) for the desktop application. Projects auto-save immediately to disk/IndexedDB on creation and edits.
-- **Lock-Safe Multi-Session Concurrency & Desktop Single-Instance Multi-Window**:
-  - **Welcome Launchpad Ergonomics**: Direct click-to-open on project cards (`cursor: pointer`), event-stopped trash buttons, vertically centered `FolderOpen` icon in standard `.btn .btn-primary` actions, and consolidated single GitHub mention in the launchpad footer.
-  - **Web Locks API & Cross-Session Synchronization (`sessionSync.ts`)**: Atomic concurrency coordinator using `navigator.locks` (with sequential promise queue fallback) and cross-session broadcasting via `BroadcastChannel("axiom_session_sync")`, guarding project registry mutations and file operations across concurrent browser tabs.
-  - **Desktop Single-Instance Multi-Window (`axiom-desktop`)**: Tauri v2 single-instance plugin (`tauri-plugin-single-instance = "2"`) intercepting secondary process starts to spawn additional windows on the primary process via `WebviewWindowBuilder`, paired with `MultiEngineManager` isolating Cranelift JIT sessions per window label and thread-safe `FS_MUTEX` locking on host filesystem I/O.
-- **Toast Notification System, Unified Confirm Dialogs, 3-Dot Project Trashing & Fileset Architecture**:
-  - **Aerospace Toast Notification System (`toast.ts` & `ToastContainer.tsx`)**: Lightweight reactive toast manager (`toast.success`, `toast.error`, `toast.info`, `toast.warning`) with auto-dismiss, smooth slide-in animations, and dark acrylic styling, completely replacing legacy browser `alert(...)`.
-  - **Unified Confirm Dialog Subsystem (`ConfirmModal.tsx`)**: Dark acrylic modal dialog with promise-based `confirmDialog(...)` helper replacing all native browser `confirm(...)` dialogs across the app, with keyboard shortcuts (`Enter`/`Escape`) and zero usage of `prompt()`.
-  - **3-Vertical-Dot Kebab Trashing on Main Page**: Removed "Move to Trash" from in-project header menu (`ProjectDropdown.tsx`), keeping project header clean and focused. On the main page (`WelcomeLaunchpad.tsx`), project cards house "Move to Trash" inside a 3-vertical-dot button (`MoreVertical`) with click-outside auto-close and confirmation.
-  - **Vivado Fileset Label Cleanup**: Standardized sidebar fileset headers across all 7 supported languages to clean, unified titles: **Design Sources**, **Simulation Sources**, and **Constraints**, eliminating confusing `(sim_1)` and `(constrs_1)` suffixes.
-- **Precise Cursor-Tracking Wire & Net Hover Card Positioning**:
-  - **Fixed Wire Hover Positioning**: Resolved bug where hovering a wire in `SchematicViewer.tsx` triggered a fallback to `{ x: 20, y: 50 }` (rendering fixed at the top-left screen corner). Replaced with `edgeTooltipPos` calculating live viewport cursor coordinates (`mousePos.x + 16, mousePos.y + 16`) with viewport boundary clamping (`maxX = window.innerWidth - 270`, `maxY = window.innerHeight - 160`) preventing viewport overflow.
-  - **Hover vs. Selection Priority**: Refactored `activeHoverNode` and `activeHoverEdge` memoizers so wire hovering cleanly takes priority over previously selected nodes and works even while a gate is active.
-  - **Canvas Pointer Exit Cleanup**: Implemented `handleMouseLeave` on `<canvas>` clearing `hoveredNodeId` and `hoveredEdgeId` so transient hover cards disappear immediately when pointer leaves the canvas.
-- **Vivado XDC LSP Engine, Fileset Plus (+) Actions, Lean Caching & Modern Drag-to-Measure Waveforms**:
-  - **Vivado XDC Constraints LSP & Syntax Engine (`crates/lsp/src/xdc.rs`, `ui/src/engine/monacoXdc.ts`)**:
-    - Full static analysis linter, hover docs, and autocompletions for Vivado XDC physical and timing constraints (`set_property`, `PACKAGE_PIN`, `IOSTANDARD`, `create_clock`, etc.) with zero false-positive errors on standard constraint files like `timing.xdc`.
-    - Integrated with Monaco tokenizer supporting `#` comments, breadcrumb badges, and on-demand XDC validation.
-  - **Fileset Plus (+) Action Buttons & 3-Dot Kebab File Context Menus**:
-    - Replaced static file count badges with interactive `+` buttons on **Design Sources**, **Simulation Sources**, and **Constraints** opening `AddSourceModal` with that exact fileset pre-selected.
-    - Replaced exposed file trash buttons with 3-vertical-dot kebab (`MoreVertical`) dropdowns offering "Set as Top Module" and styled "Delete" dialogs.
-    - Fixed top-module tagging to prevent testbenches (`tb_*.v`, `*.sv`) from falsely inheriting `[TOP]` badges.
-  - **Lean Viewport, Tab & Scroll Position Persistence ("Don't Overcache")**:
-    - Persists active tabs and active file on selection/closure across page reloads.
-    - Persists fileset folder expand/collapse state per project in `localStorage`.
-    - Monaco editor scroll coordinates (`top`, `left`, `line`, `col`) debounced and restored per file.
-    - Schematic camera pan (`offsetX`, `offsetY`), zoom (`scale`), live values, and clock nets persisted per design.
-  - **Simulation Reset Rewind Fix (`engineBridge.ts`)**:
-    - Resolved bug where clicking Reset uncompiled the circuit; Reset now rewinds to $t=0$, resets signal states to initial vectors, and keeps `compiled: true` so the user can immediately step or run without recompilation.
-    - Dispatches `axiom_sim_reset` event.
-  - **Modern Drag-to-Measure Waveform Window System & Reset-to-Zero Viewport**:
-    - Replaced clunky single-click A-B cursor workflow with a modern Saleae Logic 2 / Chrome DevTools drag-to-measure window: dragging across the graph highlights a shaded measurement window with $[A, B]$ boundary handles, draggable edges, and window sliding.
-    - Fixed text wrapping on the measurement HUD by enforcing `whiteSpace: "nowrap"`, compact engineering units (`formatTimeCompact`), and added a 1-click "Zoom into Window" button.
-    - Attached `onWheel` to the waveform canvas for trackpad/mouse-wheel zooming and horizontal panning.
-    - Added an automatic listener on `axiom_sim_reset` that rewinds the waveform graph viewport back to $t=0$ (`timeOffsetPs = 0`).
-- **IEEE 1800 System Tasks ($), Procedural Delays (#), and Default Codebase Lint Sanitization**:
-  - **IEEE 1800 System Tasks & Functions (`$`)**: Full lexer and parser support for identifiers starting with `$` (`$dumpfile`, `$dumpvars`, `$finish`, `$stop`, `$display`, `$monitor`, `$time`, `$realtime`, `$random`, `$clog2`) with statement-level `Statement::TaskCall` and expression-level `Expr::Call`.
-  - **Procedural Delays & Event Controls**: Full support for `#` delays (`#10;`, `#20 rst_n = 1;`, `always #5 clk = ~clk;`) and event controls (`@(posedge clk);`), with graceful elaborator unwrapping and simulation filtering.
-  - **Net Shorthand Initializers & Parameter Ranges**: Continuous assignment initializers on net declarations (`wire [6:0] opcode = instr[6:0];`), unpacked memory arrays (`reg [31:0] regfile [0:7];`), multi-parameter lists, and ranged parameters (`localparam [1:0]`).
-  - **Submodule Instance Net Driver Recognition**: Testbench instance port connections (`.F(F)`) properly registered as driven nets to eliminate false `AXIOM_W003_UNDRIVEN_NET` warnings.
-  - **100% Zero-Diagnostic Default Codebases**: Complete audit and resolution of all default templates and sample designs in `projectModel.ts`, `sampleDesigns.ts`, and `AddSourceModal.tsx`: added required `default:` branches to finite state machine `case` statements in `uart_transceiver` and `spi_master`, ensuring all default projects start completely clean with 0 warnings and 0 errors.
-- **WebAssembly Standalone Worker Sandbox & SharedArrayBuffer Simulation Isolation**:
-  - **Dedicated Background Web Worker (`ui/src/engine/worker/simWorker.ts`)**: Offloaded in-browser WebAssembly simulation execution and LSP processing from the main UI thread to a dedicated background Web Worker, loading `axiom_wasm_bg.wasm` client-side with zero UI freezing during heavy gate-level simulations or complex elaboration.
-  - **High-Speed Autonomous Simulation Loop**: Worker runs autonomous clock ticking and step evaluation at high frequency, batching signal changes and telemetry at 60 FPS (`broadcastBatch`) to eliminate UI thread rendering bottlenecks.
-  - **Lock-Free Atomic SharedArrayBuffer Synchronization (`ui/src/engine/worker/simSharedBuffer.ts`)**: Implemented 128-byte shared ring buffer with atomic sequence counter locking (`Atomics.store`, `Atomics.load`) for zero-copy, lock-free telemetry snapshots (`timePs`, `delta`, `isRunning`, `glitchCount`, `powerMw`, `currentMa`, `voltageSagV`, `railVoltageV`). Automatically falls back to structured clone messaging when `crossOriginIsolated` is false.
-  - **Watchdog Supervisor & Auto-Respawn Recovery (`ui/src/engine/worker/simWorkerClient.ts`)**: 5,000ms watchdog guarding against infinite zero-time delta loops or unstable combinational oscillation hazards, automatically terminating hung workers, cleanly respawning a fresh sandbox, and re-compiling the active design without crashing the browser tab.
-  - **Universal Bridge Integration (`ui/src/engine/engineBridge.ts`)**: Seamless tiered execution hierarchy (Tauri Native JIT IPC $\to$ WebWorker WebAssembly Sandbox $\to$ Main-Thread WASM $\to$ Simulated Fallback) with zero breaking changes to existing UI components.
-- **Direct Xilinx 7-Series & UltraScale+ Primitive Library Emulation**:
-  - **Direct In-Engine Primitive Lowering (`crates/ir/src/primitives/`)**: Full in-RAM catalog (`PrimitiveCatalog`) intercepting unknown hardware modules during AST elaboration without requiring external Verilog library definitions. Cycle- and delta-accurate lowering for `LUT6_2`, `LUT1..6`, `BUFG`, `BUFGCE`, `IBUF`, `OBUF`, `FDRE`, `FDSE`, `FDCE`, `FDPE`, `DSP48E2`, `DSP48E1`, `RAMB36E2`, `RAMB18E2`, `CARRY4`, and `CARRY8`.
-  - **Cranelift Native JIT & Portable Evaluator Concat Engine (`crates/jit/src/compiler.rs`, `portable.rs`)**: Extended Cranelift JIT compiler to compile `BirExpr::Concat(items)` directly to native 64-bit machine instructions (`ishl`, `band`, `bor`) with exact IEEE 1800 bit-ordering, and added sub-64-bit masking to `BirExpr::Slice`.
-  - **In-RAM LSP Primitive Documentation, Hover & Completion (`crates/lsp/src/primitives_doc.rs`)**: Dedicated markdown documentation, parameter lists, pin descriptions, and completion snippets for all Xilinx primitives. Static linter (`crates/lsp/src/linter.rs`) automatically recognizes primitive driver ports (`O`, `O5`, `O6`, `Q`, `P`, `DOUT...`) for 0 false diagnostics.
-- **Self-Updating Desktop Subprocess & Web Release Decoupling**:
-  - **Tauri Self-Updater Pipeline (`crates/desktop/src/lib.rs`, `platform.ts`, `UpdatePromptModal.tsx`)**: Complete native self-updating workflow. Spawns a detached background helper script (`axiom_updater.sh` on Unix / `axiom_updater.ps1` on Windows), safely terminates the running Tauri application (`app_handle.exit(0)`), waits for the parent PID to exit, replaces the old executable with the new binary, launches the updated binary, and terminates the helper process.
-  - **Web Update Decoupling**: Completely removed "Check for Updates..." from `MenuBar.tsx` on the web version, and disabled non-desktop auto-update checks on app startup in `App.tsx` via `isDesktop()` guards. Updates are now strictly scoped to desktop installations.
-- **Unified Dark Acrylic Dropdown & Context Menu Primitives, Opaque Surfaces, and Componentization**:
-  - **Opaque Elevated Theme Tokens (`ui/src/styles/theme.css`)**: Defined `--bg-surface: #1e242c;` under `:root` surface hierarchy to eliminate transparent menu fallbacks. Added standard CSS classes (`.axiom-dropdown-menu`, `.axiom-menu-item`, `.axiom-menu-item:hover`, `.axiom-menu-item-danger`, `.axiom-menu-separator`, `.axiom-menu-label`).
-  - **Modular Dropdown Component Family (`ui/src/components/ui/DropdownMenu.tsx`)**: Composable primitives (`DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuSeparator`, `DropdownMenuLabel`) featuring automatic click-outside listener dismissal, `Escape` key navigation, alignment (`start` | `end` | `center`), and z-index isolation.
-  - **UI Componentization & Code Cleanup**: Refactored `WelcomeLaunchpad.tsx` and `ProjectManager.tsx` to eliminate duplicated inline context menu DOM, inline mouseenter/mouseleave listeners, and custom window click effects, resolving transparent backdrop bugs and text collisions.
-- **Re-entrant Lock Synchronization & Universal Context Menu Anti-Wrapping**:
-  - **Re-entrant Web Locks & In-Memory Queue Synchronization (`ui/src/engine/sessionSync.ts`)**: Resolved a critical deadlock bug where `trashProject`, `restoreProject`, and `permanentDeleteProject` called `saveProjectRegistry` inside an existing `axiom_registry_lock` block. Implemented session-level `heldLockDepths` tracking so nested lock requests in the same tab execute immediately without deadlocking `navigator.locks` or the sequential fallback queue. Separated unlocked raw persistence (`persistRegistryRaw`) in `projectRegistry.ts`.
-  - **Trashed Project Lifecycle & Opening Guards (`projectRegistry.ts`, `App.tsx`)**: Trashed projects immediately persist `isTrashed = true`, disappear from the Active tab, and increment the Trash badge. Hardened `loadProjectById` and `handleOpenProjectById` to block loading trashed projects and show a warning toast.
-  - **Universal Context & Header Menu Anti-Wrapping (`theme.css`, `ProjectDropdown.tsx`, `MenuBar.tsx`, `DropdownMenu.tsx`, `LanguageDropdown.tsx`)**: Enforced `white-space: nowrap`, `width: max-content`, `maxWidth: calc(100vw - 32px)`, and `flex-shrink: 0` on all dropdown containers, menu buttons, inner labels, and shortcut tags, eliminating unwanted multi-line text wrapping across all header popovers and context menus.
-- **Istanbul University - Cerrahpasa Logic Circuits Class Examples & Lesson Reference Subsystem**:
-  - **Educational Template & Coursework Integration (`ui/src/engine/projectModel.ts`)**: Added `class_examples_project` at the end of `PROJECT_TEMPLATES` for Istanbul University - Cerrahpasa (IUC) Logic Circuits. Seeded with Lesson 1 (`lesson_1`): `uygulama_0.v` (gate-level combinational circuit computing $F = ((\neg A \land B) \land C) \lor \neg B$), `tb_uygulama_0.v` (testbench stepping through test vectors at `#0`, `#25`, `#25`, `#25` and stopping at `#100`), and Basys 3 Artix-7 constraints (`constraints.xdc`).
-  - **Launchpad Lesson Dropdown & 1-Click Launch (`WelcomeLaunchpad.tsx`)**: Minimalistic card strictly scoped to the main launchpad templates grid featuring an interactive Course Lessons dropdown selector ("Lesson 1: Uygulama 0"), Artix-7 Basys 3 target chip, and instant 1-click project initialization bypassing the modal wizard. Excluded from `NewProjectModal.tsx` to keep generic project creation lean.
-  - **Virtual Lab & Schematic Netlist Auto-Mapping (`VirtualLabRack.tsx`, `schematicModel.ts`)**: Automatically routes `class_examples_project` and `uygulama_0` into the tactile gate-level logic bay with interactive switches `A, B, C`, gate probes `w1..w4`, output LED `F`, and 8-row truth table HUD.
-- **Extended Verilog & SystemVerilog Syntax Advancement Engine**:
-  - **Non-ANSI Port Header Declarations (`crates/syntax/src/parser.rs`)**: Full IEEE 1364-1995/2001 support for non-ANSI port declarations (`module foo (a, b, cin, sum, cout); input a, b, cin; output sum, cout;`) updating port directions, ranges, and types seamlessly without duplicating local nets or triggering false linter warnings.
-  - **Multiple Instances & Multi-Assign Statements**: Loop parsing for comma-separated module and gate instances (`not g1 (w1, a), g2 (w2, b);`) and comma-separated continuous assignments (`assign a = 1, b = 2;`), capturing individual source spans for precise error reporting.
-  - **Named Procedural Blocks & Local Declarations**: Full support for labeled blocks (`begin : block_name ... end : block_name`) and procedural variable declarations (`integer`, `genvar`, `reg`, `wire`, `logic`) within `begin ... end` bodies with optional initializer preservation.
-  - **Procedural Simulation Loops**: Native AST, IR elaboration, and LSP linting support for `forever`, `repeat (count)`, and `while (cond)` loops, plus robust step assignment parsing in `for` loops (`for (i = 0; i < N; i = i + 1)`).
-  - **Wildcard & Don't-Care Case Statements (`casez` and `casex`)**: Added `CaseKind::CaseZ` and `CaseKind::CaseX` with support for `?` don't-care / high-impedance tri-state bits in binary and hexadecimal number literals (`4'b1???`, `4'b01??`).
-  - **Indexed Part-Select Expressions**: Complete AST representation (`Expr::IndexedSlice`), parser, elaborator lowering, and LSP linter traversal for ascending `[base +: width]` and descending `[base -: width]` bit slices, as well as chained multi-bracket indexing.
-  - **Standard Compiler Directives**: Non-breaking scanner and top-level directive skipping for `` `default_nettype ``, `` `resetall ``, `` `undef ``, and `` `celldefine `` / `` `endcelldefine ``.
-- **WebAssembly Synthesis Worker Integration, Monaco Port Completion & Schematic Viewport Tools**:
-  - **WebAssembly Synthesis Worker Glue & Fallback Clean-Up (`ui/src/wasm/axiom_wasm.js`, `simWorker.ts`)**: Exported `wasm_synthesize_netlist` and `wasm_export_synthesized_verilog` in `axiom_wasm.js` matching `axiom_wasm.d.ts` and Rust `crates/wasm/src/lib.rs`. Eliminated Rollup/Vite static analysis export warnings during `npm run build` (0 warnings) with worker fallbacks.
-  - **Monaco Editor Named Module Port Autocompletion (`crates/lsp/src/completion.rs`, `primitives_doc.rs`, `lib.rs`)**: Backwards parser detecting module instantiation context (`<module_name> <inst_name> (` and `#(...)`), providing intelligent named port completions (`.A(A)`) for user AST modules and Xilinx primitives with dot deduplication and wildcard (`.*`) support.
-  - **Schematic Canvas Zoom-to-Fit & Mode Camera Separation (`ui/src/components/SchematicViewer.tsx`)**: Dedicated camera persistence keys per mode (`axiom_schematic_cam_${activeDesignId}_${schematicMode}`) eliminating camera distortion between RTL Schematic and Synthesized Netlist views, with auto-centering on asynchronous synthesis finish.
-- **Istanbul University - Cerrahpasa Digital Logic Curriculum Expansion (Lessons 2–5) & Interactive Lab Auto-Grader**:
-  - **Full Curriculum Coursework Suite (`ui/src/engine/projectModel.ts`)**: Expanded `class_examples_project` to 5 digital logic lessons: Lesson 1 (Combinational Gates, `uygulama_0.v`), Lesson 2 (Multiplexers & Decoders, `mux_4to1.v`, `decoder_2to4.v`), Lesson 3 (Adders & 4-bit ALU, `full_adder.v`, `alu_4bit.v`), Lesson 4 (JK Flip-Flop & 4-bit Up/Down Synchronous Counter, `jk_flip_flop.v`, `counter_up_down_4bit.v`), and Lesson 5 (Overlapping Mealy Sequence Detector 1011, `sequence_detector_1011.v`), complete with Basys 3 XDC pin constraints and self-checking testbenches.
-  - **Interactive Lab Auto-Grader & Scorecard (`ui/src/engine/graderModel.ts`, `LabGraderModal.tsx`, `Header.tsx`, `App.tsx`)**: Top header action `[ Grade Lab ]` active for curriculum lab projects. Deterministic truth-table evaluator comparing RTL against golden vectors across all 5 lessons. Features 4 KPI category cards (Functional Accuracy, Static Linter Cleanliness, Testbench Coverage, FPGA Synthesizability), executive scorecard (Grade A+, 100/100), and downloadable Markdown lab submission report (`lab_report_<lesson>.md`).
-  - **Schematic DAG Routing & Synthesis for Curriculum Modules (`ui/src/engine/schematicModel.ts`)**: Dedicated schematic graph generators for 4:1 multiplexers (`generateMuxGraph()`) and sequence detectors (`generateFsmGraph()`).
-  - **Launchpad Lesson Selector Refinement (`WelcomeLaunchpad.tsx`)**: Dynamic dropdown supporting all 5 lessons with correct pluralization (`Lesson` vs `Lessons`) and 1-click launch.
-- **Authentic Digilent Basys 3 & Nexys A7 FPGA Development Board Hardware Emulator in Virtual Lab**:
-  - **Tactile Basys 3 Board Front-Panel (`ui/src/components/Basys3BoardBay.tsx`)**: Realistic PCB hardware rendering with gold mounting holes, silkscreen labels, and Artix-7 XC7A35T chip package outline. Includes 16 tactile sliding DIP switches (`SW0..SW15`) with mechanical rocker click physics, 16 high-brightness green LEDs (`LD0..LD15`) with radial phosphor glow shaders driven dynamically by live simulated nets, a 5-button directional pad (`BTNC`, `BTNU`, `BTNL`, `BTNR`, `BTND`) with active press states for momentary pulses and reset assertion, and a 4-digit multiplexed 7-segment display (`CA..CG`, `DP`, `AN0..AN3`) with glowing ruby red phosphor segments and unlit ghost segment styling.
-  - **XDC Pin Constraint Dynamic Auto-Binding (`ui/src/engine/boardModel.ts`)**: Automatically parses active project's `constraints.xdc` (`PACKAGE_PIN V17`, `PACKAGE_PIN U16`, etc.) with regex extraction. Connects physical peripherals directly to simulated nets and handles vector slicing (`in[0]`, `out[3:0]`) with instant in-RAM stimulus injection.
-  - **Virtual Lab Rack Integration (`ui/src/components/VirtualLabRack.tsx`, `App.tsx`)**: Dedicated segmented switcher between "Basys 3 Board" and "Logic Bays", auto-selecting the board emulator for projects targeting Basys 3 / Artix-7 or containing physical pin constraints.
-- **Interactive Finite State Machine (FSM) Bubble Diagram Visualizer & Live State Tracker**:
-  - **In-Engine FSM State & Transition Extraction (`crates/ir/src/microarch/fsm_detector.rs`, `crates/syntax/src/parser.rs`)**: Static analysis engine identifying 1-always, 2-always, and 3-always state registers (`reg [1:0] state, next_state;`) with bidirectional constant and identifier resolution (`name_to_val`, `val_to_name`), reset state association, and transition extraction from `case (state)` and `if/else` branching logic, including Mealy transition outputs (`detected = 1'b1`). Fixed AST parameter parsing in `crates/syntax/src/parser.rs` (`parse_param_decls_into`) to preserve all comma-separated parameter declarations.
-  - **Interactive FSM Canvas Visualizer (`ui/src/components/FsmViewer.tsx`)**: High-DPR interactive canvas with circular/radial and sequential bubble graph layouts, cubic Bezier curved transition arrows with direction markers, self-loops, and protective condition knockout tags. Features live active state glowing cyan as clock ticks during simulation, animated transition flashes on state advancement, real-time hit counters, pan/zoom navigation with auto-fit camera centering, and export to SVG.
-  - **FSM Static Audit & DRC HUD (`ui/src/engine/microarchModel.ts`)**: In-diagram static audit drawer detecting unreachable states, terminal trap states, missing reset transitions, and reporting state and transition coverage metrics.
-  - **Studio Workspace & Mobile Integration (`App.tsx`, `MobileDrawer.tsx`, `ui/src/i18n/`)**: Integrated `[ FSM ]` ribbon tab across mobile off-canvas drawer, split studio, and maximized full-height views, with full localization across 7 languages.
-- **Advanced Waveform Bus Slicing, Analog Waveform Mode & Precision Frequency Measurement**:
-  - **Multi-Bit Bus Trace Explosion & Slicing (`ui/src/components/WaveformViewer.tsx`)**: Chevron controls on multi-bit vector buses allowing dynamic bit-by-bit trace expansion (`bus[0]..bus[W-1]`) as well as 4-bit nibble slicing (`bus[7:4]`, `bus[3:0]`) for buses $\ge 8$ bits with dedicated `[NIB]` / `[BIT]` pill toggles in the gutter, global "Explode All / Collapse All" toolbar action, and localStorage persistence.
-  - **Analog & Stepped Waveform Plotting (`ui/src/engine/radixUtils.ts`, `WaveformViewer.tsx`)**: Multi-mode plot rendering for vector signals supporting `digital` (hex diamond envelopes), `analog_step` (stepped DAC sample-and-hold), and `analog_linear` (continuous linear interpolation). Features dynamic track expansion (56px tall vs 28px standard), gradient shading fills beneath curves, 0%/50%/100% horizontal guide lines, min/max value watermarks, and per-signal `[DIG]` / `[STP]` / `[LIN]` gutter pill toggles.
-  - **Precision Frequency, Period & Clock Cycle Measurement HUD**: Acrylic floating measurement HUD on the canvas between cursors displaying time delta ($\Delta t$), reciprocal frequency ($f = 1/\Delta t$ in GHz, MHz, kHz, or Hz), and detected clock cycle count ($N_{\text{cyc}}$) derived from the circuit's active clock signal. Paired with Saleae-style shaded drag-to-measure window selection and 1-click "Zoom into Window".
-  - **Draggable Timeline Bookmark Markers**: Persistent timeline markers (`TimelineMarker`) with customizable color palettes and labels (`M1`, `M2`, tags). Rendered with full-height dashed canvas lines and header pentagon flags, click-and-drag timeline repositioning, double-click ruler creation, toolbar dropdown with quick jump-to navigation, and inline edit/delete modals.
-- **IEEE 1364 Value Change Dump (VCD) Import & Golden Model Silicon Waveform Diffing**:
-  - **In-Engine VCD File Parser (`crates/telemetry/src/vcd_import.rs`)**: High-speed streaming parser for IEEE 1364 standard `.vcd` files with picosecond timescale normalization (`SimTime`), hierarchical scope reconstruction (`$scope module ... $upscope`), variable table resolution, and scalar/vector change tracking. Supported by full Rust unit test suite (`vcd_import_tests.rs`) with 133 / 133 workspace tests passing.
-  - **Client-Side VCD Streaming Model (`ui/src/engine/vcdModel.ts`)**: Fast in-browser VCD parser and waveform diffing engine comparing simulated nets against external golden VCD files. Performs time-interpolated value comparison across all transition timestamps, normalizes binary and hex vectors, collates contiguous mismatches into failure intervals, and calculates duration-weighted match percentages.
-  - **External Waveform Importer UI (`ImportVcdModal.tsx`)**: Drag-and-drop modal dialog supporting `.vcd` trace imports with metadata inspection (timescale, duration, date, signal count), interactive signal mapping matrix (simulated net to golden signal pairing with width verification), and 1-click golden reference sample generators with optional fault injection.
-  - **Golden Model Waveform Diffing Engine (`WaveformViewer.tsx`)**: Shaded crimson mismatch intervals (`rgba(239, 68, 68, 0.22)`) with border accents along divergent signal tracks, timeline ruler mismatch tick markers, amber dashed reference ghost traces (`[GOLDEN]`) overlaid directly alongside simulated signals, and an interactive Golden Diff HUD banner with match percentage, mismatch count, seek-to-mismatch navigation, ghost trace toggle, and clear action.
-  - **Web Workspace Sanitation (`NewProjectModal.tsx`)**: Strictly guarded storage location inputs, "Create project subdirectory" checkbox, and directory preview behind `isDesktop()` checks, completely eliminating redundant virtual filesystem path prompts on web.
+All AI agents working on this repository must strictly adhere to the standardized 5-step development lifecycle:
 
-- **Schematic Empty State Placeholders, Unbound Module DAG Decoupling & In-Editor Coverage Hygiene**:
-  - **Unbound Schematic DAG Decoupling (`ui/src/engine/schematicModel.ts`, `App.tsx`)**: Removed hardcoded fallback to `logic_circuit` in `generateSchematicGraph`. Unknown, unelaborated, or newly created modules without netlists return clean empty graphs (`{ id: "empty", topModule: "", nodes: [], edges: [], bounds: ... }`). Updated `App.tsx` visualizer bindings to dynamically resolve `activeDesignId={project?.templateId ?? project?.topModule ?? ""}` instead of falling back to `"logic_circuit_project"`.
-  - **Centered Empty-State Schematic Placeholder (`ui/src/components/SchematicViewer.tsx`)**: When `!graph || graph.nodes.length === 0`, completely suppresses the canvas, minimap, and toolbar controls, displaying a centered dark acrylic placeholder card ("No Schematic to Display" with `Cpu` badge and user guidance to elaborate or select synthesizable hardware).
-  - **In-Editor RTL Coverage Decoration Hygiene (`ui/src/components/HdlEditor.tsx`)**: Changed `coverageEnabled` to default to `false` (opt-in analysis tool). In `updateCoverage`, added explicit filtering skipping `LineCoverageStatus::NonExecutable`, eliminating phantom red dots (`axiom-cov-glyph-dead`) and red background tints from comments, port headers, module declarations, and blank lines.
-  - **Curriculum & Default Codebase Syntax Validation (`crates/lsp/src/lib.rs`)**: Added Rust unit tests verifying that default RTL project files (`untitled.v`, `dsp_bram_mac.v`, `tb_dsp_bram_mac.sv`) parse and lint with 0 diagnostics across all crates.
+```
+[ Step 1: Todo Future Phase ]
+           |
+           v
+[ Step 2: Formulate Implementation Plan ]
+           |
+           v
+[ Step 3: Wait for User Acceptance ]
+           |
+           v
+[ Step 4: Apply Plan Across Codebase ]
+           |
+           v
+[ Step 5: Verify Quality Gate & Move to Completed ]
+```
 
-- **Extended Protocol Decoders & Serial Packet Inspectors (CAN, USB 1.1/2.0, Ethernet MII/RMII)**:
-  - **In-Engine Telemetry Protocol Expansion (`crates/sim/src/protocol/`)**:
-    - CAN Bus 2.0A/2.0B decoder (`can.rs`) with bit-stuffing recovery, 11-bit standard and 29-bit extended ID, DLC, CRC-15 calculation, and ACK phase validation.
-    - USB 1.1/2.0 Low-Speed/Full-Speed packet decoder (`usb.rs`) with NRZI line state tracking, bit-unstuffing, SYNC, PID verification, token/data/handshake decomposition, and CRC-5 / CRC-16 checks.
-    - Ethernet MII/RMII/Parallel-Byte frame dissector (`ethernet.rs`) with preamble, SFD, MAC header, EtherType, IPv4/ARP dissection, payload, and FCS CRC-32 verification.
-    - Full test suite in `crates/sim/src/protocol/tests.rs` verifying frame extraction across all new protocols (137 / 137 workspace tests passing).
-  - **Wireshark-Compatible PCAP & CSV Exporters (`ui/src/engine/pcapExport.ts`, `csvExport.ts`)**:
-    - Binary Libpcap export supporting Ethernet (`LINKTYPE_ETHERNET = 1`), CAN (`LINKTYPE_CAN_SOCKETCAN = 227`), and USB (`LINKTYPE_USB_2_0 = 288`) with microsecond timestamps and packet length fields.
-    - Formatted tabular CSV exporter with standard timestamp, protocol, summary, data size, and integrity status columns.
-  - **Protocol Packet Visualizer & Inspector Dock (`ui/src/components/ProtocolAnalyzer.tsx`)**:
-    - Interactive protocol selector pills (CAN, USB, Ethernet, UART, SPI, I2C, AXI), channel auto-mapping heuristic (`guessPinMap`), and live decode runner.
-    - Tabular packet stream view with timestamp alignment, color-coded protocol fields, byte counts, and integrity badges.
-    - Deep packet inspection card displaying protocol field tree, side-by-side 16-byte hex dump and ASCII decode, and checksum verification status.
-    - Slide-out configuration drawer with parameter inputs for all 7 protocols (baud rate, sample point, speed, interface mode, CPOL/CPHA, word size, 10-bit addressing, AXI data width).
-    - Integrated into dual-pane visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer, and modal launcher (`ProtocolDecoderModal.tsx`).
-    - Protocol waveform track in `WaveformViewer.tsx` rendered with dedicated color palette per protocol and error states.
+### Step 1: Todo Future Phase
+- Consult `todo.md` before planning architectural changes, new subsystems, or feature enhancements.
+- Identify the active phase or establish a new phase under the `## Todo` section in `todo.md`.
+- Break down the phase into explicit, actionable task checkboxes with target files specified.
 
-- **Gate-Level Technology Mapping & FPGA Primitive Inference**:
-  - **Boolean Network Decomposition & K-LUT Mapping (`crates/ir/src/synth/`)**:
-    - Elaborator lowering for `Expr::Ternary` (`cond ? a : b`) into boolean multiplexer logic `(cond & a) | (~cond & b)` in `elaborator.rs`, enabling automated 2:1 multiplexer synthesis directly into `LUT3` cells with `INIT = 0xAC`.
-    - Multi-bit bus bit-blasting in `LutMapper` (`lut_mapper.rs`): decomposes multi-bit combinational assignments into individual slice LUTs with exact pin mapping and bit-level truth table `INIT` parameter computation.
-    - Automated DSP slice inference (`dsp_mapper.rs`): detects multi-bit multiplications ($width \ge 4$) and multiply-accumulate (MAC) patterns in continuous assignments and clocked processes, mapping to `DSP48E2` (UltraScale+) and `DSP48E1` (7-Series).
-    - Automated Block RAM inference (`bram_mapper.rs`): detects unpacked memory arrays with synchronous read/write patterns, inferring `RAMB18E2` (< 18Kb) and `RAMB36E2` (up to 36Kb).
-    - Exact 16-bit, 32-bit, and 64-bit hex `INIT` equations with 140 / 140 Rust workspace unit and integration tests passing (`cargo test --workspace`).
-  - **Physical Architecture Mapping Visualizer (`ui/src/components/TechMappingViewer.tsx`)**:
-    - Interactive target silicon device selector (Artix-7, Kintex-7, Virtex-7, Zynq-7000, Kintex UltraScale+, Axiom Virtual Silicon) with live re-synthesis runner.
-    - FPGA slice resource utilization banner with progress bars (Slice LUTs, Registers/FFs, Carry chains, DSP slices, Block RAMs, I/O pins, Logic Depth, and delay in ps).
-    - Dual-pane mapped netlist view with filterable cells table, pin connectivity map, parameters table, and interactive $K$-input Truth Table HUD for LUTs.
-    - Structural Verilog Netlist Modal with copy-to-clipboard and 1-click `.v` file downloader.
-    - Integrated into visualizer tabs (`App.tsx`), full-screen maximized mode, mobile off-canvas drawer (`MobileDrawer.tsx`), and center split views.
+### Step 2: Formulate Implementation Plan
+- Formulate an in-depth implementation plan before making source code edits or running mutating operations.
+- Write the plan to the implementation plan artifact (`implementation_plan.md`) with:
+  - Background context and problem statement.
+  - User review items (highlighting any breaking changes, architectural pivots, or design decisions).
+  - Proposed changes categorized logically by crate, component, or file.
+  - Verification plan covering automated tests and manual UI/UX verification steps.
+- Set `request_feedback = true` and `user_facing = true`.
+
+### Step 3: Wait for User Acceptance
+- Stop calling tools and pause execution.
+- Present a concise, high-level summary of the implementation plan pointing to the artifact.
+- **Do NOT proceed to execution until the user explicitly reviews and accepts the plan.**
+
+### Step 4: Apply Plan Across Codebase
+- Execute the approved changes cleanly across affected Rust crates, UI components, tests, and documentation.
+- Maintain code cleanliness, documentation integrity, and preserve existing comments.
+- Synchronize all user-facing UI strings across all 7 supported language dictionaries (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+
+### Step 5: Verify Quality Gate & Move Phase to Completed
+- Execute the full verification suite (automated tests, strict clippy, TypeScript build, zero-emoji audit).
+- Verify that changes fulfill all acceptance criteria without regressions.
+- Update `todo.md`: move the completed phase and its subtasks from `## Todo` to `## Completed`.
+- Commit and push changes with clear, descriptive commit messages following the repository Git policy.
 
 ---
 
 ## 3. Repository & Workspace Architecture
 
-The repository is organized as a Cargo multi-crate workspace and modern TypeScript/React frontend:
+The repository is structured as a high-performance Cargo multi-crate workspace paired with a modern React 19 / TypeScript studio and VitePress documentation portal:
 
 ```
 axiom/
-├── Cargo.toml                          # Master workspace configuration
-├── GEMINI.md                           # Single-source-of-truth project context for AI agents
-├── todo.md                             # Master task & milestone priority tracker
-├── install.sh / install.ps1            # Universal single-line installation scripts
-│
-├── crates/                             # Rust Simulation Engine Workspace
-│   ├── core/                           # Four-state logic (0,1,X,Z), SimTime, diagnostics & spans
-│   ├── syntax/                         # Streaming zero-copy lexer, preprocessor, and Pratt AST parser
-│   ├── ir/                             # Elaborator, symbol tables, module hierarchy & BIR (IR)
-│   ├── jit/                            # Cranelift in-RAM JIT backend & 4-state memory manager
-│   ├── sim/                            # Stratified event queue, delta-cycle loop, glitch detector
-│   ├── telemetry/                      # Dynamic power, PDN inductive sag ($V_{sag} = IR + L di/dt$), VCD/SAIF
-│   ├── lsp/                            # In-RAM Verilog/SystemVerilog LSP 3.17 server & static analysis linter
-│   ├── desktop/                        # DesktopEngine library and native Tauri v2 IPC handlers
-│   ├── cli/                            # Unified CLI & In-RAM GUI server (embedded Zstd UI bundle)
-│   └── wasm/                           # wasm-bindgen WebAssembly wrapper for in-browser simulation & LSP
-│
-├── ui/                                 # React 19 + TypeScript + PostCSS Web & Desktop Studio
-│   ├── src/
-│   │   ├── engine/
-│   │   │   ├── worker/                 # Web Worker isolation, SharedArrayBuffer & watchdog supervisor
-│   │   │   │   ├── simWorker.ts        # Standalone worker kernel executing WebAssembly in background
-│   │   │   │   ├── simWorkerClient.ts  # Client coordinator, request-response router & watchdog supervisor
-│   │   │   │   ├── simWorkerProtocol.ts# Strongly typed worker IPC command & event batch message definitions
-│   │   │   │   └── simSharedBuffer.ts  # 128-byte SharedArrayBuffer ring buffer with Atomics synchronization
-│   │   │   ├── engineBridge.ts         # Dual-runtime bridge (auto-detects Tauri IPC vs Web Worker vs WASM)
-│   │   │   ├── projectModel.ts         # Vivado project model (sources_1, sim_1, constrs_1, templates)
-│   │   │   ├── packageModel.ts         # Vivado FPGA package definition, BGA pins, die floorplan & XDC
-│   │   │   ├── monacoVerilog.ts        # Monarch Verilog tokenizer, axiom-dark theme & LSP providers
-│   │   │   ├── schematicModel.ts       # Synthesizes hardware netlist DAG for schematic viewer
-│   │   │   ├── timingModel.ts          # Static timing analysis, slack radar, CDC matrix, energy treemap
-│   │   │   └── sampleDesigns.ts        # 7 production Verilog hardware systems
-│   │   ├── components/
-│   │   │   ├── Header.tsx              # Execution control (Run, Step, +1ns, +100ps, Step δ, Reset)
-│   │   │   ├── Sidebar.tsx             # Collapsible sidebar (Sources explorer vs Netlist hierarchy)
-│   │   │   ├── ProjectManager.tsx      # Vivado file sets explorer, top-module picker, templates
-│   │   │   ├── NewProjectModal.tsx     # Vivado project creation wizard with target FPGA part selection
-│   │   │   ├── AddSourceModal.tsx      # Add source dialog for sources_1, sim_1, constrs_1
-│   │   │   ├── HdlEditor.tsx           # Monaco multi-tab editor with live markers, [TOP] tag, breadcrumb
-│   │   │   ├── UnifiedBottomDock.tsx   # Collapsible dock: Console & REPL, Problems & Linter, Power, Glitches
-│   │   │   ├── WaveformViewer.tsx      # Multi-radix traces, dual cursors, delta-cycle accordion
-│   │   │   ├── SchematicViewer.tsx     # GPU-accelerated netlist DAG, semantic LOD, logic cone slicer
-│   │   │   ├── PackageVisualizer.tsx   # FPGA Package BGA ball grid map, silicon die & I/O Ports dock
-│   │   │   ├── VirtualLabRack.tsx      # DIP switches, buttons, 7-seg LEDs, UART/SPI/PWM/RISC-V bays
-│   │   │   ├── TimingRadarViewer.tsx   # Slack waterfall, CDC matrix, hierarchical energy treemap
-│   │   │   ├── OmnibarModal.tsx        # Ctrl+K Spotlight-style command palette & fuzzy finder
-│   │   │   └── ResizableSplitter.tsx   # Zero-dependency draggable splitter handles
-│   │   └── styles/theme.css            # Dark engineering aesthetic design system
-│   └── dist/                           # Production web bundle (pre-compiled into CLI)
-│
-├── docs/                               # VitePress Documentation Portal (https://axiom.aerovex.net)
-├── analysis/                           # Axiom Architectural Blueprints (14 detailed specs)
-└── vivadoanalysis/                     # AMD Vivado Reverse-Engineering & Architecture Critique
+|-- Cargo.toml                          # Master workspace configuration
+|-- GEMINI.md                           # Single-source-of-truth project context for AI agents
+|-- todo.md                             # Master task & milestone priority tracker
+|-- install.sh / install.ps1            # Universal single-line installation scripts
+|
+|-- crates/                             # Rust Simulation & HDL Workspace
+|   |-- core/                           # Four-state logic (0,1,X,Z), SimTime, diagnostics & spans
+|   |-- syntax/                         # Zero-copy lexer, preprocessor, and Pratt AST parser
+|   |-- ir/                             # Elaborator, symbol tables, module hierarchy, BIR netlist & primitives
+|   |-- jit/                            # Cranelift in-RAM JIT backend & 4-state memory manager
+|   |-- sim/                            # Stratified event queue, delta-cycle loop, glitch detector & protocols
+|   |-- telemetry/                      # Dynamic power, PDN inductive sag ($V_{sag} = IR + L di/dt$), VCD & SAIF
+|   |-- lsp/                            # In-RAM Verilog/SystemVerilog/XDC LSP server & static analysis linter
+|   |-- desktop/                        # DesktopEngine library and native Tauri v2 IPC handlers
+|   |-- cli/                            # Unified CLI & in-RAM GUI server (embedded Zstd UI bundle)
+|   `-- wasm/                           # wasm-bindgen WebAssembly wrapper for in-browser simulation & LSP
+|
+|-- ui/                                 # React 19 + TypeScript + PostCSS Web & Desktop Studio
+|   |-- src/
+|   |   |-- engine/                     # Simulation bridges, worker client, project model, timing & VFS
+|   |   |-- components/                 # Workspace views: Monaco editor, Schematic DAG, Lab Rack, Waves, FSM
+|   |   |-- i18n/                       # 7 language dictionaries (en, tr, de, ja, zh, es, fr)
+|   |   `-- styles/theme.css            # Dark engineering aesthetic design system
+|   `-- dist/                           # Production web bundle (pre-compiled into CLI)
+|
+|-- docs/                               # VitePress Documentation Portal (59 comprehensive guides)
+|-- analysis/                           # Axiom Architectural Blueprints (14 detailed specs + uiux/)
+`-- vivadoanalysis/                     # AMD Vivado Reverse-Engineering & Architecture Critique
 ```
 
 ---
 
-## 4. Key Architectural Subsystems
+## 4. Strict Agent Operating Policies
 
-### 4.1. In-RAM JIT Machine Code & WebAssembly Engine
-- **No External Compilers**: Verilog/SystemVerilog parsing and elaboration occur entirely in Rust.
-- **Cranelift Native JIT**: Directly emits native machine instructions into executable memory in RAM in milliseconds.
-- **WebAssembly Client**: Compiles to `wasm32-unknown-unknown`, allowing browser simulation without server computation.
-- **Contiguous 4-State Arena**: All signal states reside in contiguous `values: Box<[u64]>` and `masks: Box<[u64]>` memory, guaranteeing L1/L2 cache locality.
+All agents operating in this codebase must adhere to the following non-negotiable rules:
 
-### 4.2. Stratified Event Scheduler & Delta-Cycle Introspection
-- **Full IEEE 1800 Compliance**: Implements Stratified Event Queue phases: Active $\rightarrow$ Inactive $\rightarrow$ NBA (Non-Blocking Assignments) $\rightarrow$ Observed $\rightarrow$ Reactive.
-- **Granular Stepping APIs**:
-  - `engine.tick(delta_ps)`: Advances physical simulation time by arbitrary picoseconds.
-  - `engine.step_delta()`: Advances a discrete zero-time $\delta$-cycle within current time.
-- **Glitch & Hazard Radar**: Automatically intercepts and flags zero-time combinational glitches (static-0, static-1, dynamic hazards) that Vivado conceals.
-
-### 4.3. Physics-Informed Voltage, Energy & Power Telemetry
-- **Dynamic Power**: Modeled from net capacitance, voltage rails, and toggle rate:
-  $$P_{\text{dynamic}} = \frac{1}{2} C_{\text{net}} V_{\text{dd}}^2 f \alpha$$
-- **Inductive PDN Droop**: Models power distribution network inductance ($V_{\text{sag}} = IR + L \frac{di}{dt}$), flagging micro-spikes during clock transitions.
-- **Export Standards**: Generates standard Value Change Dump (VCD) and Switching Activity Interchange Format (SAIF 2.0).
-
-### 4.4. Vivado Project Management & De-Cramped Ergonomic Studio
-- **Authentic Vivado File Sets**:
-  - `Design Sources (sources_1)`: Verilog / SystemVerilog RTL modules.
-  - `Simulation Sources (sim_1)`: Testbenches with stimulus generators.
-  - `Constraints (constrs_1)`: Timing & pin constraints (`timing.xdc`).
-- **Target Silicon Devices**: Artix-7 (`xc7a35t`, `xc7a100t`), Zynq-7000 (`xc7z020`), Kintex-7 (`xc7k325t`), Kintex UltraScale+ (`xcku5p`), Axiom Virtual Silicon.
-- **Ergonomic De-Cramping**:
-  - **Unified Bottom Dock**: Collapsible to a 28px status bar, liberating ~250px of vertical space.
-  - **Collapsible Sidebar**: Shrinks to a 38px vertical icon strip, liberating 222px of horizontal space.
-  - **1-Click Panel Maximization (Full Screen)**: Expands Editor, Waveforms, Schematic DAG, or Virtual Lab to 100% full screen.
-
----
-
-## 5. Strict Operating Guidelines & Git Workflow Policy
-
+### 4.1. Strict No-Emoji Policy
 > [!IMPORTANT]
-> **Strict No-Emoji Policy:**
 > **Do NOT use emojis anywhere in the codebase, UI/UX, or agent markdown files.**
-> Always use clean SVG icons (such as Lucide React icons in the frontend) or concise text labels instead of emojis. Never include emojis in menu titles, buttons, tabs, tooltips, dialogs, console messages, or documentation.
+> Always use clean SVG icons (such as Lucide React icons in the frontend) or concise text labels instead of emojis. Never include emojis in menu titles, buttons, tabs, tooltips, dialogs, console messages, commit messages, or documentation.
 
+### 4.2. Continuous Verification Quality Gate
+Before concluding any task or moving a phase to completed, all three quality gates must pass cleanly:
+1. **Rust Workspace Tests**:
+   ```bash
+   cargo test --workspace
+   ```
+   *(All 160+ unit, integration, primitive emulation, protocol decoding, and synthesis tests must pass with 0 failures)*
+2. **Rust Strict Clippy**:
+   ```bash
+   cargo clippy --workspace --all-targets -- -D warnings
+   ```
+   *(Must compile with 0 warnings)*
+3. **Frontend Production Build**:
+   ```bash
+   npm --prefix ui run build
+   ```
+   *(Must complete TypeScript checks and Vite bundling with 0 errors)*
+
+### 4.3. Git Workflow & Commit Policy
 > [!NOTE]
-> **Git Workflow Policy:**
 > **You can commit and push after every change.**
-> Always ensure that changes are verified (e.g., `npm run build`, `cargo test`), clean, and committed with clear descriptive messages.
-> Destructive Git operations (such as `git reset --hard`, `git clean -f`, force-pushing `git push --force`, or destructive rebasing) remain strictly forbidden to preserve repository history integrity.
+> Always ensure that changes are verified, clean, and committed with clear descriptive messages.
+> Destructive Git operations (such as `git reset --hard`, `git clean -f`, force-pushing `git push --force` on shared branches, or destructive rebasing) remain strictly forbidden to preserve repository history integrity.
+
+### 4.4. Continuous Internationalization (i18n) Key Parity
+- Whenever a new user-facing UI string is introduced, add it to `ui/src/i18n/en.ts`.
+- Immediately synchronize translations across all 6 additional supported languages:
+  - Turkish: `ui/src/i18n/tr.ts`
+  - German: `ui/src/i18n/de.ts`
+  - Japanese: `ui/src/i18n/ja.ts`
+  - Chinese: `ui/src/i18n/zh.ts`
+  - Spanish: `ui/src/i18n/es.ts`
+  - French: `ui/src/i18n/fr.ts`
+- Maintain 100% key parity across all language dictionaries with zero missing translation keys.
+
+### 4.5. Single Source of Truth Hierarchy
+To prevent documentation bloat and maintain clear authority:
+- **`todo.md`**: The exclusive single source of truth for phase tracking, task breakdowns, roadmap milestones, and completion status. Never maintain separate phase checklists in `GEMINI.md`.
+- **`analysis/`**: The authoritative source for deep architectural blueprints, internal data structures, and mathematical formulas. Refer to these files instead of duplicating specs in `GEMINI.md`.
+- **`docs/`**: The public-facing documentation portal covering user guides, HDL references, and platform tutorials.
+- **`GEMINI.md`**: High-density operational rules, workspace architecture, and workflow SOP for AI agents.
 
 ---
 
-## 6. Build, Test & Verification Commands
+## 5. Master Subsystem & Reference Index
 
-When working in the repository, verify changes using these standard commands:
+For deep architectural and implementation specifications, refer directly to the corresponding analysis documents:
 
-- **Build Rust Workspace & Test Suite**:
-  ```bash
-  cargo test --workspace
-  ```
-  *(Ensures all 140 unit, integration, benchmark, conformance, protocol decoding, and synthesis tests pass)*
-
-- **Build TypeScript / React UI**:
-  ```bash
-  npm --prefix ui run build
-  ```
-  *(Runs TypeScript `tsc` check and Vite production bundling)*
-
-- **Run UI Development Server**:
-  ```bash
-  npm --prefix ui run dev
-  ```
-  *(Launches Vite dev server on `http://localhost:3000/`)*
-
-- **Build Rust Desktop & CLI Binaries**:
-  ```bash
-  cargo build --release --bin axiom --bin axiom-desktop
-  ```
-
-- **Run Native Standalone Desktop Studio (Zero-Port Tauri Window)**:
-  ```bash
-  ./target/release/axiom-desktop
-  # or via CLI launcher:
-  cargo run --bin axiom -- gui
-  ```
+| Subsystem Area | Architectural Blueprint | Documentation Guide |
+| :--- | :--- | :--- |
+| Engine Architecture & Memory Model | `analysis/01_engine_architecture.md` | `docs/architecture/` |
+| Lexer, Parser & AST Representation | `analysis/02_lexer_parser_ast.md` | `docs/languages/verilog/` |
+| Elaboration & BIR Netlist Intermediate Representation | `analysis/03_elaboration_and_netlist_ir.md` | `docs/architecture/` |
+| Cranelift In-RAM JIT & WASM Codegen | `analysis/04_jit_machine_code_compiler.md` | `docs/architecture/` |
+| Stratified Event Queue & Delta Stepping | `analysis/05_event_scheduler_and_delta_stepping.md` | `docs/ui/simulation-dock.md` |
+| Dynamic Power & Inductive PDN Droop Telemetry | `analysis/06_voltage_energy_telemetry_model.md` | `docs/ui/telemetry-energy.md` |
+| C-ABI, WASM & Embeddable Runtime Interface | `analysis/07_api_and_runtime_interface.md` | `docs/architecture/` |
+| Tauri v2 Desktop & React 19 Studio UI | `analysis/08_desktop_and_web_ui.md` | `docs/ui/overview.md` |
+| Schematic DAG & Technology Mapping | `analysis/09_schematic_dag_and_synthesis_viewer.md` | `docs/ui/schematic-viewer.md` |
+| Virtual Lab Hardware Bays & Basys 3 Board | `analysis/10_virtual_lab_and_stimulus_rack.md` | `docs/ui/virtual-lab.md` |
+| Static Timing Analysis Radar & Slack Waterfall | `analysis/11_timing_radar_and_slack_waterfall.md` | `docs/ui/timing-radar.md` |
+| Energy Treemap & Thermal Distribution | `analysis/12_hierarchical_energy_treemap_and_thermal.md` | `docs/ui/telemetry-energy.md` |
+| Omnibar Command Palette & Scripting Shell | `analysis/13_omnibar_and_scripting_repl.md` | `docs/ui/simulation-dock.md` |
+| Studio UI Design System & Component Guidelines | `analysis/uiux/` | `docs/ui/` |
+| AMD Vivado Comparative Analysis & Reverse Engineering | `vivadoanalysis/` | `docs/vivado/` |
 
 ---
 
-## 7. Master Documentation & Analysis Index
+## 6. Standard Development & Verification Commands
 
-For deep architectural and implementation specifications, refer to:
+```bash
+# 1. Run full Rust workspace test suite
+cargo test --workspace
 
-1. **`analysis/analysis.md`**: Master index of the 14 comprehensive technical blueprints:
-   - `01_engine_architecture.md`: Multi-crate workspace & zero-allocation memory model.
-   - `02_lexer_parser_ast.md`: Zero-copy lexer, preprocessor & resilient AST parser.
-   - `03_elaboration_and_netlist_ir.md`: Elaboration pipeline & BIR netlist intermediate representation.
-   - `04_jit_machine_code_compiler.md`: Cranelift in-RAM JIT & WebAssembly codegen.
-   - `05_event_scheduler_and_delta_stepping.md`: Stratified IEEE 1800 event queue & delta API.
-   - `06_voltage_energy_telemetry_model.md`: Physics-informed dynamic power & PDN droop.
-   - `07_api_and_runtime_interface.md`: Embeddable Rust, C-ABI & WASM API.
-   - `08_desktop_and_web_ui.md`: Tauri v2 + React 19 + PostCSS desktop and web studio.
-   - `09_schematic_dag_and_synthesis_viewer.md`: GPU-accelerated hardware DAG & cone slicer.
-   - `10_virtual_lab_and_stimulus_rack.md`: Zero-JTAG virtual instruments & stimulus injection.
-   - `11_timing_radar_and_slack_waterfall.md`: Setup/hold slack waterfall & CDC matrix.
-   - `12_hierarchical_energy_treemap_and_thermal.md`: Silicon energy treemap & SSN model.
-   - `13_omnibar_and_scripting_repl.md`: Ctrl+K Omnibar palette & interactive shell.
+# 2. Run Rust strict clippy (zero warnings enforced)
+cargo clippy --workspace --all-targets -- -D warnings
 
-2. **`vivadoanalysis/`**: Deep comparative analysis of AMD Vivado's internal tools (`xvlog`, `xelab`, `xsim`, `ug907`, TCL CLI).
+# 3. Build and check TypeScript / React Studio UI
+npm --prefix ui run build
 
-3. **`todo.md`**: Master milestone, phase, and task priority tracker. Exclusive single source of truth for all project phases, roadmap milestones, and active task lists.
+# 4. Launch Studio UI development server
+npm --prefix ui run dev
 
----
+# 5. Build release binaries (CLI & Native Desktop Studio)
+cargo build --release --bin axiom --bin axiom-desktop
 
-## 8. Continuous Documentation & Task Tracking Policies
-
-1. **Continuous Analysis Documentation Currency**:
-   - All architectural blueprints under `analysis/` and `analysis/uiux/` are living documents.
-   - Whenever any subsystem, UI/UX layout, theme token, engine API, or interaction pattern is created, modified, or refined, the corresponding architectural documents must be continuously updated in tandem to prevent architectural drift.
-2. **Strict Master Task Tracker Policy (`todo.md`)**:
-   - `todo.md` is the exclusive single source of truth for all phases, roadmap milestones, and todo lists.
-   - Phases and todo items stay strictly in `todo.md`; never include phase numbers, roadmaps, or todo lists in `GEMINI.md`.
-   - Every user request, agent modification, architectural enhancement, and bugfix must be documented in `todo.md` with explicit task breakdowns and completion checkboxes.
-3. **Automatic User Feedback & Request Ingestion Policy**:
-   - Anytime the user provides a prompt containing feedback, UX/UI critiques, feature adjustments, or bug reports (e.g. context menus, naming, tree styling, selection mechanics), you MUST immediately record all requested items into `todo.md` under an active priority section before proceeding with execution.
-4. **Continuous Internationalization (i18n) & String Synchronization Policy**:
-   - At the end of every prompt, make sure every newly added user-facing string is added to `ui/src/i18n/en.ts`.
-   - Immediately translate all new strings at once (file by file) to every other supported language (`ui/src/i18n/tr.ts`, `ui/src/i18n/de.ts`, `ui/src/i18n/ja.ts`, `ui/src/i18n/zh.ts`, `ui/src/i18n/es.ts`, `ui/src/i18n/fr.ts`).
-   - Maintain 100% key parity across all language dictionaries with zero missing translation keys and zero build errors.
-
-
+# 6. Build VitePress documentation portal
+npm --prefix docs run docs:build
+```
