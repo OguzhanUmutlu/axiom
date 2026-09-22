@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Dark Obsidian Canvas Ambient Glow -->
+    <radialGradient id="c2BgGlow" cx="50%" cy="51%" r="55%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.08"/>
+      <stop offset="40%" stop-color="#a855f7" stop-opacity="0.04"/>
+      <stop offset="75%" stop-color="#1d4ed8" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#070a12" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Logic 1: Apex Crown Radiant Gradients -->
+    <linearGradient id="c2Logic1ApexLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="25%" stop-color="#cffafe"/>
+      <stop offset="60%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <linearGradient id="c2Logic1ApexRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#00f2fe"/>
+      <stop offset="70%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Logic 0: Left Ground Pillar Gradients -->
+    <linearGradient id="c2Logic0FacetOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </linearGradient>
+
+    <linearGradient id="c2Logic0FacetInner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Logic X: Right Contention & Event Queue Gradients -->
+    <linearGradient id="c2LogicXFacetInner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="45%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <linearGradient id="c2LogicXFacetOuter" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="60%" stop-color="#6b21a8"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </linearGradient>
+
+    <!-- Logic Z: Floating Tri-State Crossbar Gradients -->
+    <linearGradient id="c2LogicZTop" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="35%" stop-color="#00f2fe"/>
+      <stop offset="70%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#00f2fe"/>
+    </linearGradient>
+
+    <linearGradient id="c2LogicZFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d8f6"/>
+      <stop offset="40%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Specular Glow -->
+    <filter id="c2GlowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Dark Obsidian Container Background -->
+  <rect width="512" height="512" fill="#070a12"/>
+  <rect width="512" height="512" fill="url(#c2BgGlow)"/>
+
+  <!-- Subtle Silicon Wafer Ingot Coordinate Reticle -->
+  <g opacity="0.10" stroke="#3b82f6" stroke-width="0.5">
+    <line x1="256" y1="36" x2="256" y2="476"/>
+    <line x1="36" y1="260" x2="476" y2="260"/>
+    <polygon points="256,48 440,436 72,436" fill="none" stroke="#a855f7" stroke-width="0.5" stroke-dasharray="3 6"/>
+  </g>
+
+  <!-- Candidate 2: The Quantum Silicon Monolith Group -->
+  <g id="quantumSiliconMonolith">
+    <!-- FACET 1: LOGIC 1 - APEX CROWN MONOLITH (Power / Clock Drive) -->
+    <!-- Left Apex Facet -->
+    <polygon points="256,56 188,180 234,206 256,168"
+             fill="url(#c2Logic1ApexLeft)"/>
+    <!-- Right Apex Facet -->
+    <polygon points="256,56 256,168 278,206 324,180"
+             fill="url(#c2Logic1ApexRight)"/>
+
+    <!-- FACET 2: LOGIC 0 - LEFT GROUND PILLAR (Substrate Potential / Vss) -->
+    <!-- Left Outer Grounding Face -->
+    <polygon points="182,192 120,312 88,432 108,444 148,444 156,420 168,360 216,268 226,216"
+             fill="url(#c2Logic0FacetOuter)"/>
+    <!-- Left Inner Illuminated Face -->
+    <polygon points="226,216 216,268 168,360 156,420 188,420 184,332"
+             fill="url(#c2Logic0FacetInner)"/>
+    <!-- Left Foot Step Anchor Base -->
+    <polygon points="88,432 108,444 176,444 188,420 156,420"
+             fill="#0f172a" stroke="#1d4ed8" stroke-width="1"/>
+
+    <!-- FACET 3: LOGIC X - RIGHT CONTENTION PILLAR (Event Queue & Stratified NBA) -->
+    <!-- Right Inner Shimmer Face -->
+    <polygon points="286,216 296,268 344,360 356,420 324,420 328,332"
+             fill="url(#c2LogicXFacetInner)"/>
+    <!-- Right Outer Shadow Face -->
+    <polygon points="330,192 392,312 424,432 404,444 364,444 356,420 344,360 296,268 286,216"
+             fill="url(#c2LogicXFacetOuter)"/>
+    <!-- Right Foot Step Anchor Base -->
+    <polygon points="424,432 404,444 336,444 324,420 356,420"
+             fill="#0f172a" stroke="#a855f7" stroke-width="1"/>
+
+    <!-- STRATIFIED EVENT QUEUE GROOVES (Laser-etched telemetry strata on Logic X facet) -->
+    <!-- Active Region Strata -->
+    <line x1="316" y1="310" x2="380" y2="310" stroke="#00f2fe" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+    <!-- Inactive Region Strata -->
+    <line x1="324" y1="340" x2="394" y2="340" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
+    <!-- Non-Blocking Assignment (NBA) Region Strata -->
+    <line x1="332" y1="370" x2="408" y2="370" stroke="#00f2fe" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <!-- Observed Region Strata -->
+    <line x1="340" y1="400" x2="418" y2="400" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
+
+    <!-- FACET 4: LOGIC Z - FLOATING CANTILEVERED CROSSBAR (High Impedance Tri-State) -->
+    <!-- Suspended between the pillars with precision 6px laser isolation gaps -->
+    <!-- Top Face (Illuminated Silicon Prism) -->
+    <polygon points="196,280 316,280 306,298 206,298"
+             fill="url(#c2LogicZTop)"/>
+    <!-- Front Face (Vertical High-Impedance Plane) -->
+    <polygon points="206,298 306,298 296,326 216,326"
+             fill="url(#c2LogicZFront)"/>
+    <!-- Specular Leading Edge -->
+    <line x1="206" y1="298" x2="306" y2="298" stroke="#ffffff" stroke-width="1.5" opacity="0.95"/>
+
+    <!-- Inner Delta Aperture / Eye of the "A" Void -->
+    <polygon points="256,178 238,212 274,212"
+             fill="#070a12" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+    <circle cx="256" cy="198" r="2.5" fill="#00f2fe" opacity="0.8"/>
+
+    <!-- Substrate Central Negative Space Portal -->
+    <!-- Forms the lower arch of the capital letter "A" -->
+    <polygon points="222,336 290,336 318,424 194,424"
+             fill="#070a12" opacity="0.75"/>
+
+    <!-- Specular Diamond Point at Apex Pinnacle -->
+    <line x1="256" y1="44" x2="256" y2="68" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <line x1="244" y1="56" x2="268" y2="56" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="256" cy="56" r="3.5" fill="#ffffff" filter="url(#c2GlowFilter)"/>
+
+    <!-- Precision Chamfer Highlight Lines -->
+    <line x1="256" y1="56" x2="256" y2="168" stroke="#ffffff" stroke-width="1.5" opacity="0.9"/>
+    <line x1="188" y1="180" x2="234" y2="206" stroke="#00f2fe" stroke-width="1" opacity="0.7"/>
+    <line x1="324" y1="180" x2="278" y2="206" stroke="#a855f7" stroke-width="1" opacity="0.7"/>
+  </g>
+</svg>

@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Canvas Ambient Glow -->
+    <radialGradient id="axiomBgGlow" cx="50%" cy="51%" r="55%">
+      <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.09"/>
+      <stop offset="35%" stop-color="#3b82f6" stop-opacity="0.05"/>
+      <stop offset="70%" stop-color="#1d4ed8" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#070a12" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Apex Crystalline Core Gradients -->
+    <linearGradient id="axiomApexFacetLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="25%" stop-color="#cffafe"/>
+      <stop offset="60%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <linearGradient id="axiomApexFacetRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#00f2fe"/>
+      <stop offset="70%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Left Wing: Rising Edge Stepped Facets -->
+    <linearGradient id="axiomLeftBladeHigh" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <linearGradient id="axiomLeftBladeStep" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="45%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+
+    <linearGradient id="axiomLeftBladeBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="60%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+
+    <!-- Right Wing: Falling Edge & Propagation Shadow Facets -->
+    <linearGradient id="axiomRightBladeUpper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="55%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <linearGradient id="axiomRightBladeLower" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </linearGradient>
+
+    <!-- Delta Horizon Pulse Crossbar Gradient -->
+    <linearGradient id="axiomHorizonPulse" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="18%" stop-color="#3b82f6"/>
+      <stop offset="40%" stop-color="#00f2fe"/>
+      <stop offset="60%" stop-color="#00f2fe"/>
+      <stop offset="82%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <!-- Grounding Substrate Rail Gradient -->
+    <linearGradient id="axiomGroundRail" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.4"/>
+      <stop offset="25%" stop-color="#3b82f6" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#00f2fe" stop-opacity="1"/>
+      <stop offset="75%" stop-color="#3b82f6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <!-- Specular Glow Filter -->
+    <filter id="axiomGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Dark Obsidian Container Background -->
+  <rect width="512" height="512" fill="#070a12"/>
+  <rect width="512" height="512" fill="url(#axiomBgGlow)"/>
+
+  <!-- Precision Silicon Engineering Reticle -->
+  <g opacity="0.12" stroke="#3b82f6" stroke-width="0.5">
+    <line x1="256" y1="36" x2="256" y2="476"/>
+    <line x1="36" y1="260" x2="476" y2="260"/>
+    <circle cx="256" cy="260" r="196" fill="none" stroke-dasharray="2 6"/>
+  </g>
+
+  <!-- Candidate 1: The Delta Horizon Main Vector Group -->
+  <g id="deltaHorizonGlyph">
+    <!-- Grounding Substrate Bus Rail (Delta Base Enclosure) -->
+    <path d="M 160,432 L 352,432 L 340,416 L 172,416 Z"
+          fill="url(#axiomGroundRail)" opacity="0.9"/>
+    <line x1="172" y1="416" x2="340" y2="416" stroke="#00f2fe" stroke-width="1.5" opacity="0.8"/>
+
+    <!-- Left Base Foot Plate (Grounded Silicon Rail) -->
+    <polygon points="84,412 96,436 176,436 192,412 168,348 116,348"
+             fill="url(#axiomLeftBladeBase)"/>
+
+    <!-- Right Base Foot Plate (Shadow Rail) -->
+    <polygon points="428,412 416,436 336,436 320,412 344,348 396,348"
+             fill="url(#axiomRightBladeLower)"/>
+
+    <!-- Left Wing: Stepped Digital Pulse Transition Facet -->
+    <!-- Orthogonal rising step: Low -> 45deg Chamfer -> Rising Edge Step -> High Level -->
+    <path d="M 116,348 L 168,348 L 180,316 L 192,316 L 192,272 L 152,272 L 132,308 L 116,348 Z"
+          fill="url(#axiomLeftBladeStep)"/>
+
+    <!-- Left Wing: High State Crystalline Blade -->
+    <polygon points="152,272 192,272 216,144 180,188"
+             fill="url(#axiomLeftBladeHigh)"/>
+
+    <!-- Apex Crystalline Diamond: Left Facet -->
+    <polygon points="256,64 216,144 256,176"
+             fill="url(#axiomApexFacetLeft)"/>
+
+    <!-- Apex Crystalline Diamond: Right Facet -->
+    <polygon points="256,64 296,144 256,176"
+             fill="url(#axiomApexFacetRight)"/>
+
+    <!-- Right Wing: High State Descent Facet -->
+    <polygon points="296,144 256,176 304,272 344,272 332,188"
+             fill="url(#axiomRightBladeUpper)"/>
+
+    <!-- Right Wing: Lower Propagation Shadow Facet -->
+    <polygon points="344,272 304,272 320,316 332,316 344,348 396,348 360,272"
+             fill="url(#axiomRightBladeLower)"/>
+
+    <!-- The Delta Horizon Crossbar (Square Wave Clock Pulse) -->
+    <!-- Logic Profile: Baseline -> Rising Transition -> High Pulse -> Falling Transition -> Baseline -->
+    <path d="M 180,316 L 220,316 L 220,276 L 292,276 L 292,316 L 332,316 L 316,344 L 196,344 Z"
+          fill="url(#axiomHorizonPulse)" stroke="#00f2fe" stroke-width="1.5" stroke-linejoin="miter"/>
+
+    <!-- Top Laser Edge of the Pulse Crossbar -->
+    <polyline points="180,316 220,316 220,276 292,276 292,316 332,316"
+              fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="miter" opacity="0.9"/>
+
+    <!-- Inner Crystalline Negative Space / Apex Aperture -->
+    <polygon points="256,186 230,268 282,268"
+             fill="#070a12" stroke="#3b82f6" stroke-width="1" opacity="0.95"/>
+    <polygon points="256,204 242,252 270,252"
+             fill="#1d4ed8" opacity="0.35"/>
+
+    <!-- Substrate Lower Archway Negative Space -->
+    <polygon points="196,356 316,356 336,412 176,412"
+             fill="#070a12" opacity="0.7"/>
+
+    <!-- Precision Laser Etch Seam Accents -->
+    <line x1="216" y1="144" x2="256" y2="176" stroke="#00f2fe" stroke-width="1" opacity="0.8"/>
+    <line x1="296" y1="144" x2="256" y2="176" stroke="#3b82f6" stroke-width="1" opacity="0.8"/>
+    <line x1="256" y1="64" x2="256" y2="176" stroke="#ffffff" stroke-width="1.5" opacity="0.95"/>
+
+    <!-- Specular Diamond Point at Apex -->
+    <line x1="256" y1="52" x2="256" y2="76" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <line x1="244" y1="64" x2="268" y2="64" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="256" cy="64" r="3.5" fill="#ffffff" filter="url(#axiomGlowFilter)"/>
+  </g>
+</svg>

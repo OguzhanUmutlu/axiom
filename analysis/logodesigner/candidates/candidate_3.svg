@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Mach Cone Ambient Radial Glow -->
+    <radialGradient id="c3BgGlow" cx="50%" cy="48%" r="55%">
+      <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.10"/>
+      <stop offset="35%" stop-color="#3b82f6" stop-opacity="0.06"/>
+      <stop offset="70%" stop-color="#1d4ed8" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#070a12" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Hypersonic Leading Edge - Left Blade Gradients -->
+    <linearGradient id="c3LeftBladeOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="25%" stop-color="#00f2fe"/>
+      <stop offset="65%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <linearGradient id="c3LeftBladeInner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </linearGradient>
+
+    <!-- Aerodynamic Shadow Wing - Right Blade Gradients -->
+    <linearGradient id="c3RightBladeOuter" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#cffafe"/>
+      <stop offset="25%" stop-color="#00d8f6"/>
+      <stop offset="65%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </linearGradient>
+
+    <linearGradient id="c3RightBladeInner" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="60%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#05070c"/>
+    </linearGradient>
+
+    <!-- Dual-Frequency Waveform Crossbar Gradient -->
+    <linearGradient id="c3WaveformBar" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="20%" stop-color="#00f2fe"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="75%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <!-- Specular Glow -->
+    <filter id="c3ApexGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Dark Obsidian Container Background -->
+  <rect width="512" height="512" fill="#070a12"/>
+  <rect width="512" height="512" fill="url(#c3BgGlow)"/>
+
+  <!-- Hypersonic Mach Shock Angles Reticle -->
+  <g opacity="0.10" stroke="#00f2fe" stroke-width="0.5">
+    <line x1="256" y1="32" x2="256" y2="480"/>
+    <line x1="256" y1="52" x2="64" y2="440" stroke-dasharray="4 4"/>
+    <line x1="256" y1="52" x2="448" y2="440" stroke-dasharray="4 4"/>
+    <circle cx="256" cy="260" r="200" fill="none" stroke="#3b82f6" stroke-dasharray="2 6"/>
+  </g>
+
+  <!-- Candidate 3: The Cranelift JIT Chevron Vector Assembly -->
+  <g id="craneliftJitChevron">
+    <!-- LEFT HYPERSONIC BLADE -->
+    <!-- Left Blade Leading Wing Face -->
+    <polygon points="256,52 216,144 140,296 80,432 120,444 164,412 188,328 228,212 256,128"
+             fill="url(#c3LeftBladeOuter)"/>
+
+    <!-- Left Blade Keel & Pressure Face -->
+    <polygon points="256,128 228,212 188,328 164,412 188,432 208,368 236,268 256,188"
+             fill="url(#c3LeftBladeInner)"/>
+
+    <!-- RIGHT AERODYNAMIC SHADOW BLADE -->
+    <!-- Right Blade Keel & Suction Face -->
+    <polygon points="256,128 256,188 276,268 304,368 324,432 348,412 324,328 284,212"
+             fill="url(#c3RightBladeInner)"/>
+
+    <!-- Right Blade Leading Wing Face -->
+    <polygon points="256,52 256,128 284,212 324,328 348,412 392,444 432,432 372,296 296,144"
+             fill="url(#c3RightBladeOuter)"/>
+
+    <!-- DUAL-FREQUENCY WAVEFORM CROSSBAR (Clock Domain Crossing CDC Synchronization) -->
+    <!-- Connects the twin blades with two fast clock pulses and one half-frequency pulse -->
+    <path d="M 188,328 
+             L 204,328 L 204,284 L 220,284 L 220,328 
+             L 236,328 L 236,284 L 252,284 L 252,328 
+             L 268,328 L 268,284 L 304,284 L 304,328 
+             L 324,328 L 312,352 L 200,352 Z"
+          fill="url(#c3WaveformBar)" stroke="#00f2fe" stroke-width="1.5" stroke-linejoin="miter"/>
+
+    <!-- Dual-Frequency Laser Waveform Highlight (Illuminated Leading Edge) -->
+    <polyline points="188,328 204,328 204,284 220,284 220,328 236,328 236,284 252,284 252,328 268,328 268,284 304,284 304,328 324,328"
+              fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linejoin="miter" opacity="0.95"/>
+
+    <!-- Hypersonic Intake Notch (Upper Central Negative Space) -->
+    <polygon points="256,136 242,176 270,176"
+             fill="#070a12" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+
+    <!-- Mid-Stage Inter-Pulse Aperture (Eye of the Chevron 'A') -->
+    <polygon points="256,192 238,276 274,276"
+             fill="#070a12" opacity="0.95"/>
+    <line x1="256" y1="192" x2="256" y2="260" stroke="#00f2fe" stroke-width="1" opacity="0.5"/>
+
+    <!-- Twin Trailing Edge Thrust Skids / Foot Pads -->
+    <polygon points="80,432 120,444 136,428 104,420"
+             fill="#0f172a" stroke="#00f2fe" stroke-width="0.75"/>
+    <polygon points="432,432 392,444 376,428 408,420"
+             fill="#0f172a" stroke="#1d4ed8" stroke-width="0.75"/>
+
+    <!-- Forward Apex Specular Pinnacle & Kinetic Shockwave -->
+    <line x1="256" y1="40" x2="256" y2="64" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <line x1="244" y1="52" x2="268" y2="52" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="256" cy="52" r="3.5" fill="#ffffff" filter="url(#c3ApexGlow)"/>
+
+    <!-- High-Tension Leading Razor Edge Strokes -->
+    <line x1="256" y1="52" x2="80" y2="432" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+    <line x1="256" y1="52" x2="432" y2="432" stroke="#3b82f6" stroke-width="1" opacity="0.4"/>
+  </g>
+</svg>
