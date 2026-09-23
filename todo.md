@@ -17,10 +17,36 @@
 
 ## Todo
 
-
 ---
 
 ## Completed
+
+- [x] **Phase 75: Schematic Layout & Routing Optimization, Waveform Windowing & Tab Overflow Dropdown - [P1]**
+  - [x] **Barycentric & Median Vertical Node Placement (`ui/src/engine/schematicModel.ts`)**:
+    - Replaced naive vertical centering with barycentric / median Y-coordinate calculation based on connected drivers.
+    - Prevented `g2`, `g4`, `g5`, and `out_F` from collapsing onto the same vertical centerline.
+    - Positioned `g5` and `out_F` lower to reflect the natural confluence of the upper and lower branches.
+  - [x] **Commutative Gate Pin Sorting (`ui/src/engine/schematicModel.ts`)**:
+    - Dynamically sorted commutative logic gate input pins (`AND`, `OR`, `NAND`, `NOR`, `XOR`, `XNOR`) based on the Y-positions of their incoming source drivers.
+    - Eliminated inverted pin wire crossings immediately upstream of multi-input gates (e.g. `w3` and `w4` entering `g5`).
+  - [x] **Schematic Run Blanking & Camera Offscreen Fix (`ui/src/components/SchematicViewer.tsx`)**:
+    - Guarded `fitToScreen` against unmeasured container dimensions and prevent caching offscreen offsets in `localStorage`.
+    - Added robust `try { ... } catch (err)` around `renderCanvas` to prevent silent blackouts on simulation run or signal updates.
+    - Validated camera viewport on resize and re-centered if world bounds are outside visible viewport.
+  - [x] **Enhanced Waveform Windowing & Drag-to-Zoom Mode (`ui/src/components/WaveformViewer.tsx`)**:
+    - Added intuitive Drag-to-Window zoom mode (box zoom on Shift+drag or dedicated toolbar button).
+    - Provided quick preset time windows (10ns, 100ns, 1μs) and one-click/double-click Zoom to Delta-t window banner with Scan icon.
+  - [x] **Panel Tab Overflow Dropdown with Vertical Ellipsis (`ui/src/components/layout/LayoutLeafRenderer.tsx`, `ui/src/components/layout/LayoutRenderer.tsx`, `ui/src/App.tsx`, `ui/src/engine/layoutModel.ts`)**:
+    - Added responsive tab width measurement via `ResizeObserver` to detect overflowing/wrapping tabs in the panel header.
+    - Rendered a sleek vertical ellipsis (`MoreVertical`) dropdown button when tabs exceed container width.
+    - When a hidden tab is selected from the dropdown, activated it and placed it at the last visible tab position in the panel strip.
+    - Synchronized all new UI strings across all 7 language dictionaries (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+  - [x] **Verification Quality Gate**:
+    - Rust workspace tests (`cargo test --workspace`) passing with 0 failures (160+ tests).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`) passing with 0 warnings.
+    - Frontend production build (`npm --prefix ui run build`) passing with 0 errors.
+    - Docs portal build (`npm --prefix docs run docs:build`) passing with 0 errors.
+    - Zero-emoji audit passed.
 
 - [x] **Phase 74: Dynamic Verilog Port Parser Robustness & RTL Schematic Netlist Signal Extraction Fix - [P1]**
   - [x] **Clause-Based ANSI Header Port Parser (`ui/src/engine/schematicModel.ts`)**:
