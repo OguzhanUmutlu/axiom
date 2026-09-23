@@ -36,6 +36,23 @@
 
 ## Completed
 
+- [x] **Phase 56: Custom Aerospace Version Dropdown & Enriched Deep Release Manifestos - [P1]**
+  - [x] **Custom Aerospace Version Dropdown (`docs/.vitepress/theme/components/ReleaseDownloader.vue`)**:
+    - [x] Replace standard HTML `<select>` with custom dark-themed Vue 3 dropdown component.
+    - [x] Build interactive trigger pill with tag icon, monospace version label, status badge (`Latest GA` / `Legacy`), and animated SVG chevron (180° rotation on open).
+    - [x] Implement elevated glassmorphic menu card (`backdrop-filter: blur(16px)`, obsidian background `#141418`, subtle cyan-tinted border, z-index 100).
+    - [x] Render rich version list items with version tag, status pill, formatted release date, and active checkmark SVG.
+    - [x] Support click-outside detection, keyboard navigation (`Escape`, `ArrowUp`, `ArrowDown`, `Enter`), and smooth enter/leave animations.
+  - [x] **Enriched GitHub Release Notes & Deep Technical Manifestos (`v1.0.0` & `v0.1.0`)**:
+    - [x] Author comprehensive, high-density release notes for `v1.0.0` covering all core subsystems (In-RAM JIT, Stratified Queue, Telemetry, STA Radar, Virtual Lab, Protocol Decoders, WASM/Desktop runtimes, CLI command matrix, and install guides).
+    - [x] Update `v1.0.0` release notes live on GitHub via `gh release edit v1.0.0 --notes-file ...`.
+    - [x] Refine and standardize `v0.1.0` release notes live on GitHub via `gh release edit v0.1.0 --notes-file ...`.
+  - [x] **Verification & Quality Gate**:
+    - [x] Verify VitePress build (`npm --prefix docs run docs:build`) with 0 errors.
+    - [x] Verify UI production build (`npm --prefix ui run build`) with 0 errors.
+    - [x] Verify Rust tests and strict clippy (`cargo test --workspace`, `cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Strict zero-emoji audit across all touched files.
+
 - [x] **Phase 55: Automated Dynamic GitHub Releases Downloader with Version Selector - [P1]**
   - [x] **VitePress Dynamic Release Downloader Component (`docs/.vitepress/theme/components/ReleaseDownloader.vue`)**:
     - [x] Create interactive Vue 3 component fetching releases from GitHub API (`/repos/aerovexsim/axiom/releases`).
