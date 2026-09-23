@@ -36,6 +36,25 @@
 
 ## Completed
 
+- [x] **Phase 58: IUC Logic Circuits Lesson 1 (Uygulama 0 & Testbench) Full Parity & Procedural Timing Engine - [P1]**
+  - [x] **Procedural Delay Scheduling & Timing Engine (`crates/ir/src/bir.rs`, `crates/ir/src/elaborator.rs`, `crates/sim/src/simulator.rs`)**:
+    - [x] Extend `BirProcess` with `initial_time_ps: u64` and add `add_process_with_time()` to `BirCircuit`.
+    - [x] Update `BirCircuit::add_process()` to avoid registering `BirProcessKind::Initial` in `sensitivity_map` or inferring net sensitivity triggers.
+    - [x] In `elaborator.rs`, implement `lower_initial_statement()` to walk `initial` blocks with delays (`#0`, `#25`, etc.), track cumulative simulation time in picoseconds, and emit discrete timed `BirProcess` segments.
+    - [x] In `crates/sim/src/simulator.rs`, schedule each `BirProcessKind::Initial` into the `StratifiedEventQueue` at its scheduled time (`SimTime::from_ps(proc.initial_time_ps)`).
+    - [x] Verify testbench signals execute over physical time ($t=0\text{ns}: A=1, B=0, C=1 \rightarrow F=1$; $t=25\text{ns}: A=0, B=0, C=1 \rightarrow F=1$; $t=50\text{ns}: A=0, B=0, C=0 \rightarrow F=1$; $t=75\text{ns}: A=1, B=1, C=1 \rightarrow F=0$).
+  - [x] **Multi-File Elaboration & Testbench Bundling (`ui/src/engine/projectModel.ts`)**:
+    - [x] Update `bundleProjectSources(project)` to bundle both `sources_1` and `sim_1` Verilog/SystemVerilog files so top-level testbenches and their instantiated design modules elaborate together without "Module not found" or "Top module not found" errors.
+  - [x] **Schematic DAG & Virtual Lab Truth Table Alignment (`ui/src/engine/schematicModel.ts`, `ui/src/components/VirtualLabRack.tsx`)**:
+    - [x] Align `generateLogicCircuitGraph()` in `schematicModel.ts` with lesson Verilog: `w2 = ~A` (`g1`), `w1 = w2 & B` (`g2`), `w4 = ~B` (`g3`), `w3 = w1 & C` (`g4`), `F = w4 | w3` (`g5`).
+    - [x] Align `renderLogicCircuitBays()` in `VirtualLabRack.tsx` to use `w2 = ~A` and `w1 = w2 & B`.
+  - [x] **Verification & Quality Gate**:
+    - [x] Update automated integration test `test_sim_uygulama_0_with_tb` in `crates/sim/tests/sim_integration_tests.rs` with cycle-accurate timing assertions.
+    - [x] Pass `cargo test --workspace` across all crates.
+    - [x] Pass `cargo clippy --workspace --all-targets -- -D warnings`.
+    - [x] Pass `npm --prefix ui run build`.
+    - [x] Strict zero-emoji audit.
+
 - [x] **Phase 57: Bottom Dock Default Hidden, Dock Button Streamlining, Mobile Ergonomics, and v1.0.0 Release Assets Refresh - [P1]**
   - [x] **Bottom Dock Collapse State & Streamlined Controls (`ui/src/components/UnifiedBottomDock.tsx`)**:
     - [x] Default `isCollapsed` state to `true` so the bottom drawer is collapsed/hidden on initial launch.
