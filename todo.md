@@ -17,42 +17,35 @@
 
 ## Todo
 
-- [ ] **Phase 66: Industry-Grade Layout Engine (Tabs -> Panels -> Split Panels -> Whole Layout) & Persistent Layout Presets - [P1]**
-  - [ ] **Hierarchical Layout Architecture (`ui/src/engine/layoutModel.ts`)**:
-    - [ ] Implement formal recursive layout tree schema:
-      - `LayoutLeaf`: A container holding an ordered array of view tabs (`views: string[]`) and `activeViewId: string`.
-      - `LayoutSplit`: A branch dividing space between two child nodes horizontally (`row`) or vertically (`column`) with fractional `splitRatio: number` (0.0 to 1.0).
-      - `AxiomLayout`: Root layout descriptor with `id`, `name`, `root: LayoutNode`, `isGlobal: boolean`, timestamps.
-    - [ ] Provide factory presets: Default Engineering Split, Code Focused, Full Schematic Studio, Timing & Synthesis Cockpit, Virtual Lab Workbench, Multi-Waveform Split.
-  - [ ] **Dual Storage Persistence (Project Layout vs Global Layouts) (`ui/src/engine/layoutStorage.ts`)**:
-    - [ ] Store project-specific layout inside `AxiomProject.layout` so each project retains its tailored workspace.
-    - [ ] Store globally saved user layouts in `localStorage` (`axiom_global_layouts`) accessible across all projects.
-    - [ ] Add layout selector and switcher in View menu and Settings dialog.
-
-- [ ] **Phase 67: Interactive Blueprint Layout Editor Mode (Striped Boxes, Drag-and-Drop & Minimalist Shell) - [P1]**
-  - [ ] **Interactive Blueprint Layout Editor Mode (`ui/src/components/LayoutEditorOverlay.tsx`, `ui/src/components/ProjectSettingsModal.tsx`)**:
-    - [ ] Add "Edit" button next to each layout in `Settings > Layouts` and "Customize Layout..." in the `View` menu.
-    - [ ] Clicking "Edit" temporarily suspends the settings modal and enters Layout Editor Mode.
-    - [ ] In Layout Editor Mode:
-      - [ ] Hide all standard application chrome, headers, menus, sidebars, bottom docks, and toolbars.
-      - [ ] Render a minimalist top-right action bar containing only "Cancel" and "Save Layout" buttons.
-      - [ ] Replace every panel with an empty abstract blueprint box:
-        - [ ] Dark acrylic background with blueish striped border (`repeating-linear-gradient` with cyan/blue accents and rounded corners `border-radius: 8px`).
-        - [ ] Render tab pills inside each box with drag handles.
-        - [ ] Provide Split Horizontal (`Columns`) and Split Vertical (`Rows`) action buttons inside each box.
-        - [ ] Enable dragging tabs between boxes to merge or reorganize views.
-        - [ ] Provide draggable split dividers to adjust panel ratios.
-        - [ ] Provide a close button on empty boxes to prune splits.
-    - [ ] "Save Layout" commits changes to Project Layout or selected Global Layout and restores normal application view.
-    - [ ] "Cancel" discards layout changes and restores previous workspace state.
-  - [ ] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
-    - [ ] Synchronize all layout editor labels, tooltips, and actions across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
-  - [ ] **Comprehensive Verification Quality Gate**:
-    - [ ] Full Rust workspace tests, strict clippy, TypeScript build, VitePress docs build, zero-emoji audit.
-
 ---
 
 ## Completed
+
+- [x] **Phase 66 & 67: Industry-Grade Layout Engine (Tabs -> Panels -> Split Panels -> Whole Layout) & Interactive Blueprint Layout Editor - [P1]**
+  - [x] **Hierarchical Layout Architecture (`ui/src/engine/layoutModel.ts`)**:
+    - [x] Implement formal recursive layout tree schema (`LayoutLeaf`, `LayoutSplit`, `AxiomLayout`).
+    - [x] 6 production factory presets (Default Engineering Split, Code Focused, Full Schematic Studio, Timing & Synthesis Cockpit, Virtual Lab Workbench, Multi-Waveform Split).
+    - [x] Complete tree manipulation utilities (`findLeafById`, `updateLeafActiveView`, `moveViewBetweenLeaves`, `splitLeaf`, `closeTabInLeaf`, `updateSplitRatio`, `simplifyLayoutTree`).
+  - [x] **Dual Storage Persistence & 3 Layout Slots (`ui/src/engine/layoutStorage.ts`, `ui/src/engine/projectModel.ts`)**:
+    - [x] Store project-specific layout inside `AxiomProject.layout`.
+    - [x] Store globally saved user layouts in 3 slots (`axiom_layout_slot_1`, `_2`, `_3`) in `localStorage`.
+    - [x] Add layout selector and switcher in View menu and Settings dialog.
+  - [x] **Workspace Layout Rendering Engine (`ui/src/components/layout/LayoutRenderer.tsx`, `LayoutLeafRenderer.tsx`)**:
+    - [x] Recursive renderer with draggable `ResizableSplitter` dividing child nodes.
+    - [x] Tabbed panel leaf host supporting all 14 visualizer views, tab addition, and panel maximization.
+  - [x] **Interactive Blueprint Layout Editor Mode (`ui/src/components/layout/BlueprintLayoutEditor.tsx`)**:
+    - [x] Fullscreen distraction-free authoring mode hiding headers, sidebars, and docks.
+    - [x] Render panels as empty abstract blueprint boxes with blueish striped border (`border-radius: 8px`).
+    - [x] Drag-and-drop tabs between boxes to reorganize views.
+    - [x] In-box Split Horizontal and Split Vertical actions.
+    - [x] Minimalist top-right action bar with "Cancel", "Save to Project", "Save to Global Slot...", and "Save & Apply".
+  - [x] **Settings & MenuBar Integration (`ui/src/components/ProjectSettingsModal.tsx`, `ui/src/components/MenuBar.tsx`)**:
+    - [x] "Workspace Layouts" category tab in `ProjectSettingsModal`.
+    - [x] `View > Workspace Layout` submenu in `MenuBar.tsx`.
+  - [x] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Synchronize all layout labels and actions across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
+  - [x] **Comprehensive Verification Quality Gate**:
+    - [x] Full Rust workspace tests, strict clippy, TypeScript build, VitePress docs build, zero-emoji audit.
 
 - [x] **Phase 65: Settings Menu Placement, Responsive Tab Overflow with 3-Dot Swap & Unified Split Controls - [P1]**
   - [x] **File > Settings Menu Relocation & Header Decluttering (`ui/src/components/MenuBar.tsx`, `ui/src/components/Header.tsx`, `ui/src/App.tsx`)**:
