@@ -13,17 +13,91 @@
 ---
 ## In Progress
 
-*(No active phases currently in progress)*
+*(No active phase in progress)*
 
 ---
 
 ## Todo
 
-*(Check next phases below or add upcoming architectural tasks)*
+- [ ] **Phase 65: Settings Menu Placement, Responsive Tab Overflow with 3-Dot Swap & Unified Split Controls - [P1]**
+  - [ ] **File > Settings Menu Relocation & Header Decluttering (`ui/src/components/MenuBar.tsx`, `ui/src/components/Header.tsx`)**:
+    - [ ] Add standard "Settings..." item (`Ctrl+,`) under the `File` menu in `MenuBar.tsx` to open `ProjectSettingsModal`.
+    - [ ] Remove awkward settings gear placement from the project chip in the header / editor breadcrumbs.
+    - [ ] Keep clean project chip in the subheader displaying project name and FPGA target device.
+  - [ ] **Responsive Navigation Tab Overflow with Vertical 3-Dot Dropdown (`ui/src/components/`, `ui/src/App.tsx`)**:
+    - [ ] Measure available header width against tab button widths dynamically.
+    - [ ] When tabs do not all fit into the available width (e.g. `Tech Mapping` getting clipped into `Tech...`), collect the overflowing tabs into an invisible stack.
+    - [ ] Render a vertical 3-dot overflow menu button (`MoreVertical` icon) at the end of the visible tab list.
+    - [ ] Clicking the 3-dot button opens a dark acrylic dropdown menu displaying all overflowing tabs with icons and titles.
+    - [ ] When an overflowing tab is selected, swap it with the last visible tab so the picked tab becomes active and fully visible.
+    - [ ] Recalculate and push additional items into the overflow stack if the newly selected tab title is longer, guaranteeing zero clipped labels.
+  - [ ] **Awkward `+ Waves` Button Elimination & Unified Split Controls (`ui/src/App.tsx`, `ui/src/components/Header.tsx`)**:
+    - [ ] Remove the rigid `+ Waves` button that forces a fixed top waveform section regardless of context.
+    - [ ] Replace with contextual split actions (split horizontal / vertical) cleanly integrated into view management.
+  - [ ] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [ ] Synchronize all user-facing strings across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
+
+- [ ] **Phase 66: Industry-Grade Layout Engine (Tabs -> Panels -> Split Panels -> Whole Layout) & Persistent Layout Presets - [P1]**
+  - [ ] **Hierarchical Layout Architecture (`ui/src/engine/layoutModel.ts`)**:
+    - [ ] Implement formal recursive layout tree schema:
+      - `LayoutLeaf`: A container holding an ordered array of view tabs (`views: string[]`) and `activeViewId: string`.
+      - `LayoutSplit`: A branch dividing space between two child nodes horizontally (`row`) or vertically (`column`) with fractional `splitRatio: number` (0.0 to 1.0).
+      - `AxiomLayout`: Root layout descriptor with `id`, `name`, `root: LayoutNode`, `isGlobal: boolean`, timestamps.
+    - [ ] Provide factory presets: Default Engineering Split, Code Focused, Full Schematic Studio, Timing & Synthesis Cockpit, Virtual Lab Workbench, Multi-Waveform Split.
+  - [ ] **Dual Storage Persistence (Project Layout vs Global Layouts) (`ui/src/engine/layoutStorage.ts`)**:
+    - [ ] Store project-specific layout inside `AxiomProject.layout` so each project retains its tailored workspace.
+    - [ ] Store globally saved user layouts in `localStorage` (`axiom_global_layouts`) accessible across all projects.
+    - [ ] Add layout selector and switcher in View menu and Settings dialog.
+
+- [ ] **Phase 67: Interactive Blueprint Layout Editor Mode (Striped Boxes, Drag-and-Drop & Minimalist Shell) - [P1]**
+  - [ ] **Interactive Blueprint Layout Editor Mode (`ui/src/components/LayoutEditorOverlay.tsx`, `ui/src/components/ProjectSettingsModal.tsx`)**:
+    - [ ] Add "Edit" button next to each layout in `Settings > Layouts` and "Customize Layout..." in the `View` menu.
+    - [ ] Clicking "Edit" temporarily suspends the settings modal and enters Layout Editor Mode.
+    - [ ] In Layout Editor Mode:
+      - [ ] Hide all standard application chrome, headers, menus, sidebars, bottom docks, and toolbars.
+      - [ ] Render a minimalist top-right action bar containing only "Cancel" and "Save Layout" buttons.
+      - [ ] Replace every panel with an empty abstract blueprint box:
+        - [ ] Dark acrylic background with blueish striped border (`repeating-linear-gradient` with cyan/blue accents and rounded corners `border-radius: 8px`).
+        - [ ] Render tab pills inside each box with drag handles.
+        - [ ] Provide Split Horizontal (`Columns`) and Split Vertical (`Rows`) action buttons inside each box.
+        - [ ] Enable dragging tabs between boxes to merge or reorganize views.
+        - [ ] Provide draggable split dividers to adjust panel ratios.
+        - [ ] Provide a close button on empty boxes to prune splits.
+    - [ ] "Save Layout" commits changes to Project Layout or selected Global Layout and restores normal application view.
+    - [ ] "Cancel" discards layout changes and restores previous workspace state.
+  - [ ] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [ ] Synchronize all layout editor labels, tooltips, and actions across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
+  - [ ] **Comprehensive Verification Quality Gate**:
+    - [ ] Full Rust workspace tests, strict clippy, TypeScript build, VitePress docs build, zero-emoji audit.
 
 ---
 
 ## Completed
+
+- [x] **Phase 64: Mobile Virtual Keyboard Ergonomics, Cursor Centering, Instant Persistence & WASM Linter - [P1]**
+  - [x] **Mobile Virtual Keyboard & Dynamic Container Resizing (`ui/index.html`, `ui/src/components/HdlEditor.tsx`, `ui/src/App.tsx`)**:
+    - [x] Update viewport meta tag in `ui/index.html` with `interactive-widget=resizes-content`.
+    - [x] Track `window.visualViewport` resize/scroll to dynamically calculate `keyboardInset` and detect when on-screen keyboard is active (`keyboardInset > 100px`).
+    - [x] Smoothly retract / hide `MobileBottomBar` when typing, reclaiming 52px of screen space.
+    - [x] Adjust code container height and bounds to fit the visible viewport above the virtual keyboard.
+  - [x] **Cursor Auto-Centering & End-of-File Scrollability (`ui/src/components/HdlEditor.tsx`)**:
+    - [x] Enable `scrollBeyondLastLine: true` in Monaco options to allow lines at EOF (`endmodule`) to be scrolled way above the keyboard.
+    - [x] Provide generous responsive bottom padding (`padding: { top: 8, bottom: isMobile ? (keyboardInset > 0 ? 160 : 260) : 8 }`).
+    - [x] Register `onDidChangeCursorPosition` and `onDidFocusEditorText` calling `editor.revealPositionInCenter(pos, ScrollType.Smooth)`.
+    - [x] Re-center active cursor position on virtual keyboard open/close and trigger `editor.layout()`.
+  - [x] **Ultra-Fast Main-Thread WASM Linter Diagnostics (`ui/src/engine/engineBridge.ts`, `ui/src/components/HdlEditor.tsx`)**:
+    - [x] Run `engineBridge.lint()` directly via `this.initWasm()` on the main thread in RAM (~0.1ms) instead of delegating to Web Worker.
+    - [x] Sanitize diagnostic column bounds: expand 0-width ranges (`startColumn === endColumn`) to minimum 1-character span so Monaco renders visible red squiggly underlines.
+    - [x] Trigger an immediate lint pass in `handleEditorDidMount` and reduce debounced typing delay from 200ms to 80ms.
+  - [x] **Instant Keystroke LocalStorage Persistence (`ui/src/App.tsx`)**:
+    - [x] Synchronously call `saveProjectToStorage(updated)` on every keystroke inside `handleCodeChange()`.
+    - [x] Eliminate 500ms data-loss vulnerability on rapid browser refresh / reload.
+    - [x] In `getInitialProject()`, restore from `loadSavedProject()` if query slug is absent, preserving active workspaces across refreshes.
+  - [x] **Verification & Quality Gate**:
+    - [x] Verify lines at EOF (`endmodule`) can be tapped, focused, centered, and scrolled freely above the mobile keyboard.
+    - [x] Verify both `w1h` (undeclared identifier) and `wire w1, w2, w3, ` (syntax error) display visible squigglies and error counters.
+    - [x] Verify that typing a character and immediately refreshing preserves the exact modified code.
+    - [x] Full quality gate: `npm run build`, `npm run docs:build`, `cargo test --workspace`, `cargo clippy`, zero-emoji audit.
 
 - [x] **Phase 63: Categorized Project Settings Modal, Editor Action Decluttering & On-Demand Simulation Compilation - [P1]**
   - [x] **Categorized Project & Editor Settings Modal (`ui/src/components/ProjectSettingsModal.tsx`, `ui/src/components/ui/Modal.tsx`)**:
@@ -1234,8 +1308,8 @@
     - Rendered the active language's flag icon (e.g., US, TR, DE) in a clean, standardized 28x28 square button matching all other header icon buttons.
     - Clicking the flag opens the full language dropdown with flags, native names, localized names, and language codes (`EN`, `TR`, etc.).
   - [x] **Single-Icon Omnibar / Search Button**:
-    - Replaced the wide `[  Omnibar ⌘K ]` button with a minimalist single-icon button `<Search size={14} />`.
-    - Maintained accessible tooltip (`title="Omnibar (Ctrl+K / ⌘K)"`) and keyboard shortcut handlers.
+    - Replaced the wide `[  Omnibar Cmd+K ]` button with a minimalist single-icon button `<Search size={14} />`.
+    - Maintained accessible tooltip (`title="Omnibar (Ctrl+K / Cmd+K)"`) and keyboard shortcut handlers.
   - [x] **Open Source GitHub Integration**:
     - Created reusable `GithubIcon` SVG component in `ui/src/components/ui/GithubIcon.tsx` and exported via `ui/src/components/ui/index.ts`.
     - Added GitHub repository icon button in `Header.tsx` (desktop and mobile) linked to `https://github.com/aerovexsim/axiom`.
@@ -1408,7 +1482,7 @@
   - [x] **Spacious Dual-Pane Studio & De-Cramping (`App.tsx`)**:
     - Redesigned Split Studio from cramped quad-split into high-productivity Dual-Pane Studio:
       - Left Pane: Monaco HDL Editor with active `[TOP]` module tag, breadcrumbs, line numbers, and resizable width handle.
-      - Right Pane: Full-height, full-width Visualizer container with ergonomic top switcher tabs (` Schematic DAG`, ` Virtual Lab`, ` Waveforms`, `⏱ Timing & Energy`), optional `[+ Waveforms]` stacked toggle, and 1-click Maximize button.
+      - Right Pane: Full-height, full-width Visualizer container with ergonomic top switcher tabs (` Schematic DAG`, ` Virtual Lab`, ` Waveforms`, ` Timing & Energy`), optional `[+ Waveforms]` stacked toggle, and 1-click Maximize button.
       - Each tool gets 100% of the right pane width and height, eliminating all clipping and cramped controls.
   - [x] **Typography & Touch Target Scaling (`theme.css`, `Header.tsx`, `Sidebar.tsx`, `ProjectManager.tsx`, `UnifiedBottomDock.tsx`)**:
     - Upgraded base font to 14px (line-height 1.5) in `theme.css`.
@@ -1469,7 +1543,7 @@
     - **New Project Wizard Modal (`NewProjectModal.tsx`)**: Step 1 project name, Step 2 target FPGA silicon selector, Step 3 starter template cards.
     - **Add Source to Vivado Project Dialog (`AddSourceModal.tsx`)**: Target file set picker (`sources_1`, `sim_1`, `constrs_1`), file extension validation (`.v`, `.sv`, `.xdc`), and starter templates (Clocked RTL module, Verilog testbench skeleton, XDC constraints).
   - [x] **Unified Dockable Bottom Drawer (`UnifiedBottomDock.tsx`)**:
-    - Replaced statically stacked Telemetry + Console (300px overhead) with a unified, tabbed bottom drawer (`>_ Console & REPL`, ` Power & Telemetry`, ` Glitches & Hazards`, `⏱ Timing Slack`).
+    - Replaced statically stacked Telemetry + Console (300px overhead) with a unified, tabbed bottom drawer (`>_ Console & REPL`, ` Power & Telemetry`, ` Glitches & Hazards`, ` Timing Slack`).
     - Collapsible to a 28px sleek status bar displaying live simulation time, rail voltage, instant power, and quick jump buttons, liberating ~250px of vertical space.
     - Resizable height with smooth dragging handle and full Maximize `` / Restore toggle.
   - [x] **Collapsible Sidebar Strip (`Sidebar.tsx`)**:
