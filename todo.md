@@ -13,8 +13,6 @@
 ---
 ## In Progress
 
-*(No active tasks currently in progress)*
-
 ---
 
 ## Todo
@@ -24,6 +22,28 @@
 ---
 
 ## Completed
+
+- [x] **Phase 61: Undeclared Signal Diagnostics, Monaco Undo Isolation & Multi-Project Batch Trashing - [P1]**
+  - [x] **Undeclared Identifier & Undriven Net Diagnostics (`crates/lsp/src/linter.rs`, `crates/lsp/src/lib.rs`)**:
+    - [x] Implement `AXIOM_E003_UNDECLARED_IDENTIFIER` in `VerilogLinter` to traverse all expressions across continuous assignments, procedural blocks, instance port connections, and parameter bindings, flagging any referenced identifier that is not declared in `module.ports`, `NetDecl`, `ParamDecl`, or built-in system identifiers.
+    - [x] Fix `AXIOM_W003_UNDRIVEN_NET` in `VerilogLinter`: remove incorrect `instance_connected_signals` suppression for known gate primitives and FPGA primitives, ensuring that declared nets connected only to primitive inputs without any driver (like `w1` in `and g4(w3, w1, C)`) are correctly flagged as undriven.
+    - [x] Add comprehensive Rust unit tests verifying that valid primitive netlists (snippet 1) have 0 errors, while netlists with undeclared signals or undriven nets (snippet 2 with `w1hi` and `w1`) report exact diagnostics.
+  - [x] **Monaco Editor File Undo Isolation (`ui/src/components/HdlEditor.tsx`)**:
+    - [x] Pass `path={activeFile ? `axiom://project/${project?.id || "prj"}/${activeFile.id}/${activeFile.name}` : undefined}` and `saveViewState={true}` to `@monaco-editor/react` `<Editor />`.
+    - [x] Ensure that switching between active tabs isolates `ITextModel` instances and prevents `Ctrl+Z` in one file from undoing edits or reverting to content from another file.
+  - [x] **Multi-Project Selection & Batch Trashing (`ui/src/components/WelcomeLaunchpad.tsx`, `ui/src/App.tsx`)**:
+    - [x] Add multi-selection checkboxes to project cards in both Active and Trash views with event bubbling prevention.
+    - [x] Add a batch action toolbar in the Launchpad header with "Select All", "Deselect All", selection count, and "Trash Selected (N)" / "Restore Selected (N)" / "Delete Permanently (N)".
+    - [x] Implement confirmation modals for batch trashing and batch permanent deletion.
+    - [x] Implement batch deletion handlers in `App.tsx` (`handleTrashProjects`, `handleRestoreProjects`, `handlePermanentDeleteProjects`).
+  - [x] **Multi-Language Key Parity (7 Languages) (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Add translation keys for batch selection, batch trashing, and confirmation modals across all 7 supported platform dictionaries (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+  - [x] **Verification & Quality Gate**:
+    - [x] Pass Studio TypeScript build (`npm --prefix ui run build`).
+    - [x] Pass VitePress docs build (`npm --prefix docs run docs:build`).
+    - [x] Pass full Rust workspace tests (`cargo test --workspace`).
+    - [x] Pass strict Rust Clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Pass zero-emoji audit.
 
 - [x] **Phase 60: Class Example Project Integration & Unified Template Architecture - [P1]**
   - [x] **Unified Template Cards in Launchpad (`ui/src/components/WelcomeLaunchpad.tsx`)**:
