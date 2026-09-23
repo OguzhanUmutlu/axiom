@@ -23,6 +23,25 @@
 
 ## Completed
 
+- [x] **Phase 62: WebAssembly Kernel Recompilation & Auto-Save Session Flush on Page Unload - [P1]**
+  - [x] **Dual-Key Project Storage Sync (`ui/src/engine/projectModel.ts`, `ui/src/engine/projectRegistry.ts`)**:
+    - [x] Update `saveProjectToStorage(project)` to synchronously persist to both `STORAGE_KEY` (`axiom_current_project`) and per-project key `axiom_project_${project.id}`.
+    - [x] Add `touchProjectMetadata(project)` in `projectRegistry.ts` to update `updatedAt`, `fileCount`, `topModule`, and `targetDevice` in `REGISTRY_STORAGE_KEY` on save.
+  - [x] **Instant Unload Auto-Save Flush (`ui/src/engine/autoSaveManager.ts`)**:
+    - [x] Track `pendingSaveFn` in `autoSaveManager.ts`.
+    - [x] Implement `flushPendingAutoSave()` that immediately cancels the timer and executes `pendingSaveFn()` synchronously.
+    - [x] Register `beforeunload` and `pagehide` event listeners on `window` to flush pending saves before browser refreshes or navigates away.
+  - [x] **WebAssembly WASM Binary Synchronization (`ui/src/wasm/axiom_wasm_bg.wasm`)**:
+    - [x] Compile `axiom-wasm` with `wasm32-unknown-unknown` release profile.
+    - [x] Run `wasm-bindgen` to regenerate `ui/src/wasm/axiom_wasm_bg.wasm` and glue code containing Phase 61's AST-based `AXIOM_E003_UNDECLARED_IDENTIFIER` and `AXIOM_W003_UNDRIVEN_NET` linter.
+    - [x] Verify that `w1h` typo produces instant error and warning diagnostics in both native and WASM web environments.
+  - [x] **Verification & Quality Gate**:
+    - [x] Pass Studio TypeScript build (`npm --prefix ui run build`).
+    - [x] Pass VitePress docs build (`npm --prefix docs run docs:build`).
+    - [x] Pass full Rust workspace tests (`cargo test --workspace`).
+    - [x] Pass strict Rust Clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Pass zero-emoji audit.
+
 - [x] **Phase 61: Undeclared Signal Diagnostics, Monaco Undo Isolation & Multi-Project Batch Trashing - [P1]**
   - [x] **Undeclared Identifier & Undriven Net Diagnostics (`crates/lsp/src/linter.rs`, `crates/lsp/src/lib.rs`)**:
     - [x] Implement `AXIOM_E003_UNDECLARED_IDENTIFIER` in `VerilogLinter` to traverse all expressions across continuous assignments, procedural blocks, instance port connections, and parameter bindings, flagging any referenced identifier that is not declared in `module.ports`, `NetDecl`, `ParamDecl`, or built-in system identifiers.
