@@ -13,6 +13,8 @@
 ---
 ## In Progress
 
+*(No active phases currently in progress)*
+
 ---
 
 ## Todo
@@ -22,6 +24,40 @@
 ---
 
 ## Completed
+
+- [x] **Phase 63: Categorized Project Settings Modal, Editor Action Decluttering & On-Demand Simulation Compilation - [P1]**
+  - [x] **Categorized Project & Editor Settings Modal (`ui/src/components/ProjectSettingsModal.tsx`, `ui/src/components/ui/Modal.tsx`)**:
+    - [x] Build a multi-category settings dialog using the blurred popup `Modal` component (`backdropFilter: "blur(8px)"`, width: 760).
+    - [x] Provide a two-pane layout: vertical category navigation sidebar on the left and settings panel on the right.
+    - [x] Implement **General / Project** tab: Project Name, Target Device / FPGA family, Top-Level Module name, project statistics (files, timestamps, project ID).
+    - [x] Implement **Editor & UX** tab: Katana Slash Strike Cursor Effect toggle switch (`axiom_katana_cursor`), Monaco Minimap toggle (`axiom_editor_minimap`), Line Numbers toggle (`axiom_editor_line_numbers`), Word Wrap toggle (`axiom_editor_word_wrap`), Auto-Save toggle & debounce delay selector.
+    - [x] Implement **Simulation & Compilation** tab: Compilation Strategy selector (On-Demand vs Manual), Mid-run Recompile Lock toggle (prevent recompilation during active runs until simulation reset), Max Delta Cycles threshold, Default Code Coverage tracking toggle.
+    - [x] Implement **Security & Storage** tab: Trust Permission Status (Trusted vs Restricted Mode), Storage Quota dropdown, live storage usage bar with color thresholding, data isolation directory toggle, Purge Generated Data action with feedback.
+    - [x] Support opening directly to a specific category tab (`initialCategory`).
+  - [x] **Editor Action Strip & Breadcrumbs Decluttering (`ui/src/components/HdlEditor.tsx`)**:
+    - [x] Remove Katana slash effect toggle button (`Swords` icon) from top-right actions strip (relocated to Settings).
+    - [x] Remove redundant `Elab` / `Check` button from top-right actions strip.
+    - [x] Add a clean `Settings` gear button (`<Settings size={13} />`) in the editor actions strip to open the settings modal (focused on Editor & UX).
+    - [x] Move RTL Code Coverage button (`BarChart2`) from the top tab bar to the Breadcrumbs subheader bar on the right.
+    - [x] Remove unnecessary `"Rust JIT"` text / badge from the Breadcrumbs subheader bar.
+    - [x] Clean up layout and spacing to give Monaco editor maximum visual clarity.
+  - [x] **On-Demand Compilation & Safe Mid-Run Simulation (`ui/src/App.tsx`, `ui/src/components/Header.tsx`, `ui/src/engine/engineBridge.ts`)**:
+    - [x] Track source code dirty state (`isCodeDirtySinceCompile`) upon user edits.
+    - [x] When user clicks Run (`Play`) or Step (`Step 1ns`, `Step 100ps`, `Step Delta`):
+      - [x] If uncompiled (`!state.compiled`) or at $t = 0, \delta = 0$ with dirty code, automatically compile sources before proceeding with execution.
+    - [x] If simulation has progressed into time ($t > 0$ or $\delta > 0$) or is actively running:
+      - [x] Do NOT recompile mid-run upon source edits; preserve live simulation state and signal values without desynchronization.
+      - [x] Display compile status / tooltip: "Source modified (simulation must be reset to $t=0$ to recompile)".
+      - [x] When user resets simulation, the next Run or Step automatically triggers the on-demand recompile.
+    - [x] Make `engineBridge.compile()` return a `Promise<boolean>` for seamless async coordination with simulation commands.
+  - [x] **Internationalization (i18n) Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Add keys for settings categories, editor toggles, compilation strategy, and tooltips across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
+  - [x] **Verification & Quality Gate**:
+    - [x] Full Rust workspace tests (`cargo test --workspace`).
+    - [x] Strict Rust Clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Studio TypeScript build (`npm --prefix ui run build`).
+    - [x] VitePress docs build (`npm --prefix docs run docs:build`).
+    - [x] Zero-emoji audit.
 
 - [x] **Phase 62: WebAssembly Kernel Recompilation & Auto-Save Session Flush on Page Unload - [P1]**
   - [x] **Dual-Key Project Storage Sync (`ui/src/engine/projectModel.ts`, `ui/src/engine/projectRegistry.ts`)**:
