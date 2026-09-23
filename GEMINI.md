@@ -2,7 +2,7 @@
 
 ## 1. Project Manifesto & Core Mission
 
-**Axiom** is an aerospace-grade, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust** and deployed live at **`https://axiom.aerovex.net`** (documentation portal at **`https://docs.axiom.aerovex.net`**).
+**Axiom** is an aerospace-grade, high-performance, cross-platform remake of AMD Vivado's Hardware Description Language (HDL) processing, simulation, and analysis engine, built natively in **Rust** and deployed live at **`https://axiom.aerovex.net`** (Web Studio at **`https://axiom.aerovex.net/studio/`**).
 
 Vivado is the industry standard for FPGA development, yet it suffers from legacy bloat: 100+ GB installations, sluggish Java Swing interfaces, multi-stage file-based elaboration pipelines, zero-time delta cycle black-boxing, and zero support for modern platforms like macOS (Apple Silicon) or standard web browsers.
 

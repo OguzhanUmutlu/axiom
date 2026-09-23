@@ -36,7 +36,7 @@
 
 ## Completed
 
-- [x] **Phase 53: Autonomous Logo Design Studio, Harsh Critic Loop & Domain Splitting Architecture - [P1]**
+- [x] **Phase 53: Autonomous Logo Design Studio, Harsh Critic Loop & Unified Studio Architecture - [P1]**
   - [x] **Professional Logo Design Skill & Evaluation Framework (`analysis/logodesigner/SKILL.md`)**:
     - [x] Create comprehensive professional skill guide on aerospace EDA silicon branding, geometric precision, SVG vector craft, optical balance, and dark aesthetic harmony.
     - [x] Formulate strict 6-dimension evaluation rubric (1 to 10 points per dimension) with minimum 9/10 passing threshold per criterion.
@@ -45,12 +45,11 @@
     - [x] Define and invoke `axiom_logo_critic` subagent to relentlessly critique and score candidate designs across all rubric categories until unanimous excellence (>= 9/10 each).
     - [x] Save all iterative rounds and final high-scoring vector master to `analysis/logodesigner/` (Candidate 3 V2 ratified with 58.8 / 60.0).
   - [x] **Asset Integration Across Studio & Desktop**:
-    - [x] Export approved vector master into `ui/public/logo.svg`, `ui/public/favicon.ico`, `ui/public/icon.png`, and application headers.
+    - [x] Export approved vector master into `ui/public/logo.svg`, `docs/public/logo.svg`, `ui/public/favicon.ico`, `ui/public/icon.png`, and application headers.
     - [x] Verify crisp legibility across all display scales (16x16, 32x32, 64x64, 256x256, 512x512).
-  - [x] **Domain Architecture & Subdomain Separation (`axiom.aerovex.net` & `docs.axiom.aerovex.net`)**:
-    - [x] Set `docs.axiom.aerovex.net` as the primary documentation portal: update `CNAME`, `docs/public/CNAME`, `.github/workflows/deploy-docs.yml`.
-    - [x] Set `axiom.aerovex.net` as the primary live Studio application: add `ui/public/CNAME`, configure direct root routing.
-    - [x] Update all cross-links in `README.md`, `GEMINI.md`, `docs/.vitepress/config.mts`, `docs/index.md`, `docs/guide/quickstart.md`, `AboutModal.tsx`, `MenuBar.tsx`, and `OmnibarModal.tsx`.
+  - [x] **Unified Deployment Architecture (`axiom.aerovex.net` & `/studio/`)**:
+    - [x] Maintain unified single-domain GitHub Pages deployment with `axiom.aerovex.net` as documentation portal and `/studio/` hosting the WebAssembly Studio.
+    - [x] Harmonize all cross-links in `README.md`, `GEMINI.md`, `docs/.vitepress/config.mts`, `docs/index.md`, `docs/guide/quickstart.md`, `AboutModal.tsx`, `MenuBar.tsx`, and `OmnibarModal.tsx`.
 
 - [x] **Phase 51: Unified Dark Acrylic DropdownSelect Component & Comprehensive UI Adoption - [P1]**
   - [x] **Reusable DropdownSelect Component (`ui/src/components/ui/DropdownSelect.tsx`, `ui/src/components/ui/DropdownMenu.tsx`)**:
