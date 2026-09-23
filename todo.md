@@ -21,6 +21,24 @@
 
 ## Completed
 
+- [x] **Phase 69: Unified Custom Keybind System & Simplified Settings Categories - [P1]**
+  - [x] **Unified Keybind Engine (`ui/src/engine/keybinds.ts`)**:
+    - [x] Action registry with default shortcuts across File, Edit, View, Simulation, Tools, Navigation.
+    - [x] Key chord formatting, normalizer (`Ctrl`, `Cmd`, `Shift`, `Alt`), event matcher, and conflict detection.
+    - [x] `localStorage` persistence under `axiom_custom_keybinds` with per-keybind reset and reset all.
+    - [x] Dynamic event dispatcher hooked into `App.tsx` handling input focus isolation and browser override prevention.
+  - [x] **Keybinds Settings UI in `ProjectSettingsModal.tsx`**:
+    - [x] Dedicated `Keybinds` category tab in settings with search filter and category grouping.
+    - [x] Interactive keybind recorder modal/overlay listening for keypresses with clear conflict warning.
+    - [x] Individual reset button per row and global "Reset All" button.
+  - [x] **Simplified Settings Category Names**:
+    - [x] Streamline category labels: `General`, `Editor`, `Simulation`, `Security`, `Layouts`, `Keybinds`.
+    - [x] Update `SettingsCategory` union type and modal navigation.
+  - [x] **100% 7-Language Key Parity (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`)**:
+    - [x] Synchronize all category names, keybind action labels, descriptions, and recorder strings across all 7 language dictionaries.
+  - [x] **Verification Quality Gate**:
+    - [x] Rust workspace tests, strict clippy, TypeScript build, VitePress docs build, zero-emoji audit.
+
 - [x] **Phase 68: Layout JSON Export/Import, Draggable Waveform Signal Gutter, Editor Dirty Dot & Schematic Global Net Filter - [P1]**
   - [x] **Layout JSON File Export & Import (`ui/src/engine/layoutStorage.ts`, `ui/src/components/ProjectSettingsModal.tsx`, `ui/src/components/MenuBar.tsx`)**:
     - [x] `exportLayoutToJson(layout)`: download current layout configuration as formatted `.axiom-layout.json` file.
