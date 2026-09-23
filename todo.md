@@ -22,6 +22,26 @@
 
 ## Completed
 
+- [x] **Phase 73: Visualizer Tab X-Button Removal & Right-Click Context Menu with Close / Layout Editor Actions - [P1]**
+  - [x] **Remove Inline X Buttons from Visualizer Tabs (`ui/src/components/layout/LayoutLeafRenderer.tsx`)**:
+    - Remove the close button (`<X size={10} />`) from the visualizer tab pills in the leaf header strip, keeping tabs clean and compact.
+  - [x] **Tab Right-Click Context Menu (`ui/src/components/layout/LayoutLeafRenderer.tsx`)**:
+    - Implement right-click context menu with cursor positioning (`onContextMenu`).
+    - Provide "Close" action (`onCloseTab`) disabled when only one view remains in the leaf.
+    - Provide "Close Others" action to close sibling tabs in the leaf.
+    - Provide "Layout Editor..." action launching the Blueprint Layout Editor mode.
+    - Dismiss menu cleanly on outside click, window resize, or Escape key.
+  - [x] **Prop Extension & Layout Editor Wiring (`ui/src/components/layout/LayoutLeafRenderer.tsx`, `ui/src/App.tsx`)**:
+    - Add `onOpenLayoutEditor?: () => void` to `VisualizerContextProps` and wire to `setIsLayoutEditorOpen(true)` in `App.tsx`.
+  - [x] **100% 7-Language Parity (`ui/src/i18n/locales/*.ts`)**:
+    - Add localized strings for visualizer tab context menu across all 7 supported languages (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+  - [x] **Verification Quality Gate**:
+    - Rust workspace tests (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production build (`npm --prefix ui run build`).
+    - Docs portal build (`npm --prefix docs run docs:build`).
+    - Zero-emoji audit.
+
 - [x] **Phase 72: Dynamic RTL Schematic Elaboration, Multi-Lesson Curriculum Design Resolution & Synthesis Binding Fix - [P1]**
   - [x] **Active Design ID Resolution (`ui/src/App.tsx`, `ui/src/engine/schematicModel.ts`)**:
     - Prioritized `project.lessonId` and `project.topModule` over `project.templateId` in `activeDesignId`.
