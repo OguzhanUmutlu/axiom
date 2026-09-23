@@ -22,6 +22,26 @@
 
 ## Completed
 
+- [x] **Phase 72: Dynamic RTL Schematic Elaboration, Multi-Lesson Curriculum Design Resolution & Synthesis Binding Fix - [P1]**
+  - [x] **Active Design ID Resolution (`ui/src/App.tsx`, `ui/src/engine/schematicModel.ts`)**:
+    - Prioritized `project.lessonId` and `project.topModule` over `project.templateId` in `activeDesignId`.
+    - Added `class_examples` and curriculum lesson aliases to `generateSchematicGraph` fallback matching.
+  - [x] **Prop Extension for Schematic Netlist View (`ui/src/components/SchematicViewer.tsx`, `ui/src/components/layout/LayoutLeafRenderer.tsx`, `ui/src/App.tsx`)**:
+    - Added `verilogSource`, `topModule`, and `targetDevice` props to `SchematicViewerProps`.
+    - Wired `context.activeFile?.content`, `context.project?.topModule`, and `context.project?.targetDevice` through `LayoutLeafRenderer.tsx` and `App.tsx`.
+  - [x] **Dynamic Verilog Gate-Level Netlist Parser (`ui/src/engine/schematicModel.ts`)**:
+    - Implemented `parseVerilogToSchematicGraph(code: string, topModule?: string): SchematicGraph | null` extracting ports, gate primitives (`not`, `and`, `or`, `nand`, `nor`, `xor`, `xnor`, `buf`), and continuous assignments (`assign ...`).
+    - Topologically ordered nodes into layers and routed Manhattan orthogonal wires with collision avoidance via `layoutAndRouteGraph`.
+    - Integrated dynamic graph into `SchematicViewer` with graceful fallback to sample designs.
+  - [x] **Synthesis Mode Parameters Fix (`ui/src/components/SchematicViewer.tsx`)**:
+    - Passed active `verilogSource`, `topModule`, and `targetDevice` to `engineBridge.synthesizeDesign` and `synthesizeClientFallback`.
+  - [x] **Verification Quality Gate**:
+    - Rust workspace tests (`cargo test --workspace`) - 100% passing.
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`) - 0 warnings.
+    - Frontend production build (`npm --prefix ui run build`) - 0 errors.
+    - Docs portal build (`npm --prefix docs run docs:build`) - 0 errors.
+    - Zero-emoji audit passed.
+
 - [x] **Phase 71: Removal of Legacy Balanced / Code Focus / Visual Focus Split Presets from Header - [P2]**
   - [x] **Header Cleanup (`ui/src/components/Header.tsx`)**:
     - [x] Remove legacy split preset button group (`Balanced`, `Code Focus`, `Visual Focus`) and divider from the center header actions.
