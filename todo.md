@@ -36,6 +36,31 @@
 
 ## Completed
 
+- [x] **Phase 57: Bottom Dock Default Hidden, Dock Button Streamlining, Mobile Ergonomics, and v1.0.0 Release Assets Refresh - [P1]**
+  - [x] **Bottom Dock Collapse State & Streamlined Controls (`ui/src/components/UnifiedBottomDock.tsx`)**:
+    - [x] Default `isCollapsed` state to `true` so the bottom drawer is collapsed/hidden on initial launch.
+    - [x] Remove redundant "Dock ^" toggle button and vertical divider from the collapsed bottom dock strip.
+    - [x] Allow direct dock tab buttons (Console, Problems, Telemetry, Glitches, Coverage, Assertions, Synthesis, Timing) to expand the dock directly on selection.
+    - [x] Make collapsed strip tab container horizontally scrollable with `overflowX: auto`, `scrollbarWidth: none`, and proper min-width constraints so tabs never wrap or squash telemetry chips.
+  - [x] **Comprehensive Mobile Ergonomics & Layout Optimization (`ui/`)**:
+    - [x] `MobileBottomBar.tsx`: Enforce `whiteSpace: nowrap`, text truncation (`text-overflow: ellipsis`), and compact padding so German/French/Turkish tab labels never wrap or clip.
+    - [x] `Header.tsx`: Responsive mobile header with clamped project badges (`clamp(60px, 18vw, 110px)`), compact simulation clock, and tight spacing so actions never collide on 360-390px screens.
+    - [x] `HdlEditor.tsx`: Hide desktop-only Katana cursor button on mobile, make file tabs horizontally swipeable, and compact the linter pill.
+    - [x] `WaveformViewer.tsx`: Implement responsive gutter width (`120px` on mobile vs `230px` on desktop) doubling waveform canvas space, and make controls bar horizontally scrollable.
+    - [x] `WelcomeLaunchpad.tsx`: Adjust card grid minmax from `360px` to `280px` to eliminate horizontal scroll blowout on mobile phones.
+    - [x] `Modal.tsx`: Optimize mobile padding (`12px 10px`) and maximum height (`94vh`).
+  - [x] **v1.0.0 Embedded UI & Binary Release Assets Refresh (`crates/cli`, `crates/desktop`, `dist-release/`)**:
+    - [x] Rebuild production UI bundle (`npm --prefix ui run build`).
+    - [x] Rebuild release binaries with updated embedded Zstd UI bundle (`cargo build --release --bin axiom --bin axiom-desktop`).
+    - [x] Package `axiom-v1.0.0-x86_64-linux.tar.gz`, `axiom-x86_64-unknown-linux-gnu.tar.gz`, and `axiom_1.0.0_amd64.deb`.
+    - [x] Regenerate consolidated SHA-256 checksums (`checksums.sha256`).
+    - [x] Upload new binary assets to GitHub release `v1.0.0` using `gh release upload v1.0.0 ... --clobber`.
+  - [x] **Verification & Quality Gate**:
+    - [x] Run full Rust workspace test suite (`cargo test --workspace`).
+    - [x] Run strict Clippy check (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Run VitePress build (`npm --prefix docs run docs:build`).
+    - [x] Verify zero-emoji compliance across all modified files.
+
 - [x] **Phase 56: Custom Aerospace Version Dropdown & Enriched Deep Release Manifestos - [P1]**
   - [x] **Custom Aerospace Version Dropdown (`docs/.vitepress/theme/components/ReleaseDownloader.vue`)**:
     - [x] Replace standard HTML `<select>` with custom dark-themed Vue 3 dropdown component.
