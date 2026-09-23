@@ -17,9 +17,29 @@
 
 ## Todo
 
+
 ---
 
 ## Completed
+
+- [x] **Phase 70: Standalone Editor Panel, Panel Close Capability, Layout Text Wrapping Fix, Clean Badge Next to Coverage & Unassigned Keybinds Expansion - [P1]**
+  - [x] **Standalone Editor Panel & No Outer Sub-tabs (`ui/src/components/layout/LayoutLeafRenderer.tsx`, `ui/src/engine/layoutModel.ts`)**:
+    - [x] Make the HDL editor a standalone panel that does not show the outer 28px `</> HDL Editor` tab strip and does not accept visualizer sub-tabs.
+    - [x] Remove awkward arbitrary split buttons from the leaf header; implement `closeLeaf(root, leafId)` in `layoutModel.ts` and add a Close Panel (`X`) action on visualizer panels in split layouts.
+  - [x] **"Clean" Status Badge Next to Coverage (`ui/src/components/HdlEditor.tsx`)**:
+    - [x] Move compilation and lint status badge (`Clean` / errors / warnings) from the file tabs row down into the breadcrumbs bar right next to the `Coverage` button.
+    - [x] Keep file tab row clean and dedicated to file tabs, settings, and window controls.
+  - [x] **Layout Settings Text Wrapping Fix (`ui/src/components/ProjectSettingsModal.tsx`)**:
+    - [x] Redesign Layouts settings header banner so the title and description take full width and do not wrap into 4 vertical words.
+    - [x] Fix Global Layout Slots card layout so `(Slot Empty (Default Preset))` and slot details do not wrap onto multiple lines.
+  - [x] **Unassigned Keybinds Expansion (`ui/src/engine/keybinds.ts`, `ui/src/App.tsx`, `ui/src/components/ProjectSettingsModal.tsx`)**:
+    - [x] Add unassigned default keybind actions across File, Edit, View, and Tools.
+    - [x] Render `Unassigned` badge with instant "Record" action in Keybinds settings.
+    - [x] Connect actions in `App.tsx` global keydown dispatcher.
+  - [x] **100% 7-Language Parity (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Synchronize all new action names, descriptions, and labels across all 7 supported languages.
+  - [x] **Verification Quality Gate**:
+    - [x] Rust workspace tests, strict clippy, TypeScript build, VitePress docs build, zero-emoji audit.
 
 - [x] **Phase 69: Unified Custom Keybind System & Simplified Settings Categories - [P1]**
   - [x] **Unified Keybind Engine (`ui/src/engine/keybinds.ts`)**:
@@ -1109,7 +1129,7 @@
     - Search filter, radix toggle (`HEX`/`DEC`/`BIN`), visibility toggles (`Buses`, `Control`, `Values`), and selection HUD with quick Jump-to-Code.
     - Double-click and button triggers opening deep-dive inspector modals.
   - [x] **Seamless Studio & Mobile Integration**:
-    - Added `[ ️ Architecture ]` view tab in `App.tsx` visualizer ribbon and `MobileDrawer.tsx`.
+    - Added `[ Architecture ]` view tab in `App.tsx` visualizer ribbon and `MobileDrawer.tsx`.
     - Integrated with dual-pane split studio, single visualizer view, and mobile off-canvas drawer.
   - [x] **100% Verification**:
     - 76 / 76 Rust workspace unit & integration tests passing (`cargo test --workspace`).
