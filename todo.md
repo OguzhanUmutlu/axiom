@@ -13,17 +13,42 @@
 ---
 ## In Progress
 
-*(No active tasks — Phase 59 Multi-Window Resiliency & Problems Dock Complete)*
+*(No active tasks currently in progress)*
 
 ---
 
 ## Todo
 
-*(No active tasks — Phase 59 Multi-Window Resiliency & Problems Dock Complete)*
+*(Check next phases below or add upcoming architectural tasks)*
 
 ---
 
 ## Completed
+
+- [x] **Phase 60: Class Example Project Integration & Unified Template Architecture - [P1]**
+  - [x] **Unified Template Cards in Launchpad (`ui/src/components/WelcomeLaunchpad.tsx`)**:
+    - [x] Render each class example lesson (e.g. Lesson 1: Uygulama 0) as an individual template card in the Launchpad grid using the exact same card design as standard templates (replacing the previous dropdown card).
+    - [x] Display GraduationCap icon, lesson title, description, Basys 3 device badge, and "Create >" action.
+    - [x] On click, invoke `onOpenNewProject("class_examples_project", lesson.id)` to launch the New Project Wizard with the class example pre-selected.
+  - [x] **Class Example Project Type in Wizard (`ui/src/components/NewProjectModal.tsx`)**:
+    - [x] Add `"class_example"` to `ProjectType` union type.
+    - [x] Add a dedicated "Class Example Project" radio card option in Step 2 directly below "Example Project" with `IUC Coursework` badge.
+    - [x] Implement lesson sub-selection grid under "Class Example Project" displaying available coursework lessons (for now Lesson 1, architected to scale up to 14 lessons).
+    - [x] Auto-configure default project name (`uygulama_0`) and auto-select Basys 3 FPGA board catalog entry when opened with a class example.
+    - [x] Update Step 4 (Summary) to display class example lesson metadata and initial sources.
+    - [x] In `handleFinish`, instantiate project via `createProjectFromTemplate("class_examples_project", finalName, selectedPart.name, selectedClassLessonId)`.
+  - [x] **Launchpad to Wizard Routing & State (`ui/src/App.tsx`)**:
+    - [x] Update `handleOpenNewProject(templateId?: string, lessonId?: string)` to track both `templateId` and `lessonId`.
+    - [x] Pass `initialTemplateId` and `initialLessonId` to `<NewProjectModal />`.
+    - [x] Support auto-selecting the class example project and lesson on wizard initialization.
+  - [x] **Multi-Language Key Parity (7 Languages) (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Add `classExampleProject`, `classExampleDesc`, and `classExampleBadge` translation keys across all 7 supported platform dictionaries.
+  - [x] **Verification & Quality Gate**:
+    - [x] Pass Studio TypeScript build (`npm --prefix ui run build`).
+    - [x] Pass VitePress docs build (`npm --prefix docs run docs:build`).
+    - [x] Pass full Rust workspace tests (`cargo test --workspace`).
+    - [x] Pass strict Rust Clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Pass zero-emoji audit.
 
 - [x] **Phase 59: Multi-Window Session Resiliency, Web Navigation & Problems Dock Ergonomics - [P1]**
   - [x] **Session & Concurrency Resiliency (`ui/src/engine/sessionSync.ts`, `ui/src/engine/windowManager.ts`)**:
