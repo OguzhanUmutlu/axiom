@@ -21,6 +21,28 @@
 
 ## Completed
 
+- [x] **Phase 68: Layout JSON Export/Import, Draggable Waveform Signal Gutter, Editor Dirty Dot & Schematic Global Net Filter - [P1]**
+  - [x] **Layout JSON File Export & Import (`ui/src/engine/layoutStorage.ts`, `ui/src/components/ProjectSettingsModal.tsx`, `ui/src/components/MenuBar.tsx`)**:
+    - [x] `exportLayoutToJson(layout)`: download current layout configuration as formatted `.axiom-layout.json` file.
+    - [x] `importLayoutFromJsonFile(file)`: parse and validate imported layout structure, verify tree validity, and apply/save to active project or global slots.
+    - [x] Add "Export Layout JSON" and "Import Layout JSON..." buttons in `ProjectSettingsModal` Layouts panel and `View > Workspace Layout` submenu.
+  - [x] **Draggable & Persisted Waveform Signal Name Gutter (`ui/src/components/WaveformViewer.tsx`)**:
+    - [x] Replace static hardcoded 230px gutter with interactive resizable state `gutterWidth`.
+    - [x] Add draggable splitter border on hover/drag between signal column and canvas plot area.
+    - [x] Clamp width between 90px (compact) and 450px (expanded) with double-click reset to default (230px).
+    - [x] Persist custom gutter width in `localStorage` under `axiom_waveform_gutter_width`.
+  - [x] **Editor Modified ("Dirty") Dot & File Tab Overflow (`ui/src/components/HdlEditor.tsx`)**:
+    - [x] Render a subtle dot (`●`) indicator on modified file tabs when unsaved/dirty changes exist.
+    - [x] Add tab overflow menu (`MoreVertical`) when file tabs exceed 6 open files with direct switcher dropdown.
+  - [x] **Schematic Viewer "Hide Global Clocks / Resets" Filter (`ui/src/components/SchematicViewer.tsx`)**:
+    - [x] Floating toolbar toggle button: `Hide Global Nets` (`Clock` icon).
+    - [x] When active, suppress global distribution wires (`clk`, `clock`, `rst`, `reset`, `rst_n`, etc.) across the canvas to eliminate net routing spaghetti in synchronous designs.
+    - [x] Display compact clock ("CLK") and reset ("RST") badges directly on cell input pins.
+  - [x] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Synchronize all new labels and tooltips across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
+  - [x] **Verification Quality Gate**:
+    - [x] Full Rust workspace tests (160+ passing, 0 failing), strict clippy (0 warnings), TypeScript build (0 errors), VitePress docs build (0 errors), zero-emoji audit.
+
 - [x] **Phase 66 & 67: Industry-Grade Layout Engine (Tabs -> Panels -> Split Panels -> Whole Layout) & Interactive Blueprint Layout Editor - [P1]**
   - [x] **Hierarchical Layout Architecture (`ui/src/engine/layoutModel.ts`)**:
     - [x] Implement formal recursive layout tree schema (`LayoutLeaf`, `LayoutSplit`, `AxiomLayout`).
