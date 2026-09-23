@@ -22,6 +22,27 @@
 
 ## Completed
 
+- [x] **Phase 74: Dynamic Verilog Port Parser Robustness & RTL Schematic Netlist Signal Extraction Fix - [P1]**
+  - [x] **Clause-Based ANSI Header Port Parser (`ui/src/engine/schematicModel.ts`)**:
+    - Replace greedy regex with bracket-aware comma delimiter tokenizer for ANSI `portListHeader`.
+    - Extract directions (`input`, `output`, `inout`), bit ranges (`[msb:lsb]`), and bare identifiers.
+    - Implement direction inheritance across consecutive port identifiers.
+    - Filter out Verilog/SystemVerilog keywords (`wire`, `reg`, `logic`, `signed`, `tri`, `integer`).
+  - [x] **Non-ANSI Module Body Port Parser (`ui/src/engine/schematicModel.ts`)**:
+    - Parse semicolon-delimited `input`, `output`, `inout` statements in the module body.
+    - Accurately associate driver nets and consumer ports with extracted port names.
+  - [x] **Schematic DAG Wire Routing Verification (`ui/src/engine/schematicModel.ts`, `ui/src/components/SchematicViewer.tsx`)**:
+    - Verify `uygulama_0.v` elaborates with input ports `A`, `B`, `C` on the left and output port `F` on the right.
+    - Ensure nets `w1`, `w2`, `w3`, `w4`, `A`, `B`, `C`, and `F` connect to gate inputs and outputs with zero dangling nets.
+  - [x] **Automated Parser Verification (`ui/src/engine/__tests__/test_port_parser.js`)**:
+    - Create a test script covering single-line, multi-line ANSI, shared type, non-ANSI, and sized bus port declarations.
+  - [x] **Verification Quality Gate**:
+    - Rust workspace tests (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production build (`npm --prefix ui run build`).
+    - Docs portal build (`npm --prefix docs run docs:build`).
+    - Zero-emoji audit.
+
 - [x] **Phase 73: Visualizer Tab X-Button Removal & Right-Click Context Menu with Close / Layout Editor Actions - [P1]**
   - [x] **Remove Inline X Buttons from Visualizer Tabs (`ui/src/components/layout/LayoutLeafRenderer.tsx`)**:
     - Remove the close button (`<X size={10} />`) from the visualizer tab pills in the leaf header strip, keeping tabs clean and compact.
