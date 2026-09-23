@@ -22,6 +22,20 @@
 
 ## Completed
 
+- [x] **Phase 71: Removal of Legacy Balanced / Code Focus / Visual Focus Split Presets from Header - [P2]**
+  - [x] **Header Cleanup (`ui/src/components/Header.tsx`)**:
+    - [x] Remove legacy split preset button group (`Balanced`, `Code Focus`, `Visual Focus`) and divider from the center header actions.
+    - [x] Remove unused `Columns` icon from `lucide-react` imports.
+    - [x] Remove `editorWidthPercent`, `onSetEditorWidthPercent`, and `isSplitView` props from `HeaderProps` interface and component parameter list.
+  - [x] **App State Cleanup (`ui/src/App.tsx`)**:
+    - [x] Remove dead state `[editorWidthPercent, setEditorWidthPercent]`.
+    - [x] Remove `editorWidthPercent`, `onSetEditorWidthPercent`, and `isSplitView` props from `<Header ... />` invocation.
+  - [x] **Verification Quality Gate**:
+    - [x] Run `npm --prefix ui run build` (TypeScript check and Vite build).
+    - [x] Run `npm --prefix docs run docs:build`.
+    - [x] Run `cargo test --workspace` and `cargo clippy --workspace --all-targets -- -D warnings`.
+    - [x] Run zero-emoji audit.
+
 - [x] **Phase 70: Standalone Editor Panel, Panel Close Capability, Layout Text Wrapping Fix, Clean Badge Next to Coverage & Unassigned Keybinds Expansion - [P1]**
   - [x] **Standalone Editor Panel & No Outer Sub-tabs (`ui/src/components/layout/LayoutLeafRenderer.tsx`, `ui/src/engine/layoutModel.ts`)**:
     - [x] Make the HDL editor a standalone panel that does not show the outer 28px `</> HDL Editor` tab strip and does not accept visualizer sub-tabs.
