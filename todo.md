@@ -13,29 +13,9 @@
 ---
 ## In Progress
 
-*(No active phase in progress)*
-
 ---
 
 ## Todo
-
-- [ ] **Phase 65: Settings Menu Placement, Responsive Tab Overflow with 3-Dot Swap & Unified Split Controls - [P1]**
-  - [ ] **File > Settings Menu Relocation & Header Decluttering (`ui/src/components/MenuBar.tsx`, `ui/src/components/Header.tsx`)**:
-    - [ ] Add standard "Settings..." item (`Ctrl+,`) under the `File` menu in `MenuBar.tsx` to open `ProjectSettingsModal`.
-    - [ ] Remove awkward settings gear placement from the project chip in the header / editor breadcrumbs.
-    - [ ] Keep clean project chip in the subheader displaying project name and FPGA target device.
-  - [ ] **Responsive Navigation Tab Overflow with Vertical 3-Dot Dropdown (`ui/src/components/`, `ui/src/App.tsx`)**:
-    - [ ] Measure available header width against tab button widths dynamically.
-    - [ ] When tabs do not all fit into the available width (e.g. `Tech Mapping` getting clipped into `Tech...`), collect the overflowing tabs into an invisible stack.
-    - [ ] Render a vertical 3-dot overflow menu button (`MoreVertical` icon) at the end of the visible tab list.
-    - [ ] Clicking the 3-dot button opens a dark acrylic dropdown menu displaying all overflowing tabs with icons and titles.
-    - [ ] When an overflowing tab is selected, swap it with the last visible tab so the picked tab becomes active and fully visible.
-    - [ ] Recalculate and push additional items into the overflow stack if the newly selected tab title is longer, guaranteeing zero clipped labels.
-  - [ ] **Awkward `+ Waves` Button Elimination & Unified Split Controls (`ui/src/App.tsx`, `ui/src/components/Header.tsx`)**:
-    - [ ] Remove the rigid `+ Waves` button that forces a fixed top waveform section regardless of context.
-    - [ ] Replace with contextual split actions (split horizontal / vertical) cleanly integrated into view management.
-  - [ ] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
-    - [ ] Synchronize all user-facing strings across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
 
 - [ ] **Phase 66: Industry-Grade Layout Engine (Tabs -> Panels -> Split Panels -> Whole Layout) & Persistent Layout Presets - [P1]**
   - [ ] **Hierarchical Layout Architecture (`ui/src/engine/layoutModel.ts`)**:
@@ -73,6 +53,27 @@
 ---
 
 ## Completed
+
+- [x] **Phase 65: Settings Menu Placement, Responsive Tab Overflow with 3-Dot Swap & Unified Split Controls - [P1]**
+  - [x] **File > Settings Menu Relocation & Header Decluttering (`ui/src/components/MenuBar.tsx`, `ui/src/components/Header.tsx`, `ui/src/App.tsx`)**:
+    - [x] Add standard "Settings..." item (`Ctrl+,`) under the `File` menu in `MenuBar.tsx` to open `ProjectSettingsModal`.
+    - [x] Add global `Ctrl+,` keyboard shortcut to open settings from anywhere.
+    - [x] Remove awkward settings gear placement from the project identity chip in `Header.tsx` and editor breadcrumbs.
+    - [x] Keep clean project chip in the subheader displaying project name and FPGA target device.
+  - [x] **Responsive Navigation Tab Overflow with Vertical 3-Dot Dropdown (`ui/src/components/VisualizerTabBar.tsx`, `ui/src/App.tsx`)**:
+    - [x] Create `VisualizerTabBar.tsx` measuring available header width against tab button widths dynamically via `ResizeObserver`.
+    - [x] When tabs do not all fit into the available width (e.g. `Tech Mapping` getting clipped into `Tech...`), collect the overflowing tabs into an invisible stack.
+    - [x] Render a vertical 3-dot overflow menu button (`MoreVertical` icon) at the end of the visible tab list.
+    - [x] Clicking the 3-dot button opens a dark acrylic dropdown menu displaying all overflowing tabs with icons and titles.
+    - [x] When an overflowing tab is selected, swap it with the last visible tab so the picked tab becomes active and fully visible.
+    - [x] Recalculate and push additional items into the overflow stack if the newly selected tab title is longer, guaranteeing zero clipped labels.
+  - [x] **Awkward `+ Waves` Button Elimination & Unified Split Controls (`ui/src/App.tsx`, `ui/src/components/Header.tsx`)**:
+    - [x] Remove the rigid `+ Waves` button that forces a fixed top waveform section regardless of context.
+    - [x] Maximize visualizer to 100% full height by default with clean contextual controls.
+  - [x] **Multi-Language Key Parity across 7 Languages (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Synchronize all user-facing strings across `en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`.
+  - [x] **Verification Quality Gate**:
+    - [x] Full Rust workspace tests, strict clippy, TypeScript build, VitePress docs build, zero-emoji audit.
 
 - [x] **Phase 64: Mobile Virtual Keyboard Ergonomics, Cursor Centering, Instant Persistence & WASM Linter - [P1]**
   - [x] **Mobile Virtual Keyboard & Dynamic Container Resizing (`ui/index.html`, `ui/src/components/HdlEditor.tsx`, `ui/src/App.tsx`)**:
