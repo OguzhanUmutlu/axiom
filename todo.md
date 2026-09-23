@@ -36,6 +36,23 @@
 
 ## Completed
 
+- [x] **Phase 55: Automated Dynamic GitHub Releases Downloader with Version Selector - [P1]**
+  - [x] **VitePress Dynamic Release Downloader Component (`docs/.vitepress/theme/components/ReleaseDownloader.vue`)**:
+    - [x] Create interactive Vue 3 component fetching releases from GitHub API (`/repos/aerovexsim/axiom/releases`).
+    - [x] Implement reactive dropdown selector allowing users to choose any published release version, defaulting automatically to the latest release (`v1.0.0`).
+    - [x] Categorize release assets by platform (Windows `.msi`, `.exe`, `.zip`; Linux `.deb`, `.AppImage`, `.tar.gz`; macOS `.dmg`) with formatted file size, publish date, and direct download links.
+    - [x] Include graceful fallback handling with loading skeleton and cached release fallback if GitHub API rate limits.
+    - [x] Register component in `docs/.vitepress/theme/index.ts` and embed in `docs/index.md`.
+  - [x] **Web Studio Launchpad Dynamic Release Integration (`ui/src/components/WelcomeLaunchpad.tsx`)**:
+    - [x] Add dynamic GitHub release fetching and version dropdown to the desktop download banner in `WelcomeLaunchpad.tsx`.
+    - [x] Default to latest release (`v1.0.0`) with direct 1-click download actions for `.msi`, `.deb`, `.dmg`.
+    - [x] Synchronize all user-facing i18n keys across all 7 language dictionaries (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+  - [x] **Verification & Quality Gate**:
+    - [x] Verify VitePress build (`npm --prefix docs run docs:build`) with zero errors.
+    - [x] Verify UI production build (`npm --prefix ui run build`) with zero TypeScript errors.
+    - [x] Verify Rust tests and clippy (`cargo test --workspace`, `cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Verify zero-emoji compliance across all touched files.
+
 - [x] **Phase 54: Logo Aerodynamic Delta Refinement & Main Page Desktop Downloads (.msi, .deb, .dmg) - [P1]**
   - [x] **Vector Master Logo Refinement (`analysis/logodesigner/axiom_master_logo.svg`)**:
     - [x] Remove the digital pulse crossbar in the center of the chevron for a sleek, open aerodynamic delta.
