@@ -13,17 +13,42 @@
 ---
 ## In Progress
 
-*(No active tasks — Phase 50 Multi-Language Documentation Complete)*
+*(No active tasks — Phase 59 Multi-Window Resiliency & Problems Dock Complete)*
 
 ---
 
 ## Todo
 
-*(No active tasks — Phase 50 Multi-Language Documentation Complete)*
+*(No active tasks — Phase 59 Multi-Window Resiliency & Problems Dock Complete)*
 
 ---
 
 ## Completed
+
+- [x] **Phase 59: Multi-Window Session Resiliency, Web Navigation & Problems Dock Ergonomics - [P1]**
+  - [x] **Session & Concurrency Resiliency (`ui/src/engine/sessionSync.ts`, `ui/src/engine/windowManager.ts`)**:
+    - [x] Store `SESSION_ID` in `sessionStorage` (with in-memory fallback) so page refreshes in the same browser tab preserve their session ID and avoid self-locking.
+    - [x] Implement `takeOverProjectLease(projectId, projectName)` to allow users to force-acquire an active lease when switching windows or recovering abandoned sessions.
+    - [x] Fix `openInNewWindow()` URL construction to preserve web studio base path (`/studio/`) instead of redirecting to documentation root (`/`).
+    - [x] Resolve human-readable project names (`meta?.name || slug`) instead of displaying raw internal IDs (`proj_179...`) in alerts and toasts.
+  - [x] **Interactive Project Takeover UI (`ui/src/components/WelcomeLaunchpad.tsx`, `ui/src/App.tsx`)**:
+    - [x] Prompt user with a confirmation dialog to take over the project lease when clicking a locked project card in `WelcomeLaunchpad.tsx`.
+    - [x] Add "Take Over & Open Here" action to the 3-dot kebab menu on locked project cards.
+    - [x] Support graceful takeover when opening a locked project in `App.tsx` via `handleOpenProjectById` or URL query parameters.
+  - [x] **Problems Panel Selection, Copy & Single-Line Layout (`ui/src/components/UnifiedBottomDock.tsx`)**:
+    - [x] Refactor diagnostic rows into clean, compact single-line entries (`whiteSpace: "nowrap"`, `textOverflow: "ellipsis"`).
+    - [x] Enable native text selection (`userSelect: "text"`) on diagnostic messages and codes without triggering unintended line jumps.
+    - [x] Add one-click copy button per diagnostic row (`[CODE] Line X:Y: Message`) with animated confirmation.
+    - [x] Add "Copy All Issues" action button to the Problems panel toolbar.
+  - [x] **Multi-Language Key Parity (7 Languages) (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - [x] Add `takeOverTitle`, `takeOverMessage`, `takeOverConfirm`, `takeOverAction`, `copyAllProblems`, `copiedProblems`, `copyProblem` to `types.ts`.
+    - [x] Synchronize keys across all 7 supported language dictionaries: English (`en`), Turkish (`tr`), German (`de`), Japanese (`ja`), Chinese (`zh`), Spanish (`es`), French (`fr`).
+  - [x] **Verification & Quality Gate**:
+    - [x] Pass Studio TypeScript build (`npm --prefix ui run build`).
+    - [x] Pass VitePress docs build (`npm --prefix docs run docs:build`).
+    - [x] Pass full Rust workspace tests (`cargo test --workspace`).
+    - [x] Pass strict Rust Clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - [x] Pass zero-emoji audit.
 
 - [x] **Phase 50: VitePress Documentation Multi-Language Localization (7 Languages) - [P1]**
   - [x] **VitePress Multi-Locale Configuration (`docs/.vitepress/config.mts`, `docs/.vitepress/locales.ts`, `docs/.vitepress/theme/components/ReleaseDownloader.vue`)**:
