@@ -21,6 +21,20 @@
 
 ## Completed
 
+- [x] **Phase 84: Automatic Schematic Viewport Centering & Center/Fit Icon Modernization - [P1]**
+  - [x] **Automatic Fit on Orientation & Mode Change (`ui/src/components/SchematicViewer.tsx`)**:
+    - Trigger automatic `fitToScreen()` whenever layout orientation changes (`horizontal` <-> `vertical`).
+    - Trigger automatic `fitToScreen()` whenever schematic mode changes (`rtl` <-> `synth`), ensuring `fitToScreen()` waits for asynchronous synthesized graph generation to complete before centering.
+  - [x] **Center/Fit Icon Modernization (`ui/src/components/SchematicViewer.tsx`)**:
+    - Replace `Maximize2` fullscreen/expand icon with `Crosshair` in both the ribbon toolbar and More menu quick actions.
+    - Provide clear centering and auto-fit visual affordance aligned with EDA/CAD conventions (matching `FsmViewer`).
+  - [x] **Verification & Quality Gate**:
+    - Verify auto-fit behavior when switching orientation and switching RTL <-> Synth.
+    - Rust workspace test pass (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend bundle check (`npm --prefix ui run build`).
+    - Zero-emoji audit across all modified files.
+
 - [x] **Phase 83: Dual-Mode Schematic Separation (RTL Collinear Zero-Turn Fidelity & Synth Layer Isolation) - [P1]**
   - [x] **RTL Graph vs Synthesized Graph Branching (`ui/src/engine/schematicModel.ts`)**:
     - Introduce explicit `isSynth = graph.id.startsWith("synth_")` dispatch in `layoutAndRouteGraph`.
