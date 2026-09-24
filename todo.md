@@ -21,6 +21,30 @@
 
 ## Completed
 
+- [x] **Phase 82: Robust Cross-Window Web Heartbeat & Mutual Exclusion Project Leasing - [P1]**
+  - [x] **Unique Tab Instance Identity (`ui/src/engine/windowManager.ts`, `sessionSync.ts`)**:
+    - Assign an in-memory unique tab instance identifier (`TAB_INSTANCE_ID`) to guarantee distinct tab identities even when `sessionStorage` is cloned on browser tab duplication.
+    - Record `tabId`, `sessionId`, `projectId`, `projectName`, and `lastHeartbeat` in active project leases.
+  - [x] **Bidirectional Identifier Resolution (ID vs Name vs URL Slug) (`ui/src/engine/windowManager.ts`)**:
+    - Match leases across both `projectId` and `projectName` so that checking by slug, name, or canonical ID never fails or mixes up projects.
+    - Resolve slugs against `loadProjectRegistry()` before lease validation.
+  - [x] **Guarded Heartbeat Renewal & Background Tab Resilience (`ui/src/engine/windowManager.ts`, `App.tsx`)**:
+    - Enforce ownership check in `renewActiveProjectLease`: refuse to overwrite active leases owned by another tab.
+    - Extend lease timeout to 14s and add `visibilitychange` + `focus` handlers to trigger immediate heartbeat renewal upon tab activation.
+  - [x] **Real-Time Cross-Tab BroadcastChannel Synchronization (`ui/src/engine/windowManager.ts`)**:
+    - Implement dedicated `BroadcastChannel("axiom_project_leases")` for instant (<1ms) notification of `LEASE_ACQUIRED`, `LEASE_RENEWED`, `LEASE_RELEASED`, and `LEASE_TAKEOVER`.
+    - Instant lease release on `beforeunload` and `pagehide` to eliminate artificial wait times.
+  - [x] **No-Slug Auto-Load Guard (`ui/src/App.tsx`)**:
+    - In `getInitialProject()`, verify that saved fallback projects are not active in another window before auto-loading, cleanly routing to Welcome Launchpad instead.
+  - [x] **Superseded Window Detection & Takeover Modal (`ui/src/App.tsx`)**:
+    - When an active project is taken over in another window, the superseded window halts auto-saving and displays an interactive modal allowing the user to either reclaim the lease ("Take Over Here") or return to the Launchpad.
+  - [x] **Quality Gates & Multi-Tab Concurrency Verification**:
+    - Rust workspace tests (`cargo test --workspace` passed 160+ tests).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings` passed with 0 warnings).
+    - Frontend production bundle build (`npm --prefix ui run build` passed with 0 errors).
+    - Automated multi-tab headless concurrency test verifying lease acquisition, lock warning, takeover, and release.
+    - Zero-emoji audit confirmed across all files.
+
 - [x] **Phase 81: Generalized Schematic Layout Engine, Streamlined Ribbon & Synthesized Netlist Alignment - [P1]**
   - [x] **Dynamic & Topological Layer Assignment for Synthesized Netlists (`ui/src/engine/schematicModel.ts`)**:
     - Replace brittle hardcoded net/kind string heuristics with generalized topological depth calculation (`layer = 1 + max(driver.layer)`).
