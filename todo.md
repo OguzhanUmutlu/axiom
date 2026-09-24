@@ -21,6 +21,32 @@
 
 ## Completed
 
+- [x] **Phase 86: Comprehensive i18n Translation Audit & Missing Key Parity - [P1]**
+  - [x] **Welcome Launchpad Translation Namespace Fix & Dropdown Polish (`ui/src/components/WelcomeLaunchpad.tsx`, `ui/src/i18n/i18nContext.tsx`)**:
+    - Resolve the `welcome.selectAll` untranslated string bug by switching from `welcome.*` namespace to `launchpad.*` namespace (`launchpad.selectAll`, `launchpad.deselectAll`, `launchpad.selectedCount`, `launchpad.trashSelected`, `launchpad.restoreSelected`, etc.).
+    - Fix the release version `<select>` styling so the chevron dropdown button does not collide with the `(Latest)` text (add sufficient right padding `padding: "3px 24px 3px 8px"`).
+    - Implement runtime alias in `ui/src/i18n/i18nContext.tsx` (`parts[0] === "welcome" -> "launchpad"`) as a defensive fallback for any legacy or dynamic lookups.
+  - [x] **Missing Keys Addition & Type System Synchronization (`ui/src/i18n/types.ts`)**:
+    - Add `toast` group with `layoutApplied: string`.
+    - Add missing keys to `menu`: `sources: string`, `files: string`, `saveProject: string`, `exportProjectBundle: string`, `addSourceToProject: string`, `projectSettingsSecurity: string`.
+    - Add missing keys to `security`: `restrictedMode: string`, `trustedMode: string`.
+    - Add missing keys to `common`: `copy: string`.
+    - Add missing feature and footer keys to `launchpad`: `rustLspLinter: string`, `vivadoFileSets: string`, `openSourceNotice: string`, `githubContributions: string`.
+    - Add missing keys to `about`: `simEngine: string`, `license: string`, `licenseType: string`.
+  - [x] **UI Component Hardcoded String Replacement (`ui/src/components/`)**:
+    - Update `WelcomeLaunchpad.tsx` footer items and feature cards to use `t(...)`.
+    - Update `ProjectDropdown.tsx` actions to use `t(...)`.
+    - Update `AboutModal.tsx` engine and license labels to use `t(...)`.
+    - Update `TechMappingViewer.tsx`, `ProjectTrustModal.tsx`, `ProjectSettingsModal.tsx`, and `App.tsx` references.
+  - [x] **Full 7-Language Dictionary Synchronization (`ui/src/i18n/locales/`)**:
+    - Synchronize all new keys with 100% parity across `en.ts`, `tr.ts`, `de.ts`, `ja.ts`, `zh.ts`, `es.ts`, and `fr.ts`.
+    - Run automated TypeScript & AST audit to verify 0 missing keys and 100% dictionary equality (887 keys per language).
+  - [x] **Verification & Quality Gate**:
+    - Rust workspace test pass (`cargo test --workspace`).
+    - Rust strict clippy pass (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend build pass (`npm --prefix ui run build`).
+    - Strict zero-emoji audit across all touched files.
+
 - [x] **Phase 85: Schematic Viewport Rotation Architecture (Exact Rotated Clone of Canonical Horizontal Layout) - [P1]**
   - [x] **Single Canonical Graph Layout API (`ui/src/engine/schematicModel.ts`, `ui/src/components/SchematicViewer.tsx`)**:
     - Unify `parseVerilogToSchematicGraph`, `generateSchematicGraph`, and `generateSynthesizedSchematicGraph` so orientation does not trigger re-synthesis or divergent layout algorithms.
