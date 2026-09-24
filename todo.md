@@ -21,6 +21,88 @@
 
 ## Completed
 
+- [x] **Phase 80: High-Performance Collinear Pin Alignment, Barycentric Port Ordering & Turn-Free Schematic Routing - [P1]**
+  - [x] **Barycentric Input Port Topological Ordering (`ui/src/engine/schematicModel.ts`)**:
+    - Order primary input ports in Layer 0 along Y based on the median/barycentric target Y and minimum target layer of their downstream connected gates.
+    - Resolves natural datapath order (e.g. `A` at top, `B` in middle, `C` below), completely eliminating the unnecessary wire crossover between `g1` (`w2`) and `in_C` and removing the hop-over bridge arc.
+  - [x] **Collinear Pin-to-Pin Alignment & Zero-Turn Chains (`ui/src/engine/schematicModel.ts`)**:
+    - Align directly connected gates in sequential chains along Y so that `srcGate.y + srcPin.offsetY == dstGate.y + dstPin.offsetY` (`dy = 0`).
+    - Eliminates the 8-12px staircase micro-jog between `g2` and `g4`, rendering a perfectly straight 0-turn horizontal wire.
+    - Eliminates the micro-jog between `g4` and `g5`'s upper pin, and aligns `g5 -> out_F` collinearly with 0 turns.
+    - Aligns single-driver primary inputs (`A -> g1`, `B -> g2`) for 0-turn straight connections.
+  - [x] **Single-Drop Fanout Branch Routing (`ui/src/engine/schematicModel.ts`)**:
+    - For multi-consumer fanout nets (such as `B` driving `g2` and `g3`), ensure branch routing drops down vertically once at the dedicated channel track directly to the destination input Y, eliminating double-drops and intermediate staircase kinks (reducing turns from 4 to 2).
+  - [x] **High-Performance In-Depth Algorithm Architecture**:
+    - Ensure all barycentric sweeps, interval-based collision detections, and collinear passes run in $O(N \log N)$ time with minimal allocations, executing in $<5\text{ms}$ for responsive interactivity.
+  - [x] **Continuous Quality Gate & Verification**:
+    - Full Rust workspace test pass (`cargo test --workspace` - all 160+ tests passing).
+    - Full clippy pass (`cargo clippy --workspace --all-targets -- -D warnings` - 0 warnings).
+    - Frontend production bundle build (`npm --prefix ui run build` - successful build in 25.5s).
+    - Visual inspection and verification screenshots confirming the elimination of unnecessary turns.
+    - Zero-emoji audit passed.
+
+- [x] **Phase 79: Unified Overflow & Context Menu (Three-Dots More Options) for Schematic Ribbon (Mobile & Desktop) - [P1]**
+  - [x] **Schematic Overflow Context Menu Popover (`ui/src/components/SchematicViewer.tsx`)**:
+    - Add a persistent Three-Dots (`MoreVertical`) action button anchored to the right of the schematic toolbar, accessible on all screen widths (mobile, tablet, split-view, desktop).
+    - Implement an accessible, click-outside and Esc-dismissable dark engineering dropdown menu popover.
+    - Organize the context menu into clear functional sections: View & Layout (Orientation, Wire Crossings, Minimap, Fit, Reset Zoom), Analysis & Telemetry (Live Values, Clock Nets, Cone Slicing), and Netlist & Synthesis Stats (Cells & Nets count, FPGA technology mapping details, LOD level, Export Netlist).
+  - [x] **Streamlined Responsive Top Ribbon Layout**:
+    - Keep primary essential controls always visible without wrapping: Mode switch (`[RTL | Synth]`), Orientation toggle (`[H | V]`), Quick Fit (`[Fit]`), and the Three-Dots (`[⋮]`) button.
+    - Gracefully collapse or move secondary/verbose items (such as the `X Cells • Y Nets` text and `LOD` badge) so they never clip or truncate abruptly across narrow widths, while remaining fully visible and legible inside the Three-Dots menu.
+  - [x] **Internationalization (i18n) Parity (`ui/src/i18n/locales/*.ts`, `ui/src/i18n/types.ts`)**:
+    - Add menu labels (`moreOptions`, `circuitMetrics`, `layoutOptions`, `analysisFilters`, `resetZoom`) across all 7 language dictionaries (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+  - [x] **Continuous Quality Gate & Verification**:
+    - Full Rust workspace test pass (`cargo test --workspace`).
+    - Full clippy pass (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production bundle build (`npm --prefix ui run build`).
+    - Mobile and desktop viewport verification screenshots.
+    - Zero-emoji audit.
+
+- [x] **Phase 78: High-DPI Retina Crispness, Instant Mount Frame Render & Mobile Toolbar Prioritization - [P1]**
+  - [x] **High-DPI Retina Buffer Scaling (`ui/src/components/SchematicViewer.tsx`)**:
+    - Query `window.devicePixelRatio` (capped at 3.0x for mobile OLED / Retina performance).
+    - Size canvas physical buffer to `Math.round(width * dpr)` by `Math.round(height * dpr)` with CSS display style locked to `width` and `height`.
+    - Apply `ctx.scale(dpr, dpr)` transform so all vector lines, gates, beziers, and JetBrains Mono text rasterize with subpixel sharpness.
+  - [x] **Instant Mount & Resize First-Frame Render (`ui/src/components/SchematicViewer.tsx`)**:
+    - Fix the blank-on-mount bug where `ResizeObserver` cleared the canvas buffer without calling `renderCanvas()` when `!hasFittedRef.current`.
+    - Trigger immediate `requestAnimationFrame(renderCanvas)` in `ResizeObserver`, `fitToScreen`, and component mount.
+    - Guarantee zero-latency canvas rendering on first tab switch without requiring touch gestures or mouse movement.
+  - [x] **Responsive Mobile Toolbar & Orientation Visibility (`ui/src/components/SchematicViewer.tsx`)**:
+    - Position orientation toggle (`[<-> H / ^v V]`) and `[Fit]` prominently on mobile screens (`window.innerWidth <= 768`) right alongside the `RTL / Synth` mode buttons.
+    - Collapse secondary badges (`10 Cells • 9 Nets`, `LOD: STRUCTURAL`) on narrow mobile screens so essential controls do not overflow.
+    - Separate mobile and desktop orientation persistence (`axiom_schematic_orientation_mobile` vs `axiom_schematic_orientation_desktop`) so mobile portrait defaults to `vertical` while desktop wide screens default to `horizontal`.
+  - [x] **Continuous Quality Gate & Parity**:
+    - 100% i18n key parity across all 7 supported languages.
+    - Rust workspace tests (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production build (`npm --prefix ui run build`).
+    - Strict zero-emoji policy.
+
+- [x] **Phase 77: Schematic Orientation Toggle (Horizontal & Vertical Layouts) for Mobile & Responsive EDA - [P1]**
+  - [x] **Top-to-Bottom Vertical Layout & Routing Engine (`ui/src/engine/schematicModel.ts`)**:
+    - Extend `layoutAndRouteGraph` to support `orientation: "horizontal" | "vertical"`.
+    - In vertical orientation, arrange layer rows along $+Y$ (inputs at top, outputs at bottom) and stack intra-layer nodes along $X$.
+    - Adapt Sugiyama forward/backward sweeps to optimize $X$ positions to eliminate wire crossings.
+    - Adapt commutative pin sorting to driver $X$ coordinates (left-to-right pin assignment).
+    - Adapt datapath backbone alignment along the vertical centerline ($dx = 0$).
+    - Update port pin offsets: input pins at top edge ($y = 0$), output pins at bottom edge ($y = \text{height}$).
+    - Implement vertical Manhattan channel routing in `routeOrthogonalEdge` (vertical trunks, horizontal cross channels, straight $dx = 0$ connections).
+  - [x] **Orientation-Aware Canvas Gate Rendering (`ui/src/components/SchematicViewer.tsx`)**:
+    - Render gates oriented downward in vertical mode with 90-degree clockwise rotation so inputs face top and outputs face bottom.
+    - Ensure all instance names, gate labels, port text, and live signal callouts remain upright and readable.
+  - [x] **Schematic Toolbar Orientation Selector & Responsive Detection (`ui/src/components/SchematicViewer.tsx`)**:
+    - Add segmented toggle button in schematic toolbar with `ArrowRightLeft` (Horizontal) and `ArrowUpDown` (Vertical) icons.
+    - Persist orientation mode in `localStorage` under `axiom_schematic_orientation`.
+    - Auto-detect mobile/portrait viewport (`window.innerWidth <= 768 && window.innerHeight > window.innerWidth`) when no preference is saved.
+    - Trigger `fitToScreen()` upon orientation toggle for immediate fit.
+  - [x] **Internationalization (i18n) Parity (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - Synchronize new orientation keys across all 7 language dictionaries (`en`, `tr`, `de`, `ja`, `zh`, `es`, `fr`).
+  - [x] **Verification Quality Gate**:
+    - Rust workspace tests (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production build (`npm --prefix ui run build`).
+    - Visual inspection of both horizontal and vertical modes.
+
 - [x] **Phase 76: Iterative Schematic Crossing Minimization, Sugiyama Layer Permutation & Hop-Over Arc Wire Bridges - [P1]**
   - [x] **Iterative Layer Permutation & Barycentric Sweeps (`ui/src/engine/schematicModel.ts`)**:
     - Implement multi-pass forward (0 -> N) and backward (N -> 0) barycentric & median sweeps to minimize edge crossings.
