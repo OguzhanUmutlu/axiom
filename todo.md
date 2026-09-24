@@ -21,6 +21,25 @@
 
 ## Completed
 
+- [x] **Phase 83: Dual-Mode Schematic Separation (RTL Collinear Zero-Turn Fidelity & Synth Layer Isolation) - [P1]**
+  - [x] **RTL Graph vs Synthesized Graph Branching (`ui/src/engine/schematicModel.ts`)**:
+    - Introduce explicit `isSynth = graph.id.startsWith("synth_")` dispatch in `layoutAndRouteGraph`.
+    - Preserve the verified, zero-turn collinear alignment and natural barycentric ordering for RTL graphs without interference from FPGA techmapping heuristics.
+  - [x] **RTL Combinational Backbone Preservation (`ui/src/engine/schematicModel.ts`)**:
+    - Restrict RTL datapath backbone chain extraction to multi-input logic gates (`d.inputs.length >= 2`), ensuring 1-input inverter/buffer auxiliary gates (`not g1`, `not g3`) do not hijack the backbone centerline.
+    - Align auxiliary gates cleanly beside the backbone (e.g. `g1` collinear with input `A`, `g3` below datapath with dedicated horizontal channel).
+  - [x] **Preserve Natural Barycentric Input Port Ordering for RTL (`ui/src/engine/schematicModel.ts`)**:
+    - Prevent the synth-specific single-consumer collinear post-pass from overriding natural barycentric input port ordering (`A`, `B`, `C`) in RTL graphs, preventing input port scrambling (`A`, `C`, `B`).
+    - Eliminate intermediate staircase micro-jogs on `in_B -> g2`, `g2 -> g4`, `g4 -> g5`, and `g5 -> out_F`, guaranteeing perfectly straight horizontal zero-turn lines.
+  - [x] **Isolated Synthesized Netlist Alignment (`ui/src/engine/schematicModel.ts`)**:
+    - Retain the Phase 81 topological layer assignment, IBUF centering, and OBUF-to-output-port collinear alignment specifically for synthesized netlists (`isSynth`).
+  - [x] **Verification & Quality Gate**:
+    - Headless browser verification screenshot capturing both RTL schematic and Synthesized netlist of `uygulama_0`.
+    - Rust workspace test pass (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend bundle check (`npm --prefix ui run build`).
+    - Zero-emoji audit across all modified files.
+
 - [x] **Phase 82: Robust Cross-Window Web Heartbeat & Mutual Exclusion Project Leasing - [P1]**
   - [x] **Unique Tab Instance Identity (`ui/src/engine/windowManager.ts`, `sessionSync.ts`)**:
     - Assign an in-memory unique tab instance identifier (`TAB_INSTANCE_ID`) to guarantee distinct tab identities even when `sessionStorage` is cloned on browser tab duplication.
