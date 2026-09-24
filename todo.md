@@ -21,6 +21,24 @@
 
 ## Completed
 
+- [x] **Phase 85: Schematic Viewport Rotation Architecture (Exact Rotated Clone of Canonical Horizontal Layout) - [P1]**
+  - [x] **Single Canonical Graph Layout API (`ui/src/engine/schematicModel.ts`, `ui/src/components/SchematicViewer.tsx`)**:
+    - Unify `parseVerilogToSchematicGraph`, `generateSchematicGraph`, and `generateSynthesizedSchematicGraph` so orientation does not trigger re-synthesis or divergent layout algorithms.
+    - Eliminate divergent vertical layout passes in `schematicModel.ts` so horizontal and vertical share the exact same canonical layout and routing model.
+  - [x] **Viewport Render-Time Rotation Transform (`ui/src/components/SchematicViewer.tsx`)**:
+    - In `renderCanvas`, apply 90-degree clockwise viewport rotation (`ctx.rotate(Math.PI / 2)`) when orientation is vertical.
+    - Render the exact same horizontal graphics, wires, jumpers, gate shapes, and pins seamlessly rotated.
+  - [x] **Coordinate Transformation & Interaction Inversion (`ui/src/components/SchematicViewer.tsx`)**:
+    - Update `getCanvasCoords` to invert the 90-degree rotation so mouse clicks, node selection, edge hovering, and wire probe tooltips map with 100% precision.
+    - Update `fitToScreen` to center and scale the rotated bounding dimensions symmetrically.
+    - Update minimap to render the rotated orientation accurately.
+  - [x] **Verification & Quality Gate**:
+    - Visual verification comparing horizontal and rotated vertical orientations.
+    - Full Rust workspace test pass (`cargo test --workspace`).
+    - Full Rust strict clippy pass (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Full frontend production build pass (`npm --prefix ui run build`).
+    - Strict zero-emoji audit across all modified files.
+
 - [x] **Phase 84: Automatic Schematic Viewport Centering & Center/Fit Icon Modernization - [P1]**
   - [x] **Automatic Fit on Orientation & Mode Change (`ui/src/components/SchematicViewer.tsx`)**:
     - Trigger automatic `fitToScreen()` whenever layout orientation changes (`horizontal` <-> `vertical`).
