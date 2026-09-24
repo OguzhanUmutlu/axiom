@@ -21,6 +21,30 @@
 
 ## Completed
 
+- [x] **Phase 76: Iterative Schematic Crossing Minimization, Sugiyama Layer Permutation & Hop-Over Arc Wire Bridges - [P1]**
+  - [x] **Iterative Layer Permutation & Barycentric Sweeps (`ui/src/engine/schematicModel.ts`)**:
+    - Implement multi-pass forward (0 -> N) and backward (N -> 0) barycentric & median sweeps to minimize edge crossings.
+    - Calculate ideal continuous barycentric positions for each layer based on connected neighbor coordinates.
+    - Add topological input & output port reordering to align primary I/Os with connected gates.
+    - Re-evaluate layer assignments for long-edge single-consumer nodes (e.g. `g3` in `uygulama_0`) to prevent intermediate blocking.
+  - [x] **Channel-Aware Multi-Layer Corridor Routing (`ui/src/engine/schematicModel.ts`)**:
+    - Route multi-layer wires through inter-node horizontal channels between nodes instead of launching detours around the entire circuit.
+    - Allocate collision-free horizontal and vertical channel tracks to avoid parallel edge overlaps.
+  - [x] **Geometric Crossover & Hop-Over Arc Engine (`ui/src/engine/schematicModel.ts`, `ui/src/components/SchematicViewer.tsx`)**:
+    - Detect all pairwise orthogonal wire crossings between horizontal and vertical segments of different nets.
+    - Render IEEE 315 hop-over arcs (bridges) jumping over crossing wires with dynamic curvature matching the wire traversal direction.
+    - Render solid connection dots (`•`) at true electrical branch/tap points (fanout $\ge 2$) to eliminate ambiguity between junctions and crossings.
+  - [x] **Schematic Crossover Style Controls (`ui/src/components/SchematicViewer.tsx`)**:
+    - Add a toolbar toggle / selector for crossover rendering: `Arc Bridge` (default), `Gap`, and `Straight`.
+  - [x] **Internationalization (i18n) Parity (`ui/src/i18n/types.ts`, `ui/src/i18n/locales/*.ts`)**:
+    - Synchronize new crossover settings keys across all 7 language dictionaries.
+  - [x] **Verification Quality Gate**:
+    - Rust workspace tests (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production build (`npm --prefix ui run build`).
+    - Docs portal build (`npm --prefix docs run docs:build`).
+    - Zero-emoji audit.
+
 - [x] **Phase 75: Schematic Layout & Routing Optimization, Waveform Windowing & Tab Overflow Dropdown - [P1]**
   - [x] **Barycentric & Median Vertical Node Placement (`ui/src/engine/schematicModel.ts`)**:
     - Replaced naive vertical centering with barycentric / median Y-coordinate calculation based on connected drivers.
