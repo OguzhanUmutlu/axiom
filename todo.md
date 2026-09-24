@@ -21,6 +21,45 @@
 
 ## Completed
 
+- [x] **Phase 81: Generalized Schematic Layout Engine, Streamlined Ribbon & Synthesized Netlist Alignment - [P1]**
+  - [x] **Dynamic & Topological Layer Assignment for Synthesized Netlists (`ui/src/engine/schematicModel.ts`)**:
+    - Replace brittle hardcoded net/kind string heuristics with generalized topological depth calculation (`layer = 1 + max(driver.layer)`).
+    - Ensure proper node kinds for FPGA primitive cells: `IBUF` and `OBUF` are gate-level buffer cells (`kind: "gate"`), so only module I/O ports are `kind: "port_in"` and `kind: "port_out"`.
+    - Sequential boundary handling: Register data inputs (`D`, `CE`, `CLR`, `SET`) terminate combinational paths, ensuring sequential feedback paths (such as `Q -> LUT -> D`) do not cycle infinitely.
+    - Clean layer sequence for `uygulama_0` synthesized netlist: Layer 0 (inputs), Layer 1 (IBUFs), Layer 2 (inverters), Layer 3 (AND1), Layer 4 (AND2), Layer 5 (OR1), Layer 6 (OBUF), Layer 7 (output port).
+    - Completely eliminates cell overlapping in the same column (such as `and1`, `and2`, and `or1` previously squished into Layer 3 at $y \in [1060, 1124]$).
+  - [x] **Generalized Forward & Backward Sweeps for Boundary I/O Ports (`ui/src/engine/schematicModel.ts`)**:
+    - Forward Sweep (Output Ports): Primary output ports in the last layer (`kind: "port_out"`) compute their ideal continuous coordinate from their driver pin (`idealY = srcNode.y + srcPin.offsetY - outPortPin.offsetY`). Sorted by `idealY` and packed with collision-free spacing (`prevBottom + nodeSpacingY`). Fixes the bug where `port_F` was stranded high at $y = 36$!
+    - Backward Sweep (Input Ports): Primary input ports in Layer 0 compute their ideal continuous coordinate from the median of their downstream connected pins. Sorted by `(minTargetLayer, idealY)` and packed with non-overlapping spacing.
+  - [x] **Generalized Datapath Backbone & Collinear Pin-to-Pin Alignment (`ui/src/engine/schematicModel.ts`)**:
+    - Allow 1-input cells / buffers (`OBUF`, `IBUF`, `LUT1`, inverters, buffers) and multi-input gates to participate in collinear datapath chains.
+    - For every output port, trace its primary driving path back to the driving input.
+    - Align pin-to-pin collinear with $dy = 0$ along the entire chain (`curr.y = Math.round(prev.y + srcPin.offsetY - dstPin.offsetY)`).
+    - Single-consumer input ports driving IBUFs or gates align collinearly with $dy = 0$ (`port_A -> IBUF_A`, `port_B -> IBUF_B`, `port_C -> IBUF_C`).
+    - Output buffer to output port aligns collinearly with $dy = 0$ (`OBUF_F -> port_F`).
+    - Intermediate gates in the datapath align collinearly with $dy = 0$ (`IBUF -> LUT -> ... -> OBUF`).
+    - Verify non-overlap and collision-free bounds across all nodes in every layer.
+  - [x] **Streamlined Single-Toggle Ribbon Controls & Overflow Prevention (`ui/src/components/SchematicViewer.tsx`)**:
+    - Single Mode Toggle Button with Icon: Replace wide segmented buttons with a single toggle button (`[Zap RTL]` / `[Layers Synth]`) switching seamlessly between RTL and Synthesized netlist views.
+    - Single Orientation Toggle Button with Icon: Replace `[⇄ H] [⇅ V]` segmented buttons with a single icon button (`ArrowRightLeft` / `ArrowUpDown`) toggling orientation.
+    - Compact Fit Button: Replace verbose `[Fit Screen]` text with a clean iconic button (`Maximize2` / `Scan` icon with tooltip `Fit to Screen (F)`).
+    - Non-Overflowing Responsive Layout: Minimize redundant text labels so all primary tools fit cleanly without clipping or wrapping even on narrow split panels.
+  - [x] **Panel Close Protection (`ui/src/components/layout/LayoutLeafRenderer.tsx`, `LayoutRenderer.tsx`)**:
+    - Remove the single-click close button (`<X size={12} />`) from visualizer panel headers in normal viewing mode.
+    - Restrict panel closing, rearrangement, and deletion exclusively to the interactive Blueprint Layout Editor to prevent accidental loss of workspace panels.
+  - [x] **Strict Non-Regression Guarantee for RTL Schematic ("Make sure to not break the working one")**:
+    - Preserve all Phase 80 verified behaviors for RTL schematics:
+      - `uygulama_0.v` RTL schematic retains 0-turn straight connections for `A -> g1`, `B -> g2 -> g4 -> g5 -> out_F`.
+      - Zero crossovers over `C`.
+      - Minimal 2-turn fanout routing for `B -> g3` and `in_C -> g4`.
+    - Run automated headless test suite and visual verification on BOTH RTL Schematic and Synthesized Netlist.
+  - [x] **Quality Gates & Verification**:
+    - Rust workspace tests (`cargo test --workspace`).
+    - Rust strict clippy (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend production bundle build (`npm --prefix ui run build`).
+    - Headless visual inspection confirming both RTL Schematic and Synthesized Netlist.
+    - Zero-emoji audit.
+
 - [x] **Phase 80: High-Performance Collinear Pin Alignment, Barycentric Port Ordering & Turn-Free Schematic Routing - [P1]**
   - [x] **Barycentric Input Port Topological Ordering (`ui/src/engine/schematicModel.ts`)**:
     - Order primary input ports in Layer 0 along Y based on the median/barycentric target Y and minimum target layer of their downstream connected gates.
