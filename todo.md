@@ -21,6 +21,39 @@
 
 ## Completed
 
+- [x] **Phase 88: Schematic Layout Datapath Routing Optimization & VitePress Docs Linux Tux Penguin Icon - [P1]**
+  - [x] **Schematic Layout Datapath Optimization (`ui/src/engine/schematicModel.ts`)**:
+    - Reposition input `C` higher under `B` (`fixedY: 160`, matching canonical grid row spacing `rowHeight = 62`).
+    - Position auxiliary gate `inv2` cleanly below `C` (`fixedY: 220`, auxiliary lower bound `Math.max(minLowerY, 214)`).
+    - Eliminate obstacle detour for input `C`, ensuring 0-turn / direct 2-bend Manhattan routing straight to `and2`.
+  - [x] **VitePress Docs Linux Penguin Icon (`docs/.vitepress/theme/components/ReleaseDownloader.vue`)**:
+    - Replace generic terminal `> _` SVG with scalable, standardized Tux Penguin SVG icon matching Windows and Apple branding.
+  - [x] **Verification & Quality Gate**:
+    - Automated routing verification test for `logic_circuit` wire points.
+    - Frontend build (`npm --prefix ui run build`).
+    - Docs portal build (`npm --prefix docs run docs:build`).
+    - Strict zero-emoji audit.
+
+- [x] **Phase 87: Comprehensive Localization of New Project Wizard & Validation Engine - [P1]**
+  - [x] **Type System & Namespace Definition (`ui/src/i18n/types.ts`)**:
+    - Add structured `newProjectModal` interface containing step titles, wizard progress tabs, input labels, instructions, project types & descriptions, parts & boards catalog filters, table headers, summary keys, and validation error messages.
+  - [x] **Project Name Validation Localization (`ui/src/engine/projectRegistry.ts`, `ui/src/components/NewProjectModal.tsx`)**:
+    - Enhance `validateProjectName` with structured `errorKey` and `errorParams` (`nameEmpty`, `nameInvalidChars`, `nameDot`, `nameTrashCollision`, `nameCollision`).
+  - [x] **Wizard UI Component Localization (`ui/src/components/NewProjectModal.tsx`)**:
+    - Localize modal header, step subtitles, and progress indicator badges.
+    - Localize Step 1: name input, location path, browse button, and subdirectory options.
+    - Localize Step 2: RTL, Post-synthesis, I/O planning, imported, and example project cards, badges, and skip-sources checkboxes.
+    - Localize Step 3: Parts vs Boards catalog tabs, search inputs, dropdown filters ("All Families", "All Speeds", "All Vendors"), parts table columns, and board cards.
+    - Localize Step 4: Project summary labels, source indicators, and hardware specs.
+    - Localize navigation buttons ("Cancel", "Back", "Next", "Finish").
+  - [x] **7-Language Dictionary Synchronization (`ui/src/i18n/locales/`)**:
+    - Translate all new keys into `en.ts`, `tr.ts`, `de.ts`, `ja.ts`, `zh.ts`, `es.ts`, and `fr.ts` with 100% key parity (961 keys each).
+  - [x] **Verification & Quality Gate**:
+    - Rust workspace test pass (`cargo test --workspace`).
+    - Rust strict clippy pass (`cargo clippy --workspace --all-targets -- -D warnings`).
+    - Frontend build pass (`npm --prefix ui run build`).
+    - Strict zero-emoji audit across all modified files.
+
 - [x] **Phase 86: Comprehensive i18n Translation Audit & Missing Key Parity - [P1]**
   - [x] **Welcome Launchpad Translation Namespace Fix & Dropdown Polish (`ui/src/components/WelcomeLaunchpad.tsx`, `ui/src/i18n/i18nContext.tsx`)**:
     - Resolve the `welcome.selectAll` untranslated string bug by switching from `welcome.*` namespace to `launchpad.*` namespace (`launchpad.selectAll`, `launchpad.deselectAll`, `launchpad.selectedCount`, `launchpad.trashSelected`, `launchpad.restoreSelected`, etc.).
