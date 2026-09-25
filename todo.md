@@ -21,6 +21,33 @@
 
 ## Completed
 
+- [x] **Phase 89: Axiom EDA v1.0.1 Patch Release, Version Bump & Release Asset Deployment - [P1]**
+  - [x] **Global Version Unification across Workspace (1.0.0 -> 1.0.1)**:
+    - Root `Cargo.toml`: update `[workspace.package] version = "1.0.1"`.
+    - `crates/desktop/tauri.conf.json`: update `"version": "1.0.1"`.
+    - `ui/package.json` & `docs/package.json`: update `"version": "1.0.1"`.
+    - `ui/public/version.json` & `docs/public/version.json`: update to `1.0.1` / `v1.0.1`.
+    - `ui/src/engine/updateChecker.ts`: update `CURRENT_CLIENT_COMMIT` and `CURRENT_CLIENT_VERSION` to `v1.0.1`.
+    - `ui/src/components/UnifiedBottomDock.tsx`, `BottomConsole.tsx`, `AutoPipelineModal.tsx`: update banner strings to `v1.0.1`.
+    - `scripts/install.sh`, `scripts/install.ps1`, `ui/public/install.sh`, `ui/public/install.ps1`: update `DEFAULT_VERSION` to `v1.0.1`.
+  - [x] **Release Asset Downloader & Fallback Synchronization**:
+    - `ui/src/components/WelcomeLaunchpad.tsx`: prepend `v1.0.1` entry, update hero badge to `v1.0.1`, parameterize fallback URLs dynamically (`tag.replace(/^v/, "")`).
+    - `docs/.vitepress/theme/components/ReleaseDownloader.vue`: prepend `v1.0.1` entry in fallback release catalog, parameterize fallback download URLs dynamically.
+  - [x] **Release Artifact Compilation, Packaging & Verification**:
+    - Build release binaries: `cargo build --release --bin axiom --bin axiom-desktop`.
+    - Package x86_64 Linux tarball (`axiom-v1.0.1-x86_64-linux.tar.gz`), universal tarball (`axiom-x86_64-unknown-linux-gnu.tar.gz`), and Debian package (`axiom_1.0.1_amd64.deb`).
+    - Generate SHA256 checksums.
+  - [x] **GitHub Release & Git Tag Publication**:
+    - Tag git commit with `v1.0.1` (standard `v*` release convention).
+    - Publish GitHub release `v1.0.1` using `gh release create v1.0.1` with detailed patch release notes highlighting schematic datapath routing optimization, Linux Tux icon, and New Project Modal 7-language localization.
+    - Push git tag `v1.0.1` to `origin/main`.
+  - [x] **Quality Assurance Gate**:
+    - Rust workspace test suite: `cargo test --workspace`.
+    - Rust strict clippy: `cargo clippy --workspace --all-targets -- -D warnings`.
+    - Frontend UI build: `npm --prefix ui run build`.
+    - Docs portal build: `npm --prefix docs run docs:build`.
+    - Zero-emoji audit.
+
 - [x] **Phase 88: Schematic Layout Datapath Routing Optimization & VitePress Docs Linux Tux Penguin Icon - [P1]**
   - [x] **Schematic Layout Datapath Optimization (`ui/src/engine/schematicModel.ts`)**:
     - Reposition input `C` higher under `B` (`fixedY: 160`, matching canonical grid row spacing `rowHeight = 62`).
